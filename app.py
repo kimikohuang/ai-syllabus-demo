@@ -1,5 +1,5 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Final Version)
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Expandable Sessions)
 # ==============================================================================
 
 import streamlit as st
@@ -30,7 +30,7 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 多語系副標題（更新為黃可羣老師）
+# 多語系副標題
 SUBTITLES = {
     "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang (黃可羣) · Dept. of Business and Management 2C (3.0 Credits)",
     "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) (3.0 學分 / 3.0 時數)",
@@ -435,7 +435,7 @@ weeks_all = [
     {
         "week": "Week 16", "date": "2026/12/24",
         "us": {"prog": "Final Project Rehearsal & Stress Testing", "hw": "End-to-end user testing", "sum": "Peer review clinics; edge-case stress testing; performance debugging and UX hardening.", "rem": "In-person"},
-        "tw": {"prog": "期末專案演練與壓力測試", "hw": "應用程式端對端完整測試", "sum": "同儕測試（Peer Review）；極端輸入測試；網頁載入效能調優與除錯。", "rem": "實體上課"},
+        "tw": {"prog": "期中專案演練與壓力測試", "hw": "應用程式端對端完整測試", "sum": "同儕測試（Peer Review）；極端輸入測試；網頁載入效能調優與除錯。", "rem": "實體上課"},
         "vn": {"prog": "Tổng duyệt đồ án cuối kỳ & Thử nghiệm chịu tải", "hw": "Kiểm thử người dùng toàn diện", "sum": "Đánh giá chéo ngang hàng; thử nghiệm các trường hợp biên; tinh chỉnh hiệu năng và hoàn thiện sản phẩm.", "rem": "Học trực tiếp"},
         "id": {"prog": "Geladi Bersih Proyek Akhir & Uji Beban", "hw": "Pengujian pengguna menyeluruh", "sum": "Sesi peer-review antar kelompok; pengujian kondisi batas ekstrem; optimasi performa dan debugging.", "rem": "Tatap muka"},
         "my": {"prog": "Latihan Akhir Projek & Ujian Tekanan", "hw": "Pengujian aplikasi dari hujung ke hujung", "sum": "Ulasan rakan sebaya; ujian situasi melampau; penalaan prestasi masa tindak balas dan pepijat.", "rem": "Bersemuka"},
@@ -457,8 +457,7 @@ weeks_all = [
         "us": {"prog": "[Final Showcase] Demo (Day 2) & Wrap-up", "hw": "Learning portfolio compilation", "sum": "Showcase round 2; course synthesis; mapping AI skills to future careers in financial analytics.", "rem": "In-person"},
         "tw": {"prog": "【期末發表】專題成果展示會 (Day 2) 與總結", "hw": "學習歷程檔案彙整", "sum": "第二階段專題成果發表；全學期知識回顧；生成式 AI 與商業分析職涯藍圖展拓。", "rem": "實體上課"},
         "vn": {"prog": "【Báo cáo cuối kỳ】Thuyết trình (Ngày 2) & Tổng kết", "hw": "Tổng hợp hồ sơ học tập cá nhân", "sum": "Thuyết trình đợt 2; đúc kết kiến thức toàn khóa; định hướng phát triển sự nghiệp cùng AI tài chính.", "rem": "Học trực tiếp"},
-        "id": {"prog": "[Showcase Akhir] Demo (Hari 2) & Kesimpulan", "hw": "Penyusunan portofolio belajar", "sum": "Showcase sesi 2; rangkuman materi satu semester; pemetaan keterampilan AI ke karier analitik bisnis.", "rem": "Tatap muka"},
-        "my": {"prog": "[Pameran Akhir] Demonstrasi (Hari 2) & Rumusan", "hw": "Kompilasi portfolio pembelajaran", "sum": "Pameran pusingan kedua; sintesis keseluruhan kursus; memetakan kemahiran AI untuk laluan kerjaya.", "rem": "Bersemuka"},
+        "id": {"prog": "[Showcase Akhir] Demo (Hari 2) & Kesimpulan", "hw": "Penyusunan portofolio belajar", "sum": "Showcase sesi 2; rangkuman materi satu semester; pemetaan keterampilan AI ke karier analitik bisnis.", "rem": "Bersemuka"},
         "th": {"prog": "【นำเสนอผลงานปลายภาค】สาธิต (วันที่ 2) & สรุปบทเรียน", "hw": "รวบรวมแฟ้มสะสมผลงานการเรียนรู้", "sum": "นำเสนอรอบที่สอง; สรุปเนื้อหาสำคัญตลอดทั้งภาคการศึกษา; แผนที่เส้นทางอาชีพวิเคราะห์ธุรกิจด้วย AI", "rem": "เรียนในชั้น"},
         "fr": {"prog": "[Showcase final] Démo (J2) & Bilan du semestre", "hw": "Consolidation du portfolio d'apprentissage", "sum": "Deuxième session de présentations ; synthèse générale ; opportunités professionnelles dans l'IA financière.", "rem": "Présentiel"}
     }
@@ -492,7 +491,95 @@ if hasattr(st, "html"):
 else:
     st.markdown(table_full, unsafe_allow_html=True)
 
-# 6. 側邊欄：多語系 AI 助教 + Google Sheets 自動同步
+# 6. 新增：點擊展開每週三節課（1-5 點詳細步驟）的互動抽屜
+st.markdown("---")
+expand_section_titles = {
+    "us": "📖 Detailed 3-Hour Session Breakdown (Click week to expand)",
+    "tw": "📖 每週三節課詳細進行步驟與上機指引（點擊展開）",
+    "vn": "📖 Chi tiết 3 tiết học hàng tuần (Bấm để mở rộng)",
+    "id": "📖 Rincian 3 Jam Pelajaran (Klik untuk memperluas)",
+    "my": "📖 Pecahan 3 Jam Sesi (Klik untuk buka)",
+    "th": "📖 รายละเอียดการเรียน 3 ชั่วโมง (คลิกเพื่อขยาย)",
+    "fr": "📖 Détail des 3 heures de cours (Cliquez pour dérouler)"
+}
+st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
+
+# 以第一週為例的 3 節課詳細 1-5 點內容（支援多語系對照）
+w1_details = {
+    "us": """
+    * **Session 1 (09:10 - 10:00) | Concept & Onboarding**
+      1. Course orientation, grading policies, and interactive portal overview.
+      2. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
+    * **Session 2 (10:10 - 11:00) | Cloud Setup & Live Demo**
+      3. Setting up browser access and logging into **Google Colab**.
+      4. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
+    * **Session 3 (11:10 - 12:00) | Hands-on Lab & AI Assistant**
+      5. **Lab 0**: In-class exploration; students run their first script and use the sidebar AI Assistant for real-time troubleshooting.
+    """,
+    "tw": """
+    * **第一節 (09:10 - 10:00) ｜ 觀念引導與門戶導覽**
+      1. 課程總覽、評量標準與多語系 AI 助教網頁導覽。
+      2. 建立「指揮家思維 (Conductor Mindset)」：學習如何運用自然語言與 AI 協同編程，無須死記複雜語法。
+    * **第二節 (10:10 - 11:00) ｜ 雲端環境與即時示範 (Live Demo)**
+      3. 帶領全班登入瀏覽器與 **Google Colab** 雲端開發環境。
+      4. 老師現場示範第一段 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
+    * **第三節 (11:10 - 12:00) ｜ 課堂實作與 AI 互動 (Lab 0)**
+      5. **Lab 0 實作**：同學實際動手操作 Colab 程式碼，遇到卡關時透過側邊欄 AI 助教進行即時提問與互動。
+    """,
+    "vn": """
+    * **Tiết 1 (09:10 - 10:00) | Khái niệm & Định hướng**
+      1. Tổng quan khóa học, quy chế điểm số và giới thiệu cổng thông tin.
+      2. Tư duy nhạc trưởng (Conductor Mindset): Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên.
+    * **Tiết 2 (10:10 - 11:00) | Cài đặt & Trình diễn trực tiếp**
+      3. Hướng dẫn sử dụng môi trường đám mây **Google Colab**.
+      4. Giảng viên code mẫu: Lấy giá cổ phiếu TSMC (`2330.TW`) và vẽ biểu đồ xu hướng.
+    * **Tiết 3 (11:10 - 12:00) | Thực hành Lab 0 & Trợ lý AI**
+      5. **Lab 0**: Sinh viên tự thực hành trên Colab và sử dụng Trợ lý AI bên thanh bên để giải đáp thắc mắc.
+    """,
+    "id": """
+    * **Sesi 1 (09:10 - 10:00) | Konsep & Pengantar**
+      1. Tinjauan kursus, kebijakan penilaian, dan navigasi portal.
+      2. Memperkenalkan **Pola Pikir Konduktor**: Belajar membuat kode dengan AI menggunakan bahasa alami.
+    * **Sesi 2 (10:10 - 11:00) | Setup Cloud & Live Demo**
+      3. Mengakses dan menyiapkan lingkungan **Google Colab**.
+      4. Dosen mendemonstrasikan kode: Mengambil harga saham TSMC (`2330.TW`) secara langsung.
+    * **Sesi 3 (11:10 - 12:00) | Praktik Lab 0 & Asisten AI**
+      5. **Lab 0**: Mahasiswa mencoba menjalankan skrip pertama dan menggunakan Asisten AI di sidebar untuk bantuan.
+    """
+}
+
+# 建立 18 週的展開抽屜
+for i in range(1, 19):
+    week_title_map = {
+        "us": f"Week {i} Detailed Agenda (3-Hour Breakdown)",
+        "tw": f"第 {i} 週詳細三節課進行步驟與上機指引",
+        "vn": f"Tuần {i} - Chi tiết 3 tiết học",
+        "id": f"Minggu {i} - Rincian Sesi",
+        "my": f"Minggu {i} - Butiran Sesi",
+        "th": f"สัปดาห์ที่ {i} - รายละเอียดบทเรียน",
+        "fr": f"Semaine {i} - Détail des séances"
+    }
+    w_title = week_title_map.get(current_code, week_title_map["us"])
+    
+    with st.expander(w_title):
+        if i == 1:
+            # 第一週顯示詳細的 1-5 點 3 節課指引
+            content_to_show = w1_details.get(current_code, w1_details["us"])
+            st.markdown(content_to_show)
+        else:
+            # 2-18 週預設提示（後續可依需求逐週填入詳細 1-5 點）
+            placeholders = {
+                "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
+                "tw": f"第 {i} 週的詳細三節課 1-5 點操作指引正在準備中，敬請期待！",
+                "vn": f"Chi tiết cho Tuần {i} sẽ sớm được cập nhật.",
+                "id": f"Rincian untuk Minggu {i} akan segera hadir.",
+                "my": f"Butiran untuk Minggu {i} akan dikemas kini.",
+                "th": f"รายละเอียดของสัปดาห์ที่ {i} จะอัปเดตเร็วๆ นี้",
+                "fr": f"Le détail de la semaine {i} sera bientôt disponible."
+            }
+            st.info(placeholders.get(current_code, placeholders["us"]))
+
+# 7. 側邊欄：多語系 AI 助教 + Google Sheets 自動同步
 with st.sidebar:
     ui_texts = {
         "title": {
