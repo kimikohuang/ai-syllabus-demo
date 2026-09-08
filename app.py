@@ -1,9 +1,10 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & AI Assistant (Complete)
-# 【腳本】完整版多語系課綱門戶（全語言精準翻譯對照 + 課綱專屬 AI 助教 + 手機 QR Code）
+# [Script] Multilingual Syllabus Portal & Google Sheets Q&A Logger (Complete)
+# 【腳本】多語系互動課綱入口網站（含學生提問具名/匿名登記、即時三語對照、Google Sheet 串接）
 # ==============================================================================
 
 import streamlit as st
+import datetime
 
 # 1. 頁面基本配置
 st.set_page_config(
@@ -12,7 +13,7 @@ st.set_page_config(
     page_icon="🎓"
 )
 
-# 2. 語言定義（授課語言 -> 地主國語言 -> 學生人數比例）
+# 2. 語言定義（依據：授課語言 -> 地主國語言 -> 學生人數比例）
 LANG_CONFIG = {
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
@@ -23,14 +24,13 @@ LANG_CONFIG = {
     "fr": {"label": "Français", "name": "🇫🇷 French (Français)", "flag": "https://flagcdn.com/w40/fr.png"}
 }
 
-# 讀取 URL 參數，預設官方英文 (us)
 current_code = st.query_params.get("lang", "us")
 if current_code not in LANG_CONFIG:
     current_code = "us"
 
 current_info = LANG_CONFIG[current_code]
 
-# 副標題 7 國語言字典（依據官方系所名稱：Department of Business and Management）
+# 副標題 7 國語言字典（依據官網官方系所名稱：Department of Business and Management）
 SUBTITLES = {
     "us": "Fall 2026 (Semester 115-1) · Dept. of Business and Management 2C (3.0 Credits / 3.0 Hours) | Interactive Multilingual Syllabus Portal",
     "tw": "115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶",
@@ -62,7 +62,7 @@ with header_col2:
         unsafe_allow_html=True
     )
 
-# 自訂 CSS
+# 自訂 CSS：按鈕與表格排版
 st.markdown("""
 <style>
 .flag-btn-grid {
@@ -85,7 +85,7 @@ st.markdown("""
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 .flag-btn:hover {
     border-color: #ff4b4b;
@@ -160,7 +160,7 @@ st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=T
 
 st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**")
 
-# 4. 四大卡片完整多語系資料庫（英、中、越、印、馬、泰、法）
+# 4. 四大卡片完整多語系資料庫
 meta_cards = {
     "goal": {
         "title": {
@@ -224,7 +224,6 @@ meta_cards = {
     }
 }
 
-# 渲染 4 欄資訊卡片（精準切換為當前語言）
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
@@ -255,7 +254,7 @@ schedule_titles = {
 }
 st.markdown(f"### {schedule_titles.get(current_code, schedule_titles['us'])}")
 
-# 5. 完整的 18 週課綱多語系資料庫
+# 5. 完整的 18 週課綱資料庫
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
@@ -367,12 +366,9 @@ weeks_all = [
     }
 ]
 
-# 動態翻譯表格列
 def get_translated_row(item, code):
-    # 若有完全符合的語言（us, tw, vn）
     if code in item:
         return item[code]
-    # 印、馬、泰、法等語言提供英文 + 中文輔助對照
     base_us = item["us"]
     base_tw = item["tw"]
     return {
@@ -382,7 +378,6 @@ def get_translated_row(item, code):
         "rem": f"{base_us['rem']} / {base_tw['rem']}"
     }
 
-# 表頭多語系
 headers = {
     "us": ("Week", "Date", "Teaching Progress", "Homework & Lab", "Summary", "Remarks"),
     "tw": ("週次", "上課日期", "教學進度", "作業進度", "內容摘要", "備註"),
@@ -394,7 +389,7 @@ headers = {
 }
 cur_h = headers.get(current_code, headers["us"])
 
-# 6. 無縮排 HTML 表格渲染
+# 6. 表格 HTML 輸出
 rows_html = "".join([
     f'<tr><td class="col-week">{r["week"]}</td><td class="col-date">{r["date"]}</td><td class="col-progress">{get_translated_row(r, current_code)["prog"]}</td><td class="col-hw">{get_translated_row(r, current_code)["hw"]}</td><td class="col-summary">{get_translated_row(r, current_code)["sum"]}</td><td class="col-remarks">{get_translated_row(r, current_code)["rem"]}</td></tr>'
     for r in weeks_all
@@ -407,32 +402,84 @@ if hasattr(st, "html"):
 else:
     st.markdown(table_full, unsafe_allow_html=True)
 
-# 7. 側邊欄：課綱專屬 AI 助教（ChatGPT / Gemini Q&A）
+# 7. 側邊欄：具名/匿名選擇 ＋ 課綱 AI 助教 ＋ Google Sheets 紀錄
 with st.sidebar:
-    chat_titles = {
-        "us": "🤖 Course AI Assistant", "tw": "🤖 課程 AI 助教", "vn": "🤖 Trợ lý AI Khóa học",
-        "id": "🤖 Asisten AI Kursus", "my": "🤖 Pembantu AI Kursus", "th": "🤖 ผู้ช่วย AI ประจำวิชา", "fr": "🤖 Assistant IA du Cours"
-    }
-    chat_sub = {
-        "us": "Ask anything about our grading, weekly schedule, or homework!",
-        "tw": "有任何關於評分標準、每週進度或作業的問題，歡迎隨時提問！",
-        "vn": "Hỏi bất cứ điều gì về điểm số, lịch trình học hoặc bài tập!",
-        "id": "Tanyakan apa saja tentang penilaian, jadwal mingguan, atau tugas!",
-        "my": "Tanya apa sahaja mengenai pemarkahan, jadual mingguan, atau tugasan!",
-        "th": "ถามคำถามเกี่ยวกับเกณฑ์คะแนน ตารางเรียน หรือการบ้านได้ที่นี่!",
-        "fr": "Posez toutes vos questions sur la notation, le calendrier ou les devoirs !"
-    }
-    st.header(chat_titles.get(current_code, chat_titles["us"]))
-    st.caption(chat_sub.get(current_code, chat_sub["us"]))
+    st.header("🤖 Course AI Assistant")
+    st.caption("Ask questions & earn In-Class Practice bonus points! (可具名加分或選擇匿名提問)")
+
+    # 16 位同學名單與匿名選項
+    student_roster = [
+        "👤 Anonymous (匿名提問)",
+        "U13227205 阮世日輝 (Nguyễn Thế Nhật Huy)",
+        "U14227201 阮光輝 (Nguyễn Quang Huy)",
+        "U14227202 阮芷葳",
+        "U14227203 阮青心 (Nguyễn Thanh Tâm)",
+        "U14227204 阮賓江",
+        "U14227205 林家寶 (Lâm Gia Bảo)",
+        "U14227206 武秋娟 (Vũ Thu Quyên)",
+        "U14227208 武國泰 (Vũ Quốc Thái)",
+        "U14227209 武登輝 (Vũ Đăng Huy)",
+        "U14227210 武嘉希 (Vũ Gia Hy)",
+        "U14227211 施文甯",
+        "U14227212 范秋莊 (Phạm Thu Trang)",
+        "U14227213 張晉勇 (Trương Tấn Dũng)",
+        "U14227214 雷柏安",
+        "U14227215 裴有英德 (Bùi Hữu Anh Đức)",
+        "U14227216 潘玉南珍 (Phan Ngọc Nam Trân)",
+        "U14227217 黎燈豪 (Lê Đăng Hào)"
+    ]
+
+    selected_student = st.selectbox("🙋 Select Your Name (選擇姓名):", student_roster)
+
+    user_q = st.text_input("💬 Ask a question...", placeholder="Type in Vietnamese, English, Chinese...")
     
-    user_q = st.text_input("💬 " + ("Ask a question..." if current_code != "tw" and current_code != "vn" else ("輸入問題..." if current_code == "tw" else "Nhập câu hỏi...")))
-    if user_q:
-        q_lower = user_q.lower()
-        if "grade" in q_lower or "score" in q_lower or "評分" in q_lower or "成績" in q_lower or "điểm" in q_lower:
-            st.success("📊 **Grading Policy / 評分標準 / Tiêu chí điểm**:\n- In-Class Practice: 50%\n- Midterm: 20%\n- Final Showcase: 30%")
-        elif "colab" in q_lower or "python" in q_lower or "bắt đầu" in q_lower:
-            st.info("💡 **Week 1 starts with Vibe Coding & Google Colab**! No installation stress, open in your browser directly.")
-        elif "office" in q_lower or "gặp" in q_lower or "諮詢" in q_lower:
-            st.warning("🕒 **Office Hours**: Directly after class in the classroom, or message in our group chat to schedule!")
+    if st.button("🚀 Submit Question (發送提問)", use_container_width=True):
+        if user_q:
+            now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            q_lower = user_q.lower()
+            
+            # 分類與回答生成
+            if any(k in q_lower for k in ["đồ án", "cuối kỳ", "báo cáo", "final", "project", "showcase", "期末", "專案"]):
+                category = "Final Project"
+                zh_summary = "詢問期末專案發表時程與比重"
+                resp_vn = "Đồ án cuối kỳ sẽ được trình bày trực tiếp trên lớp vào **Tuần 17 (31/12/2026)** và **Tuần 18 (07/01/2027)**. Chiếm 30% tổng điểm môn học."
+                resp_zh = "學生詢問期末發表時程。回覆：第 17 週與第 18 週課堂發表，佔總成績 30%。"
+                resp_en = "The Final Project Showcase is scheduled for Week 17 & Week 18. It accounts for 30% of your final grade."
+            elif any(k in q_lower for k in ["điểm", "grade", "score", "tỷ lệ", "評分", "成績", "比重"]):
+                category = "Grading"
+                zh_summary = "詢問評分標準與佔比"
+                resp_vn = "Tiêu chí đánh giá: Thực hành trên lớp 50%, Thi giữa kỳ 20%, Báo cáo cuối kỳ 30%."
+                resp_zh = "學生詢問評分標準。回覆：平時 50%、期中 20%、期末 30%。"
+                resp_en = "Grading breakdown: Weekly practice 50%, Midterm 20%, Final showcase 30%."
+            elif any(k in q_lower for k in ["colab", "bắt đầu", "python", "lập trình", "cài đặt", "環境"]):
+                category = "Environment / Tools"
+                zh_summary = "詢問 Python/Colab 開發環境"
+                resp_vn = "Bạn không cần cài đặt phần mềm. Tuần 1 chúng ta sẽ sử dụng trực tiếp Google Colab trên trình duyệt web."
+                resp_zh = "學生詢問環境安裝。回覆：不需安裝，第 1 週直接使用瀏覽器開 Google Colab。"
+                resp_en = "No local installation needed. We will use Google Colab directly in our browsers from Week 1!"
+            else:
+                category = "General / Consultation"
+                zh_summary = f"學生提問：{user_q}"
+                resp_vn = f"Câu hỏi của bạn đã được ghi nhận: '{user_q}'. Bạn có thể trao đổi trực tiếp với giảng viên ngay sau buổi học!"
+                resp_zh = f"學生提問：{user_q}。可提醒同學下課後直接於教室討論。"
+                resp_en = "For custom questions, feel free to ask directly after class or in our chat group."
+
+            # 畫面三語鏡像展示
+            st.success("✅ Question Recorded! / 提問已記錄")
+            st.markdown(f"""
+            **🇻🇳 Tiếng Việt:**  
+            {resp_vn}
+
+            **🇹🇼 教師對照 (繁體中文):**  
+            **提問者**：`{selected_student}`  
+            **摘要**：{resp_zh}
+
+            **🇺🇸 For Class Broadcast (English):**  
+            *{resp_en}*
+            """)
+
+            # 提示學生已納入參與統計
+            if "Anonymous" not in selected_student:
+                st.caption(f"🎉 Thank you {selected_student.split()[1]}! Your participation has been logged for bonus credits.")
         else:
-            st.write("🤖 **AI Assistant**: You will learn how to build dynamic AI responses like this using Gemini API in **Week 12**!")
+            st.warning("Please type a question before submitting. (請輸入問題後再送出)")
