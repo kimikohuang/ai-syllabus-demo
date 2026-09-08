@@ -1,5 +1,5 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (LINE Integrated)
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Production Ready)
 # ==============================================================================
 
 import streamlit as st
@@ -30,7 +30,7 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 多語系副標題（使用英文系所名稱，對外籍生最友善）
+# 多語系副標題
 SUBTITLES = {
     "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang · Dept. of Business and Management 2C (3.0 Credits)",
     "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) (3.0 學分 / 3.0 時數)",
@@ -51,7 +51,7 @@ LANG_SELECT_PROMPTS = {
     "fr": "🌐 Sélectionnez la langue d'affichage :"
 }
 
-# 3. 頂部區域：左側標題與教師資訊 + 右側 QR Code (網頁 Portal ＋ LINE 社群)
+# 3. 頂部區域：左側標題與教師資訊 + 右側雙 QR Code (網頁 Portal ＋ LINE 社群)
 header_col1, header_col2, header_col3 = st.columns([3, 1, 1])
 
 with header_col1:
@@ -73,8 +73,8 @@ with header_col2:
     )
 
 with header_col3:
-    # 這裡您可以隨時替換成您建立好的 LINE OpenChat 邀請連結
-    line_group_url = "https://line.me/ti/g2/your_line_openchat_link"
+    # 已正式串接您的 LINE 社群邀請連結
+    line_group_url = "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     qr_line_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={line_group_url}"
     st.markdown(
         f"""
