@@ -1,4 +1,4 @@
-%%writefile app.py
+# %%writefile app.py
 # ==============================================================================
 # [Script] Interactive Multilingual Syllabus Web Application (6-Language Edition)
 # 【腳本】多語系互動課綱網頁應用（正式加入馬來西亞🇲🇾，共 6 國語言即時切換）
