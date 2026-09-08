@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Web Application (Embedded Flags)
-# 【腳本】多語系互動課綱網頁應用（真·國旗鑲嵌於按鈕內 + 防融色微邊框修正版）
+# [Script] Interactive Multilingual Syllabus & Course Info Web Application
+# 【腳本】多語系互動課綱與完整課程資訊（含教務系統目標、評分、教材、Office Hour）
 # ==============================================================================
 
 import streamlit as st
@@ -12,11 +12,11 @@ st.set_page_config(
     page_icon="🎓"
 )
 
-# 2. 標題與簡介
+# 2. 標題與副標題
 st.title("🎓 Python AI Applications (Python AI 應用)")
-st.caption("18-Week Interactive Syllabus & Parallel Multilingual Companion | 18 週互動課綱與多語系對照")
+st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | Interactive Syllabus & Parallel Multilingual Companion")
 
-# 3. 語言定義（含 FlagCDN 高畫質圖片、名稱、對照鍵值）
+# 3. 語言定義與切換設定
 LANG_CONFIG = {
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
@@ -27,23 +27,20 @@ LANG_CONFIG = {
     "fr": {"label": "Français", "name": "🇫🇷 Français (French)", "flag": "https://flagcdn.com/w40/fr.png"}
 }
 
-# 讀取 URL 參數中的語言，若無則預設為繁體中文 (tw)
 current_code = st.query_params.get("lang", "tw")
 if current_code not in LANG_CONFIG:
     current_code = "tw"
 
 current_info = LANG_CONFIG[current_code]
 
-st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
-
-# 自訂按鈕 CSS：含背景底色、邊框、陰影、懸停反饋，以及國旗防融色微灰邊
+# 自訂 CSS：按鈕底色、微陰影、國旗防融色微灰外框
 st.markdown("""
 <style>
 .flag-btn-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    margin: 12px 0 20px 0;
+    margin: 10px 0 18px 0;
 }
 .flag-btn {
     display: flex;
@@ -59,14 +56,13 @@ st.markdown("""
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .flag-btn:hover {
     border-color: #ff4b4b;
     background-color: #fff5f5;
     color: #ff4b4b !important;
     transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(255,75,75,0.15);
 }
 .flag-btn.active {
     border-color: #ff4b4b;
@@ -80,21 +76,63 @@ st.markdown("""
     height: 15px;
     object-fit: cover;
     border-radius: 2px;
-    border: 1px solid #b0b4b9; /* 明確外框：法國、印尼的白色區塊絕對不會被背景吃掉 */
+    border: 1px solid #b0b4b9;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 緊湊無縮排字串，避免觸發 Markdown 的程式碼縮排規則
+st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
+
+# 7 國語言按鈕列
 btn_items = "".join([
     f'<a class="flag-btn {"active" if code == current_code else ""}" href="?lang={code}" target="_self"><img class="flag-img" src="{data["flag"]}" alt="{data["label"]}"><span>{data["label"]}</span></a>'
     for code, data in LANG_CONFIG.items()
 ])
 st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=True)
 
-st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**  \n*(Conductor's Note: Built with Python & Streamlit in under 95 lines. You will build and deploy apps like this in Week 10!)*")
+st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**  \n*(Conductor's Note: Built with Python & Streamlit in under 120 lines. You will build and deploy apps like this in Week 10!)*")
 
-# 4. 課程多語系資料庫
+# 4. 教務系統基本資訊（支援 7 國語言對照）
+meta_info = {
+    "goal": {
+        "en": "**Course Objectives**  \nConnect what you learned in freshman Accounting and Economics, and get strong help for your sophomore Statistics, Marketing, and Management classes. Together, we will make interactive business charts and launch real web apps on your phone.\n\n*No tech background needed. If you can ask a question, you can create with AI. Everyone is warmly welcome!*",
+        "tw": "**教學目標**  \n串聯大一所學的會計與經濟學基礎，並為大二的統計、行銷與管理課程提供強力支援。我們將一起打造互動商業圖表，並將真實的 Web 應用程式發布到您的手機上。\n\n*無須任何技術背景。只要您會提問，就能與 AI 共同創造。誠摯歡迎每位同學！*",
+        "vn": "**Mục tiêu môn học**  \nKết nối kiến thức Kế toán và Kinh tế học năm nhất, hỗ trợ đắc lực cho các môn Thống kê, Marketing và Quản trị năm hai. Chúng ta sẽ cùng nhau tạo các biểu đồ kinh doanh tương tác và triển khai ứng dụng web thực tế ngay trên điện thoại.\n\n*Không yêu cầu nền tảng kỹ thuật. Chỉ cần biết đặt câu hỏi, bạn có thể sáng tạo cùng AI!*",
+        "ms": "**Objektif Kursus**  \nMenghubungkan apa yang dipelajari dalam Perakaunan dan Ekonomi tahun pertama, serta menyokong kursus Statistik, Pemasaran, dan Pengurusan tahun kedua. Bersama-sama, kita akan membina carta perniagaan interaktif dan melancarkan aplikasi web terus pada telefon pintar anda.\n\n*Tiada latar belakang teknologi diperlukan. Jika anda boleh bertanya soalan, anda boleh mencipta dengan AI!*",
+        "id": "**Tujuan Pembelajaran**  \nMenghubungkan Akuntansi dan Ekonomi tingkat satu, serta mendukung mata kuliah Statistik, Pemasaran, dan Manajemen tingkat dua. Bersama-sama, kita akan membuat grafik bisnis interaktif dan merilis aplikasi web nyata langsung di ponsel Anda.\n\n*Tidak memerlukan latar belakang teknis. Jika Anda bisa bertanya, Anda bisa berkreasi dengan AI!*",
+        "th": "**วัตถุประสงค์ของรายวิชา**  \nเชื่อมโยงความรู้พื้นฐานด้านบัญชีและเศรษฐศาสตร์ปี 1 และสนับสนุนวิชาสถิติ การตลาด และการจัดการในปี 2 เราจะร่วมกันสร้างแผนภูมิธุรกิจแบบอินเทอร์แอคทีฟและเปิดตัวเว็บแอปพลิเคชันจริงบนสมาร์ตโฟนของคุณ\n\n*ไม่จำเป็นต้องมีพื้นฐานด้านเทคโนโลยี เพียงแค่ตั้งคำถาม คุณก็สร้างสรรค์ผลงานร่วมกับ AI ได้!*",
+        "fr": "**Objectifs pédagogiques**  \nFaire le pont avec la comptabilité et l'économie de 1ère année, tout en renforçant vos acquis pour les cours de statistiques, marketing et gestion de 2e année. Ensemble, nous créerons des graphiques interactifs et déploierons de réelles applications web accessibles sur votre smartphone.\n\n*Aucun prérequis technique nécessaire. Si vous savez poser une question, vous pouvez créer avec l'IA !*"
+    },
+    "grading": {
+        "en": "**Grading Policy**  \n* **Weekly In-Class Fun Practice**: 50%\n* **Midterm Exam or Project**: 20%\n* **Final Project Report & Showcase**: 30%  \n*(Step-by-step guidance in class. Beginners are welcome!)*",
+        "tw": "**成績評量標準**  \n* **每週課堂趣味實作練習**：50%\n* **期中測驗或專題**：20%\n* **期末專案報告與成果發表**：30%  \n*(課堂提供步驟引導，無基礎者亦可安心參與！)*",
+        "vn": "**Tiêu chí đánh giá**  \n* **Thực hành vui trên lớp hàng tuần**: 50%\n* **Thi giữa kỳ hoặc Đồ án**: 20%\n* **Báo cáo và Trình bày Đồ án cuối kỳ**: 30%  \n*(Có hướng dẫn chi tiết từng bước, hoàn toàn phù hợp với người mới bắt đầu!)*",
+        "ms": "**Dasar Pemarkahan**  \n* **Latihan Amali Mingguan di Kelas**: 50%\n* **Peperiksaan Pertengahan Semester / Projek**: 20%\n* **Laporan & Pembentangan Projek Akhir**: 30%  \n*(Panduan langkah demi langkah disediakan. Sangat mesra pemula!)*",
+        "id": "**Kebijakan Penilaian**  \n* **Praktik Menyenangkan Mingguan di Kelas**: 50%\n* **Ujian Tengah Semester / Proyek**: 20%\n* **Laporan & Presentasi Proyek Akhir**: 30%  \n*(Bimbingan langkah demi langkah di kelas. Sangat ramah pemula!)*",
+        "th": "**เกณฑ์การประเมินผล**  \n* **แบบฝึกหัดในชั้นเรียนรายสัปดาห์**: 50%\n* **การสอบกลางภาคหรือโครงงาน**: 20%\n* **รายงานโครงงานปลายภาคและการนำเสนอ**: 30%  \n*(มีการชี้แนะทีละขั้นตอนในชั้นเรียน ยินดีต้อนรับผู้เริ่มต้นอย่างอบอุ่น!)*",
+        "fr": "**Modalités d'évaluation**  \n* **Exercices pratiques hebdomadaires en classe** : 50%\n* **Examen ou projet de mi-semestre** : 20%\n* **Rapport et soutenance du projet final** : 30%  \n*(Accompagnement pas à pas en classe. Débutants les bienvenus !)*"
+    },
+    "office_hour": {
+        "en": "**Office Hours**  \nI do not have an office on campus. You can talk to me directly right after class, or message me in our class chat group to set up a time to meet on campus.",
+        "tw": "**課業輔導時間 (Office Hour)**  \n授課教師在校內無專屬研究室。同學可在每週下課後直接於教室討論交流，或於班級聯絡群組中預約校內諮詢時間。",
+        "vn": "**Giờ tư vấn (Office Hours)**  \nGiảng viên không có văn phòng cố định trong khuôn viên trường. Sinh viên có thể trao đổi trực tiếp ngay sau giờ học, hoặc nhắn tin trong nhóm lớp để hẹn thời gian gặp gỡ trên trường.",
+        "ms": "**Waktu Konsultasi (Office Hours)**  \nPensyarah tidak mempunyai pejabat di kampus. Pelajar boleh berbincang terus selepas kelas tamat, atau menghantar mesej dalam kumpulan perbualan kelas untuk menetapkan masa pertemuan.",
+        "id": "**Jam Konsultasi (Office Hours)**  \nDosen tidak memiliki ruang kerja pribadi di kampus. Mahasiswa dapat berdiskusi langsung setelah kelas selesai, atau mengirim pesan melalui grup kelas untuk mengatur jadwal pertemuan di kampus.",
+        "th": "**ช่วงเวลาให้คำปรึกษา (Office Hours)**  \nผู้สอนไม่มีห้องพักส่วนตัวในมหาวิทยาลัย นักศึกษาสามารถพูดคุยได้โดยตรงทันทีหลังเลิกเรียน หรือส่งข้อความนัดหมายเวลาในกลุ่มสนทนาของชั้นเรียน",
+        "fr": "**Heures de permanence (Office Hours)**  \nJe ne dispose pas de bureau dédié sur le campus. Vous pouvez échanger avec moi directement à la fin de chaque cours, ou m'envoyer un message sur le groupe de classe pour convenir d'un rendez-vous sur le campus."
+    },
+    "materials": {
+        "en": "**Textbooks & Open Resources**  \n* **Open Access Materials & Platforms**:\n  1. Google Colab (`colab.research.google.com`)\n  2. Google AI Studio (`aistudio.google.com`)\n  3. Streamlit Documentation (`docs.streamlit.io`)\n  4. FRED Economic Data (`fred.stlouisfed.org`)\n* **References**:\n  1. McKinney, W., *Python for Data Analysis*, 3rd ed., O'Reilly Media, 2022.\n  2. Bodie, Z., Kane, A., & Marcus, A., *Investments*, 13th ed., McGraw-Hill, 2023.\n  3. Mankiw, N. G., *Principles of Economics*, 10th ed., Cengage Learning, 2023.",
+        "tw": "**教材與實用雲端平台**  \n* **開放實作平台與資源**：\n  1. Google Colab 雲端開發環境\n  2. Google AI Studio 模型調度平台\n  3. Streamlit 官方開發文件\n  4. FRED 聖路易斯聯邦準備銀行總體經濟資料庫\n* **重要參考書籍**：\n  1. McKinney, W., *Python for Data Analysis*, 3rd ed. (2022)\n  2. Bodie, Kane, Marcus, *Investments*, 13th ed. (2023)\n  3. Mankiw, N. G., *Principles of Economics*, 10th ed. (2023)",
+        "vn": "**Tài liệu & Nền tảng thực hành mở**  \n* **Nền tảng mở**:\n  1. Google Colab | 2. Google AI Studio | 3. Streamlit Docs | 4. Dữ liệu kinh tế FRED\n* **Sách tham khảo**:\n  1. McKinney, *Python for Data Analysis*, 3rd ed. (2022)\n  2. Bodie et al., *Investments*, 13th ed. (2023)\n  3. Mankiw, *Principles of Economics*, 10th ed. (2023)",
+        "ms": "**Bahan Kursus & Platform Terbuka**  \n* **Platform Terbuka**:\n  1. Google Colab | 2. Google AI Studio | 3. Dokumentasi Streamlit | 4. Data Ekonomi FRED\n* **Rujukan**:\n  1. McKinney, *Python for Data Analysis*, 3rd ed. (2022)\n  2. Bodie et al., *Investments*, 13th ed. (2023)\n  3. Mankiw, *Principles of Economics*, 10th ed. (2023)",
+        "id": "**Materi Kuliah & Platform Terbuka**  \n* **Platform Terbuka**:\n  1. Google Colab | 2. Google AI Studio | 3. Dokumentasi Streamlit | 4. Data Ekonomi FRED\n* **Referensi**:\n  1. McKinney, *Python for Data Analysis*, 3rd ed. (2022)\n  2. Bodie et al., *Investments*, 13th ed. (2023)\n  3. Mankiw, *Principles of Economics*, 10th ed. (2023)",
+        "th": "**สื่อการสอนและแพลตฟอร์มคลาวด์แบบเปิด**  \n* **แพลตฟอร์มที่ใช้**:\n  1. Google Colab | 2. Google AI Studio | 3. เอกสาร Streamlit | 4. ฐานข้อมูลเศรษฐกิจ FRED\n* **หนังสืออ้างอิง**:\n  1. McKinney, *Python for Data Analysis*, 3rd ed. (2022)\n  2. Bodie et al., *Investments*, 13th ed. (2023)\n  3. Mankiw, *Principles of Economics*, 10th ed. (2023)",
+        "fr": "**Supports et Plateformes Ouvertes**  \n* **Plateformes pratiques** :\n  1. Google Colab | 2. Google AI Studio | 3. Documentation Streamlit | 4. Données économiques FRED\n* **Ouvrages de référence** :\n  1. McKinney, *Python for Data Analysis*, 3e éd. (2022)\n  2. Bodie et al., *Investments*, 13e éd. (2023)\n  3. Mankiw, *Principles of Economics*, 10e éd. (2023)"
+    }
+}
+
+# 5. 課表週次資料庫
 weeks_data = [
     {
         "wk": "Week 1",
@@ -158,18 +196,58 @@ weeks_data = [
     }
 ]
 
-# 5. 雙欄並列呈現
+# 6. 雙欄並列呈現完整資訊
 col_en, col_trans = st.columns(2)
 
+# 左欄：官方英文
 with col_en:
-    st.subheader("🇺🇸 Official English Syllabus")
+    st.subheader("🇺🇸 Official English")
+    
+    with st.container(border=True):
+        st.markdown("### 🎯 Course Objectives")
+        st.markdown(meta_info["goal"]["en"])
+        
+    with st.container(border=True):
+        st.markdown("### 📊 Grading Policy")
+        st.markdown(meta_info["grading"]["en"])
+        
+    with st.container(border=True):
+        st.markdown("### 📚 Textbooks & Cloud Platforms")
+        st.markdown(meta_info["materials"]["en"])
+        
+    with st.container(border=True):
+        st.markdown("### 🕒 Office Hours")
+        st.markdown(meta_info["office_hour"]["en"])
+        
+    st.markdown("---")
+    st.markdown("### 🗓️ Weekly Syllabus Breakdown")
     for item in weeks_data:
         with st.container(border=True):
-            st.markdown(f"### {item['wk']}")
+            st.markdown(f"**{item['wk']}**")
             st.markdown(item["en"])
 
+# 右欄：選取的對照語言
 with col_trans:
     st.subheader(f"{current_info['name']}")
+    
+    with st.container(border=True):
+        st.markdown("### 🎯 教學目標 / Course Objectives")
+        st.markdown(meta_info["goal"].get(current_code, meta_info["goal"]["tw"]))
+        
+    with st.container(border=True):
+        st.markdown("### 📊 評量標準 / Grading Policy")
+        st.markdown(meta_info["grading"].get(current_code, meta_info["grading"]["tw"]))
+        
+    with st.container(border=True):
+        st.markdown("### 📚 教材與開放資源 / Materials")
+        st.markdown(meta_info["materials"].get(current_code, meta_info["materials"]["tw"]))
+        
+    with st.container(border=True):
+        st.markdown("### 🕒 課業輔導時間 / Office Hours")
+        st.markdown(meta_info["office_hour"].get(current_code, meta_info["office_hour"]["tw"]))
+        
+    st.markdown("---")
+    st.markdown("### 🗓️ 週次課綱對照 / Weekly Schedule")
     for item in weeks_data:
         lang_mapping = {
             "tw": item["zh"],
@@ -183,5 +261,5 @@ with col_trans:
         trans_text = lang_mapping.get(current_code, item["zh"])
 
         with st.container(border=True):
-            st.markdown(f"### {item['wk']} (對照)")
+            st.markdown(f"**{item['wk']} (對照)**")
             st.markdown(trans_text)
