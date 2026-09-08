@@ -1,5 +1,5 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Bug Fixed)
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (LINE Integrated)
 # ==============================================================================
 
 import streamlit as st
@@ -13,7 +13,7 @@ st.set_page_config(
     page_icon="🎓"
 )
 
-# 2. 語言定義（依據：授課語言 -> 地主國語言 -> 學生人數比例）
+# 2. 語言定義
 LANG_CONFIG = {
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
@@ -30,15 +30,15 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 多語系副標題
+# 多語系副標題（使用英文系所名稱，對外籍生最友善）
 SUBTITLES = {
-    "us": "Fall 2026 (Semester 115-1) · Dept. of Business and Management 2C (3.0 Credits / 3.0 Hours) | Interactive Multilingual Syllabus Portal",
-    "tw": "115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶",
-    "vn": "Học kỳ 115-1 · Khoa Quản trị và Quản lý Kinh doanh 2C (3.0 Tín chỉ / 3.0 Giờ) | Cổng thông tin & Đề cương môn học đa ngữ",
-    "id": "Semester 115-1 · Jurusan Bisnis dan Manajemen 2C (3.0 SKS / 3.0 Jam) | Portal Silabus Multibahasa Interaktif",
-    "my": "Semester 115-1 · Jabatan Perniagaan dan Pengurusan 2C (3.0 Kredit / 3.0 Jam) | Portal Sukatan Pelajaran Interaktif Pelbagai Bahasa",
-    "th": "ภาคการศึกษา 115-1 · ภาควิชาธุรกิจและการจัดการ 2C (3.0 หน่วยกิต / 3.0 ชั่วโมง) | พอร์ทัลประมวลรายวิชาแบบโต้ตอบหลายภาษา",
-    "fr": "Semestre 115-1 · Dép. Gestion et Management 2C (3.0 Crédits / 3.0 Heures) | Portail Interactif Multilingue du Syllabus"
+    "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang · Dept. of Business and Management 2C (3.0 Credits)",
+    "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) (3.0 學分 / 3.0 時數)",
+    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang · Khoa Quản trị và Quản lý Kinh doanh 2C (3.0 Tín chỉ)",
+    "id": "Semester 115-1 · Dosen: Kimiko Kechun Huang · Jurusan Bisnis dan Manajemen 2C (3.0 SKS)",
+    "my": "Semester 115-1 · Pensyarah: Kimiko Kechun Huang · Jabatan Perniagaan dan Pengurusan 2C (3.0 Kredit)",
+    "th": "ภาคการศึกษา 115-1 · ผู้สอน: Kimiko Kechun Huang · ภาควิชาธุรกิจและการจัดการ 2C (3.0 หน่วยกิต)",
+    "fr": "Semestre 115-1 · Enseignant : Kimiko Kechun Huang · Dép. Gestion et Management 2C (3.0 Crédits)"
 }
 
 LANG_SELECT_PROMPTS = {
@@ -51,8 +51,8 @@ LANG_SELECT_PROMPTS = {
     "fr": "🌐 Sélectionnez la langue d'affichage :"
 }
 
-# 3. 頂部區域排版修正（確保標題不被截斷）
-header_col1, header_col2 = st.columns([5, 1])
+# 3. 頂部區域：左側標題與教師資訊 + 右側 QR Code (網頁 Portal ＋ LINE 社群)
+header_col1, header_col2, header_col3 = st.columns([3, 1, 1])
 
 with header_col1:
     st.markdown("## 🎓 Python AI Applications (Python AI 應用)")
@@ -61,12 +61,26 @@ with header_col1:
 
 with header_col2:
     app_url = "https://ai-syllabus.streamlit.app"
-    qr_api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=4&data={app_url}"
+    qr_portal_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={app_url}"
     st.markdown(
         f"""
         <div style="text-align: center; background: #ffffff; padding: 4px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <img src="{qr_api_url}" style="width: 75px; height: 75px; display: block; margin: 0 auto;">
-            <span style="font-size: 11px; color: #4b5563; font-weight: 600; display: block; margin-top: 2px;">📱 Mobile Scan</span>
+            <img src="{qr_portal_url}" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #1e3a8a; font-weight: 600; display: block; margin-top: 2px;">📱 Portal QR</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with header_col3:
+    # 這裡您可以隨時替換成您建立好的 LINE OpenChat 邀請連結
+    line_group_url = "https://line.me/ti/g2/your_line_openchat_link"
+    qr_line_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={line_group_url}"
+    st.markdown(
+        f"""
+        <div style="text-align: center; background: #ffffff; padding: 4px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <img src="{qr_line_url}" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #06c755; font-weight: 600; display: block; margin-top: 2px;">💬 LINE Chat</span>
         </div>
         """,
         unsafe_allow_html=True
@@ -222,17 +236,17 @@ meta_cards = {
     },
     "office_hour": {
         "title": {
-            "us": "🕒 Office Hours", "tw": "🕒 諮詢時間", "vn": "🕒 Giờ tư vấn",
-            "id": "🕒 Jam Konsultasi", "my": "🕒 Waktu Konsultasi", "th": "🕒 ช่วงเวลาให้คำปรึกษา", "fr": "🕒 Permanence"
+            "us": "🕒 Office Hours & LINE Group", "tw": "🕒 諮詢時間與 LINE 社群規範", "vn": "🕒 Giờ tư vấn & Quy định nhóm LINE",
+            "id": "🕒 Jam Konsultasi & Aturan LINE", "my": "🕒 Waktu Konsultasi & Peraturan LINE", "th": "🕒 ช่วงเวลาปรึกษาและกฎกลุ่ม LINE", "fr": "🕒 Permanence & Groupe LINE"
         },
         "content": {
-            "us": "I do not have an office on campus. You can talk to me directly right after class, or message me in our class chat group to set up a time to meet on campus.",
-            "tw": "授課教師在校內無專屬研究室。同學可在每週下課後直接於教室討論交流，或於班級群組中預約校內諮詢時間。",
-            "vn": "Giảng viên không có văn phòng riêng tại trường. Bạn có thể trao đổi trực tiếp ngay sau buổi học, hoặc nhắn tin trong nhóm lớp để hẹn giờ gặp trên trường.",
-            "id": "Dosen tidak memiliki kantor di kampus. Anda dapat berdiskusi langsung setelah kelas selesai, atau kirim pesan di grup kelas untuk mengatur jadwal bertemu.",
-            "my": "Pensyarah tidak mempunyai pejabat di kampus. Anda boleh berbincang terus selepas kelas, atau mesej dalam kumpulan kelas untuk temu janji di kampus.",
-            "th": "ผู้สอนไม่มีห้องพักในมหาวิทยาลัย สามารถพูดคุยได้โดยตรงทันทีหลังเลิกเรียน หรือส่งข้อความในกลุ่มห้องเรียนเพื่อนัดหมายเวลาในมหาวิทยาลัย",
-            "fr": "Je n'ai pas de bureau sur le campus. Vous pouvez me poser vos questions à la fin du cours ou m'envoyer un message sur le groupe de classe pour un rendez-vous."
+            "us": "**Instructor**: Kimiko Kechun Huang  \n**LINE Rule**: Set nickname as \"Last3Digits + Name\" (e.g., 205 Huy).",
+            "tw": "**授課教師**：黃可健 (Kimiko Kechun Huang)  \n**LINE 規範**：暱稱請設為「學號末三碼 + 名字」（例如：205 Huy）。",
+            "vn": "**Giảng viên**: Kimiko Kechun Huang  \n**Quy định LINE**: Đặt biệt danh là \"3 số cuối mã SV + Tên\" (vd: 205 Huy).",
+            "id": "**Dosen**: Kimiko Kechun Huang  \n**Aturan LINE**: Atur nama \"3 Digit Akhir + Nama\" (cth: 205 Huy).",
+            "my": "**Pensyarah**: Kimiko Kechun Huang  \n**Peraturan LINE**: Tetapkan nama \"3 Digit Terakhir + Nama\" (cth: 205 Huy).",
+            "th": "**ผู้สอน**: Kimiko Kechun Huang  \n**กฎกลุ่ม LINE**: ตั้งชื่อเล่นเป็น \"เลขท้าย 3 ตัว + ชื่อ\" (เช่น 205 Huy)",
+            "fr": "**Enseignant** : Kimiko Kechun Huang  \n**Règle LINE** : Définissez votre pseudo : \"3 derniers chiffres + Nom\" (ex: 205 Huy)."
         }
     }
 }
@@ -267,7 +281,7 @@ schedule_titles = {
 }
 st.markdown(f"### {schedule_titles.get(current_code, schedule_titles['us'])}")
 
-# 5. 18 週課綱資料庫（全 7 國語言完整對照，修復 Week 9 結構）
+# 5. 18 週課綱資料庫
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
