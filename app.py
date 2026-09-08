@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal (Complete Edition)
-# 【腳本】完整版互動課綱入口網站（含目標、評分、教材、Office Hour 與 18 週表格）
+# [Script] Interactive Multilingual Syllabus Portal (With QR Code & Pro Order)
+# 【腳本】完整版互動課綱入口網站（含右上角手機掃描 QR Code、英中越依序排列、18週表格）
 # ==============================================================================
 
 import streamlit as st
@@ -12,23 +12,39 @@ st.set_page_config(
     page_icon="🎓"
 )
 
-# 2. 標題與簡介
-st.title("🎓 Python AI Applications (Python AI 應用)")
-st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶")
+# 2. 頂部區域：左側標題簡介 + 右側手機掃描 QR Code
+header_col1, header_col2 = st.columns([4, 1])
 
-# 3. 語言定義與切換設定
-# 依據：授課語言 (English) -> 地主國語言 (繁體中文) -> 學生人數比例 (越/印/馬/泰/法)
+with header_col1:
+    st.title("🎓 Python AI Applications (Python AI 應用)")
+    st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶")
+    st.markdown("**🌐 Select Parallel Language (點擊按鈕切換語言對照):**")
+
+with header_col2:
+    # 動態產生連往正式網址的 QR Code
+    app_url = "https://ai-syllabus.streamlit.app"
+    qr_api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=4&data={app_url}"
+    st.markdown(
+        f"""
+        <div style="text-align: center; background: #ffffff; padding: 6px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <img src="{qr_api_url}" style="width: 80px; height: 80px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #4b5563; font-weight: 600; display: block; margin-top: 2px;">📱 Scan for Mobile</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# 3. 語言定義與切換設定（依據：授課語言 -> 地主國語言 -> 學生人數比例）
 LANG_CONFIG = {
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
     "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Tiếng Việt (Vietnamese)", "flag": "https://flagcdn.com/w40/vn.png"},
     "id": {"label": "B. Indonesia", "name": "🇮🇩 Bahasa Indonesia (Indonesian)", "flag": "https://flagcdn.com/w40/id.png"},
     "my": {"label": "B. Melayu", "name": "🇲🇾 Bahasa Melayu (Malay)", "flag": "https://flagcdn.com/w40/my.png"},
-    "th": {"label": "ภาษาไทย", "name": "🇹🇭 ภาษาไทย (Thai)", "flag": "https://flagcdn.com/w40/th.png"},
-    "fr": {"label": "Français", "name": "🇫🇷 Français (French)", "flag": "https://flagcdn.com/w40/fr.png"}
+    "th": {"label": "ภาษาไทย", "name": "🇹🇭 Thai (ภาษาไทย)", "flag": "https://flagcdn.com/w40/th.png"},
+    "fr": {"label": "Français", "name": "🇫🇷 French (Français)", "flag": "https://flagcdn.com/w40/fr.png"}
 }
 
-# 預設載入官方授課語言 (us)
 current_code = st.query_params.get("lang", "us")
 if current_code not in LANG_CONFIG:
     current_code = "us"
@@ -42,7 +58,7 @@ st.markdown("""
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    margin: 10px 0 18px 0;
+    margin: 8px 0 16px 0;
 }
 .flag-btn {
     display: flex;
@@ -126,8 +142,6 @@ table.syllabus-table tr:hover td {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("**🌐 Select Parallel Language (點擊按鈕切換語言對照):**")
-
 # 7 國語言按鈕列
 btn_items = "".join([
     f'<a class="flag-btn {"active" if code == current_code else ""}" href="?lang={code}" target="_self"><img class="flag-img" src="{data["flag"]}" alt="{data["label"]}"><span>{data["label"]}</span></a>'
@@ -137,20 +151,20 @@ st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=T
 
 st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**")
 
-# 4. 教務系統四項重要資訊（目標、評分、教材、Office Hour）
+# 4. 教務系統四項重要資訊卡片（目標、評分、教材、Office Hour）
 meta_cards = {
     "goal": {
-        "title": "🎯 教學目標 / Objectives",
+        "title": "🎯 Objectives / 教學目標",
         "tw": "串聯大一會計與經濟學基礎，並為大二統計、行銷與管理課程提供強力支援。我們將一起打造互動商業圖表，並將真實的 Web 應用發布到手機上。\n\n*無須技術背景，只要會提問就能與 AI 共同創造！*",
         "us": "Connect what you learned in freshman Accounting & Economics, and get strong help for sophomore Statistics, Marketing, and Management. Together we will make interactive charts and launch real web apps on your phone.\n\n*No tech background needed. If you can ask a question, you can create with AI!*"
     },
     "grading": {
-        "title": "📊 評量標準 / Grading",
+        "title": "📊 Grading / 評量標準",
         "tw": "**每週課堂趣味實作練習**：50%  \n**期中測驗或專題**：20%  \n**期末專案報告與成果發表**：30%  \n*(課堂手把手引導，新手友善！)*",
         "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project**: 20%  \n**Final Project Report & Showcase**: 30%  \n*(Step-by-step guidance in class. Beginners are welcome!)*"
     },
     "materials": {
-        "title": "📚 指定與參考教材 / Materials",
+        "title": "📚 Materials / 指定與參考教材",
         "tw": "**雲端實作平台**：  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED 總經資料庫  \n**參考書**：Python for Data Analysis (3rd), Investments (13th), Mankiw Economics (10th)",
         "us": "**Open Access Platforms**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED Economic Data  \n**References**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)"
     },
@@ -184,7 +198,7 @@ with c4:
         st.markdown(f"**{meta_cards['office_hour']['title']}**")
         st.markdown(meta_cards['office_hour']['tw'] if current_code == "tw" else meta_cards['office_hour']['us'])
 
-st.markdown("### 🗓️ 18 週課程進度表 (Weekly Schedule)")
+st.markdown("### 🗓️ 18-Week Syllabus Breakdown / 18 週課程進度表")
 
 # 5. 完整的 18 週課綱資料庫
 weeks_all = [
