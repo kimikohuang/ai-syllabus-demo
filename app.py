@@ -1,26 +1,26 @@
 # ==============================================================================
-# [Script] 18-Week Interactive Multilingual Syllabus Table (Pure HTML / No Indent)
-# 【腳本】18 週完整多語系課綱表格（st.html 原生解析，徹底根除縮排代碼塊問題）
+# [Script] Interactive Multilingual Syllabus Portal (Complete Edition)
+# 【腳本】完整版互動課綱入口網站（含目標、評分、教材、Office Hour 與 18 週表格）
 # ==============================================================================
 
 import streamlit as st
 
 # 1. 頁面基本配置
 st.set_page_config(
-    page_title="Python AI Applications - 18-Week Syllabus",
+    page_title="Python AI Applications - Syllabus Portal",
     layout="wide",
     page_icon="🎓"
 )
 
 # 2. 標題與簡介
 st.title("🎓 Python AI Applications (Python AI 應用)")
-st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表")
+st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶")
 
 # 3. 語言定義與切換設定
 LANG_CONFIG = {
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
-    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Vietnamese (Tiếng Việt)", "flag": "https://flagcdn.com/w40/vn.png"},
+    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Tiếng Việt (Vietnamese)", "flag": "https://flagcdn.com/w40/vn.png"},
     "my": {"label": "B. Melayu", "name": "🇲🇾 Bahasa Melayu (Malay)", "flag": "https://flagcdn.com/w40/my.png"},
     "id": {"label": "B. Indonesia", "name": "🇮🇩 Bahasa Indonesia (Indonesian)", "flag": "https://flagcdn.com/w40/id.png"},
     "th": {"label": "ภาษาไทย", "name": "🇹🇭 Thai (ภาษาไทย)", "flag": "https://flagcdn.com/w40/th.png"},
@@ -33,7 +33,7 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 自訂 CSS：按鈕與表格樣式（固定欄寬比例、無橫向 scrollbar、文字自動換行）
+# 自訂 CSS：按鈕、資訊卡片與無滾動條表格樣式
 st.markdown("""
 <style>
 .flag-btn-grid {
@@ -124,7 +124,7 @@ table.syllabus-table tr:hover td {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("**🌐 Select Parallel Language (點擊按鈕切換表格對照語言):**")
+st.markdown("**🌐 Select Parallel Language (點擊按鈕切換語言對照):**")
 
 # 7 國語言按鈕列
 btn_items = "".join([
@@ -135,7 +135,56 @@ st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=T
 
 st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**")
 
-# 4. 完整的 18 週課綱資料庫
+# 4. 教務系統四項重要資訊（目標、評分、教材、Office Hour）
+meta_cards = {
+    "goal": {
+        "title": "🎯 教學目標 / Objectives",
+        "tw": "串聯大一會計與經濟學基礎，並為大二統計、行銷與管理課程提供強力支援。我們將一起打造互動商業圖表，並將真實的 Web 應用發布到手機上。\n\n*無須技術背景，只要會提問就能與 AI 共同創造！*",
+        "us": "Connect what you learned in freshman Accounting & Economics, and get strong help for sophomore Statistics, Marketing, and Management. Together we will make interactive charts and launch real web apps on your phone.\n\n*No tech background needed. If you can ask a question, you can create with AI!*"
+    },
+    "grading": {
+        "title": "📊 評量標準 / Grading",
+        "tw": "**每週課堂趣味實作練習**：50%  \n**期中測驗或專題**：20%  \n**期末專案報告與成果發表**：30%  \n*(課堂手把手引導，新手友善！)*",
+        "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project**: 20%  \n**Final Project Report & Showcase**: 30%  \n*(Step-by-step guidance in class. Beginners are welcome!)*"
+    },
+    "materials": {
+        "title": "📚 指定與參考教材 / Materials",
+        "tw": "**雲端實作平台**：  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED 總經資料庫  \n**參考書**：Python for Data Analysis (3rd), Investments (13th), Mankiw Economics (10th)",
+        "us": "**Open Access Platforms**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED Economic Data  \n**References**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)"
+    },
+    "office_hour": {
+        "title": "🕒 Office Hours / 諮詢時間",
+        "tw": "授課教師在校內無專屬研究室。同學可在每週下課後直接於教室討論交流，或於班級聯絡群組中預約校內諮詢時間。",
+        "us": "I do not have an office on campus. You can talk to me directly right after class, or message me in our class chat group to set up a time to meet on campus."
+    }
+}
+
+# 以 4 欄卡片呈現
+c1, c2, c3, c4 = st.columns(4)
+
+with c1:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['goal']['title']}**")
+        st.markdown(meta_cards['goal']['tw'] if current_code == "tw" else meta_cards['goal']['us'])
+
+with c2:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['grading']['title']}**")
+        st.markdown(meta_cards['grading']['tw'] if current_code == "tw" else meta_cards['grading']['us'])
+
+with c3:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['materials']['title']}**")
+        st.markdown(meta_cards['materials']['tw'] if current_code == "tw" else meta_cards['materials']['us'])
+
+with c4:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['office_hour']['title']}**")
+        st.markdown(meta_cards['office_hour']['tw'] if current_code == "tw" else meta_cards['office_hour']['us'])
+
+st.markdown("### 🗓️ 18 週課程進度表 (Weekly Schedule)")
+
+# 5. 完整的 18 週課綱資料庫
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
@@ -229,7 +278,7 @@ weeks_all = [
     }
 ]
 
-# 動態產生翻譯
+# 動態產生表格翻譯
 def get_translated_row(item, code):
     if code == "us":
         return item["us"]
@@ -244,7 +293,7 @@ def get_translated_row(item, code):
         "rem": f"{base_us['rem']} / {base_tw['rem']}"
     }
 
-# 5. 採用單行無縮排方式拼接 HTML 表格，徹底避開 Markdown 解析陷阱
+# 6. 無縮排純 HTML 表格輸出
 rows_html = "".join([
     f'<tr><td class="col-week">{r["week"]}</td><td class="col-date">{r["date"]}</td><td class="col-progress">{get_translated_row(r, current_code)["progress"]}</td><td class="col-hw">{get_translated_row(r, current_code)["hw"]}</td><td class="col-summary">{get_translated_row(r, current_code)["sum"]}</td><td class="col-remarks">{get_translated_row(r, current_code)["rem"]}</td></tr>'
     for r in weeks_all
@@ -252,7 +301,6 @@ rows_html = "".join([
 
 table_full = f'<div class="syllabus-table-wrapper"><table class="syllabus-table"><thead><tr><th class="col-week">週次 (Week)</th><th class="col-date">上課日期 (Date)</th><th class="col-progress">教學進度 (Progress)</th><th class="col-hw">作業進度 (Homework)</th><th class="col-summary">內容摘要 (Summary)</th><th class="col-remarks">備註</th></tr></thead><tbody>{rows_html}</tbody></table></div>'
 
-# 使用 st.html 或純 HTML 渲染
 if hasattr(st, "html"):
     st.html(table_full)
 else:
