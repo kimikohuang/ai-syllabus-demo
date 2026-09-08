@@ -407,29 +407,29 @@ with st.sidebar:
     st.header("🤖 Course AI Assistant")
     st.caption("Ask questions & earn In-Class Practice bonus points! (可具名加分或選擇匿名提問)")
 
-    # 16 位同學名單與匿名選項
+    # 安全去識別化名單（末三碼 ＋ 名字末字，外加匿名選項）
     student_roster = [
         "👤 Anonymous (匿名提問)",
-        "U13227205 阮世日輝 (Nguyễn Thế Nhật Huy)",
-        "U14227201 阮光輝 (Nguyễn Quang Huy)",
-        "U14227202 阮芷葳",
-        "U14227203 阮青心 (Nguyễn Thanh Tâm)",
-        "U14227204 阮賓江",
-        "U14227205 林家寶 (Lâm Gia Bảo)",
-        "U14227206 武秋娟 (Vũ Thu Quyên)",
-        "U14227208 武國泰 (Vũ Quốc Thái)",
-        "U14227209 武登輝 (Vũ Đăng Huy)",
-        "U14227210 武嘉希 (Vũ Gia Hy)",
-        "U14227211 施文甯",
-        "U14227212 范秋莊 (Phạm Thu Trang)",
-        "U14227213 張晉勇 (Trương Tấn Dũng)",
-        "U14227214 雷柏安",
-        "U14227215 裴有英德 (Bùi Hữu Anh Đức)",
-        "U14227216 潘玉南珍 (Phan Ngọc Nam Trân)",
-        "U14227217 黎燈豪 (Lê Đăng Hào)"
+        "***205 · 輝 (Huy)",
+        "***201 · 輝 (Huy)",
+        "***202 · 葳",
+        "***203 · 心 (Tâm)",
+        "***204 · 江",
+        "***205 · 寶 (Bảo)",
+        "***206 · 娟 (Quyên)",
+        "***208 · 泰 (Thái)",
+        "***209 · 輝 (Huy)",
+        "***210 · 希 (Hy)",
+        "***211 · 甯",
+        "***212 · 莊 (Trang)",
+        "***213 · 勇 (Dũng)",
+        "***214 · 安",
+        "***215 · 德 (Đức)",
+        "***216 · 珍 (Trân)",
+        "***217 · 豪 (Hào)"
     ]
 
-    selected_student = st.selectbox("🙋 Select Your Name (選擇姓名):", student_roster)
+    selected_student = st.selectbox("🙋 Select ID (選擇身分):", student_roster)
 
     user_q = st.text_input("💬 Ask a question...", placeholder="Type in Vietnamese, English, Chinese...")
     
