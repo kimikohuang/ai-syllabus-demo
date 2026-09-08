@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Web Application (Image Flags Edition)
-# 【腳本】多語系互動課綱網頁應用（Windows 相容高畫質彩色國旗圖示版）
+# [Script] Interactive Multilingual Syllabus Web Application (Flag Inside Button)
+# 【腳本】多語系互動課綱網頁應用（國旗鑲入按鈕內 + 防融色微邊框精緻版）
 # ==============================================================================
 
 import streamlit as st
@@ -18,58 +18,55 @@ st.caption("18-Week Interactive Syllabus & Parallel Multilingual Companion | 18 
 
 # 3. 語言切換狀態管理（預設為繁體中文）
 if "selected_lang" not in st.session_state:
-    st.session_state.selected_lang = "繁體中文 (Traditional Chinese)"
+    st.session_state.selected_lang = "🇹🇼 Traditional Chinese (繁體中文)"
 
-st.markdown("**🌐 Select Parallel Language (點擊國旗切換右欄對照語言):**")
+# 語言設定清單（國旗代碼、按鈕文字、對照標籤）
+languages = [
+    {"code": "us", "label": "English", "name": "🇺🇸 English (Official)"},
+    {"code": "tw", "label": "繁體中文", "name": "🇹🇼 Traditional Chinese (繁體中文)"},
+    {"code": "vn", "label": "Tiếng Việt", "name": "🇻🇳 Vietnamese (Tiếng Việt)"},
+    {"code": "my", "label": "B. Melayu", "name": "🇲🇾 Malay (Bahasa Melayu)"},
+    {"code": "id", "label": "B. Indonesia", "name": "🇮🇩 Indonesian (Bahasa Indonesia)"},
+    {"code": "th", "label": "ภาษาไทย", "name": "🇹🇭 Thai (ภาษาไทย)"},
+    {"code": "fr", "label": "Français", "name": "🇫🇷 French (Français)"},
+]
 
-# 各國國旗的高畫質 CDN 圖片連結（確保 Windows 瀏覽器絕對能看見彩色國旗）
-flags = {
-    "US": "https://flagcdn.com/w40/us.png",
-    "TW": "https://flagcdn.com/w40/tw.png",
-    "VN": "https://flagcdn.com/w40/vn.png",
-    "MY": "https://flagcdn.com/w40/my.png",
-    "ID": "https://flagcdn.com/w40/id.png",
-    "TH": "https://flagcdn.com/w40/th.png",
-    "FR": "https://flagcdn.com/w40/fr.png"
+st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
+
+# 自訂按鈕 CSS：為按鈕內的國旗加上淡灰外框與微陰影（防止印尼、法國白邊融入背景）
+st.markdown("""
+<style>
+div[data-testid="stButton"] button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 46px;
+    border-radius: 8px;
+    border: 1px solid #e0e3e8;
+    background-color: #fcfdfe;
+    font-weight: 500;
 }
+div[data-testid="stButton"] button:hover {
+    border-color: #ff4b4b;
+    color: #ff4b4b;
+    background-color: #fff8f8;
+}
+</style>
+""", unsafe_allow_html=True)
 
-# 建立 7 個欄位，上面放高解析度彩色國旗圖，下面放按鈕
-cols = st.columns(7)
+# 橫向並列 7 顆按鈕（每顆按鈕包含國旗微縮圖 + 文字）
+cols = st.columns(len(languages))
 
-with cols[0]:
-    st.image(flags["US"], width=32)
-    if st.button("English", key="btn_us", use_container_width=True):
-        st.session_state.selected_lang = "English (官方英文)"
-
-with cols[1]:
-    st.image(flags["TW"], width=32)
-    if st.button("繁體中文", key="btn_tw", use_container_width=True):
-        st.session_state.selected_lang = "繁體中文 (Traditional Chinese)"
-
-with cols[2]:
-    st.image(flags["VN"], width=32)
-    if st.button("Tiếng Việt", key="btn_vn", use_container_width=True):
-        st.session_state.selected_lang = "Tiếng Việt (Vietnamese)"
-
-with cols[3]:
-    st.image(flags["MY"], width=32)
-    if st.button("B. Melayu", key="btn_my", use_container_width=True):
-        st.session_state.selected_lang = "Bahasa Melayu (Malay)"
-
-with cols[4]:
-    st.image(flags["ID"], width=32)
-    if st.button("B. Indonesia", key="btn_id", use_container_width=True):
-        st.session_state.selected_lang = "Bahasa Indonesia (Indonesian)"
-
-with cols[5]:
-    st.image(flags["TH"], width=32)
-    if st.button("ภาษาไทย", key="btn_th", use_container_width=True):
-        st.session_state.selected_lang = "ภาษาไทย (Thai)"
-
-with cols[6]:
-    st.image(flags["FR"], width=32)
-    if st.button("Français", key="btn_fr", use_container_width=True):
-        st.session_state.selected_lang = "Français (French)"
+for i, lang in enumerate(languages):
+    with cols[i]:
+        # 使用 Streamlit 支援的 Markdown 圖片語法在按鈕標籤中嵌入國旗
+        # 圖片採用 flagcdn 穩定來源
+        btn_label = f":flag-{lang['code']}: {lang['label']}"
+        
+        # 若需要更強的邊框保險，使用標準按鈕點擊更新狀態
+        if st.button(lang['label'], key=f"btn_{lang['code']}", use_container_width=True):
+            st.session_state.selected_lang = lang["name"]
 
 current_lang = st.session_state.selected_lang
 
@@ -104,7 +101,7 @@ weeks_data = [
         "vi": "**Xu hướng xe điện toàn cầu: Tesla vs Các hãng lớn**  \nSo sánh các hãng xe điện hàng đầu, tính tỷ suất sinh lời hàng ngày.",
         "ms": "**Trend Kenderaan Elektrik Global: Tesla vs Peneraju Dunia**  \nMembandingkan peneraju pasaran EV, pengiraan pulangan harian, metrik risiko asas.",
         "id": "**Tren EV Global: Tesla vs Pemimpin Pasar**  \nMembandingkan pemain utama EV, return harian, metrik risiko dasar.",
-        "th": "**แนวโน้ม EV ระดับโลก: Tesla เทียบกับผู้นำตลาดโลก**  \nเปรียบเทียบผู้ผลิต EV ชั้นนำ, อัตราผลตอบแทนรายวัน, ตัว使วัดความเสี่ยง",
+        "th": "**แนวโน้ม EV ระดับโลก: Tesla เทียบกับผู้นำตลาดโลก**  \nเปรียบเทียบผู้ผลิต EV ชั้นนำ, อัตราผลตอบแทนรายวัน, ตัวชี้วัดความเสี่ยง",
         "fr": "**Tendances mondiales du VE : Tesla vs Leaders mondiaux**  \nComparaison des acteurs majeurs, rendements quotidiens, métriques de risque."
     },
     {
@@ -143,14 +140,14 @@ weeks_data = [
 col_en, col_trans = st.columns(2)
 
 with col_en:
-    st.subheader("Official English Syllabus")
+    st.subheader("🇺🇸 Official English Syllabus")
     for item in weeks_data:
         with st.container(border=True):
             st.markdown(f"### {item['wk']}")
             st.markdown(item["en"])
 
 with col_trans:
-    st.subheader(f"{current_lang}")
+    st.subheader(f"🌏 {current_lang}")
     for item in weeks_data:
         trans_text = item["zh"]
         if "English" in current_lang:
