@@ -1,6 +1,5 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Google Sheets Live)
-# 【腳本】完整版多語系課綱門戶（支援全語言切換 + Google Sheets 雲端自動同步記錄）
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Bug Fixed)
 # ==============================================================================
 
 import streamlit as st
@@ -42,7 +41,6 @@ SUBTITLES = {
     "fr": "Semestre 115-1 · Dép. Gestion et Management 2C (3.0 Crédits / 3.0 Heures) | Portail Interactif Multilingue du Syllabus"
 }
 
-# 語言選擇指引標題
 LANG_SELECT_PROMPTS = {
     "us": "🌐 Select Parallel Language:",
     "tw": "🌐 點擊按鈕切換語言對照：",
@@ -53,11 +51,11 @@ LANG_SELECT_PROMPTS = {
     "fr": "🌐 Sélectionnez la langue d'affichage :"
 }
 
-# 3. 頂部區域：標題、副標題與手機掃描 QR Code
-header_col1, header_col2 = st.columns([4, 1])
+# 3. 頂部區域排版修正（確保標題不被截斷）
+header_col1, header_col2 = st.columns([5, 1])
 
 with header_col1:
-    st.title("🎓 Python AI Applications (Python AI 應用)")
+    st.markdown("## 🎓 Python AI Applications (Python AI 應用)")
     st.caption(SUBTITLES.get(current_code, SUBTITLES["us"]))
     st.markdown(f"**{LANG_SELECT_PROMPTS.get(current_code, LANG_SELECT_PROMPTS['us'])}**")
 
@@ -66,9 +64,9 @@ with header_col2:
     qr_api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=4&data={app_url}"
     st.markdown(
         f"""
-        <div style="text-align: center; background: #ffffff; padding: 6px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <img src="{qr_api_url}" style="width: 80px; height: 80px; display: block; margin: 0 auto;">
-            <span style="font-size: 11px; color: #4b5563; font-weight: 600; display: block; margin-top: 2px;">📱 Scan for Mobile</span>
+        <div style="text-align: center; background: #ffffff; padding: 4px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <img src="{qr_api_url}" style="width: 75px; height: 75px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #4b5563; font-weight: 600; display: block; margin-top: 2px;">📱 Mobile Scan</span>
         </div>
         """,
         unsafe_allow_html=True
@@ -170,13 +168,8 @@ btn_items = "".join([
 st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=True)
 
 status_labels = {
-    "us": "Current Parallel View",
-    "tw": "目前對照語言",
-    "vn": "Chế độ xem song song hiện tại",
-    "id": "Tampilan Bahasa Saat Ini",
-    "my": "Paparan Bahasa Semasa",
-    "th": "มุมมองภาษาปัจจุบัน",
-    "fr": "Vue de langue actuelle"
+    "us": "Current Parallel View", "tw": "目前對照語言", "vn": "Chế độ xem song song hiện tại",
+    "id": "Tampilan Bahasa Saat Ini", "my": "Paparan Bahasa Semasa", "th": "มุมมองภาษาปัจจุบัน", "fr": "Vue de langue actuelle"
 }
 st.info(f"💡 **{status_labels.get(current_code, status_labels['us'])}**: **{current_info['name']}**")
 
@@ -274,7 +267,7 @@ schedule_titles = {
 }
 st.markdown(f"### {schedule_titles.get(current_code, schedule_titles['us'])}")
 
-# 5. 18 週課綱資料庫（全 7 國語言完整對照）
+# 5. 18 週課綱資料庫（全 7 國語言完整對照，修復 Week 9 結構）
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
@@ -486,7 +479,7 @@ if hasattr(st, "html"):
 else:
     st.markdown(table_full, unsafe_allow_html=True)
 
-# 6. 側邊欄：多語系 AI 助教 + Google Sheets 自動寫入串接
+# 6. 側邊欄：多語系 AI 助教 + Google Sheets 自動同步
 with st.sidebar:
     ui_texts = {
         "title": {
@@ -612,7 +605,6 @@ with st.sidebar:
                 zh_summary = f"學生提問：{user_q}"
                 en_broadcast = "Feel free to ask questions after class or in our class chat group."
 
-            # Google Apps Script Webhook 自動同步寫入
             webhook_url = "https://script.google.com/macros/s/AKfycbyep8yXuTaNgnAxKsdRXgsqJvYKAeqCmDiF2GqvUkJWf-7sCztuQ4n7cbkpbzyyYod4/exec"
             payload = {
                 "timestamp": now_str,
@@ -628,7 +620,6 @@ with st.sidebar:
             except Exception:
                 pass
 
-            # 畫面三語鏡像展示
             st.success("✅ Recorded! / 已記錄並同步至課堂試算表")
             current_flag = LANG_CONFIG[current_code]["name"]
             st.markdown(f"**{current_flag}:**\n\n{local_answers.get(current_code, local_answers['us'])}")
