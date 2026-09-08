@@ -1,7 +1,6 @@
-# %%writefile app.py
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Web Application (6-Language Edition)
-# 【腳本】多語系互動課綱網頁應用（正式加入馬來西亞🇲🇾，共 6 國語言即時切換）
+# [Script] Interactive Multilingual Syllabus Web Application (Emoji Flags Edition)
+# 【腳本】多語系互動課綱網頁應用（完整國旗圖示版，涵蓋美、台、越、馬、印、泰、法）
 # ==============================================================================
 
 import streamlit as st
@@ -19,36 +18,39 @@ st.caption("18-Week Interactive Syllabus & Parallel Multilingual Companion | 18 
 
 # 3. 語言切換狀態管理（預設為繁體中文）
 if "selected_lang" not in st.session_state:
-    st.session_state.selected_lang = "Traditional Chinese (繁體中文)"
+    st.session_state.selected_lang = "🇹🇼 Traditional Chinese (繁體中文)"
 
-st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
+st.markdown("**🌐 Select Parallel Language (點擊國旗切換右欄對照語言):**")
 
-# 建立 6 顆橫向並列按鈕（納入台灣、越南、馬來西亞、印尼、泰國、法國）
-b1, b2, b3, b4, b5, b6 = st.columns(6)
-with b1:
+# 建立 7 顆橫向並列按鈕（納入美國、台灣、越南、馬來西亞、印尼、泰國、法國）
+b_us, b_tw, b_vn, b_my, b_id, b_th, b_fr = st.columns(7)
+with b_us:
+    if st.button("🇺🇸 English", use_container_width=True):
+        st.session_state.selected_lang = "🇺🇸 English (官方英文)"
+with b_tw:
     if st.button("🇹🇼 繁體中文", use_container_width=True):
-        st.session_state.selected_lang = "Traditional Chinese (繁體中文)"
-with b2:
+        st.session_state.selected_lang = "🇹🇼 Traditional Chinese (繁體中文)"
+with b_vn:
     if st.button("🇻🇳 Tiếng Việt", use_container_width=True):
-        st.session_state.selected_lang = "Vietnamese (Tiếng Việt)"
-with b3:
+        st.session_state.selected_lang = "🇻🇳 Vietnamese (Tiếng Việt)"
+with b_my:
     if st.button("🇲🇾 B. Melayu", use_container_width=True):
-        st.session_state.selected_lang = "Malay (Bahasa Melayu)"
-with b4:
+        st.session_state.selected_lang = "🇲🇾 Malay (Bahasa Melayu)"
+with b_id:
     if st.button("🇮🇩 B. Indonesia", use_container_width=True):
-        st.session_state.selected_lang = "Indonesian (Bahasa Indonesia)"
-with b5:
+        st.session_state.selected_lang = "🇮🇩 Indonesian (Bahasa Indonesia)"
+with b_th:
     if st.button("🇹🇭 ภาษาไทย", use_container_width=True):
-        st.session_state.selected_lang = "Thai (ภาษาไทย)"
-with b6:
+        st.session_state.selected_lang = "🇹🇭 Thai (ภาษาไทย)"
+with b_fr:
     if st.button("🇫🇷 Français", use_container_width=True):
-        st.session_state.selected_lang = "French (Français)"
+        st.session_state.selected_lang = "🇫🇷 French (Français)"
 
 current_lang = st.session_state.selected_lang
 
 st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_lang}**  \n*(Conductor's Note: Built with Python & Streamlit in under 95 lines. You will build and deploy apps like this in Week 10!)*")
 
-# 4. 課程多語系資料庫（包含標準馬來西亞馬來語 ms）
+# 4. 課程多語系資料庫
 weeks_data = [
     {
         "wk": "Week 1",
@@ -126,7 +128,9 @@ with col_trans:
     st.subheader(f"🌏 {current_lang}")
     for item in weeks_data:
         trans_text = item["zh"]
-        if "Vietnamese" in current_lang:
+        if "English" in current_lang:
+            trans_text = item["en"]
+        elif "Vietnamese" in current_lang:
             trans_text = item["vi"]
         elif "Malay" in current_lang:
             trans_text = item["ms"]
