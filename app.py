@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] 18-Week Interactive Multilingual Syllabus Table (Wrap & No Scrollbar)
-# 【腳本】18 週完整多語系課綱表格（文字自動換行、無橫向滾動條、學校教務 6 欄位版）
+# [Script] 18-Week Interactive Multilingual Syllabus Table (Pure HTML / No Indent)
+# 【腳本】18 週完整多語系課綱表格（st.html 原生解析，徹底根除縮排代碼塊問題）
 # ==============================================================================
 
 import streamlit as st
@@ -20,7 +20,7 @@ st.caption("115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式
 LANG_CONFIG = {
     "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
     "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
-    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Tiếng Việt (Vietnamese)", "flag": "https://flagcdn.com/w40/vn.png"},
+    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Vietnamese (Tiếng Việt)", "flag": "https://flagcdn.com/w40/vn.png"},
     "my": {"label": "B. Melayu", "name": "🇲🇾 Bahasa Melayu (Malay)", "flag": "https://flagcdn.com/w40/my.png"},
     "id": {"label": "B. Indonesia", "name": "🇮🇩 Bahasa Indonesia (Indonesian)", "flag": "https://flagcdn.com/w40/id.png"},
     "th": {"label": "ภาษาไทย", "name": "🇹🇭 Thai (ภาษาไทย)", "flag": "https://flagcdn.com/w40/th.png"},
@@ -33,7 +33,7 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 自訂 CSS：按鈕格線、防融色國旗微邊框，以及表格自動換行樣式（無 scrollbar）
+# 自訂 CSS：按鈕與表格樣式（固定欄寬比例、無橫向 scrollbar、文字自動換行）
 st.markdown("""
 <style>
 .flag-btn-grid {
@@ -79,7 +79,7 @@ st.markdown("""
     border: 1px solid #b0b4b9;
 }
 
-/* 核心：無滾動條、自動斷行的高質感課綱表格 */
+/* 核心表格樣式：自適應寬度、徹底消除底端 scrollbar、文字自然斷行 */
 .syllabus-table-wrapper {
     width: 100%;
     margin-top: 15px;
@@ -87,11 +87,11 @@ st.markdown("""
 table.syllabus-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* 固定欄寬比例，強制內容自適應折行 */
+    table-layout: fixed;
     background-color: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 table.syllabus-table th {
     background-color: #1e3a8a;
@@ -109,8 +109,8 @@ table.syllabus-table td {
     font-size: 13.5px;
     line-height: 1.5;
     vertical-align: top;
-    white-space: normal !important; /* 強制自動斷行 */
-    word-break: break-word;        /* 長單字自然切分 */
+    white-space: normal !important;
+    word-break: break-word;
 }
 table.syllabus-table tr:hover td {
     background-color: #f8fafc;
@@ -229,60 +229,31 @@ weeks_all = [
     }
 ]
 
-# 動態產生支援 7 國語言的翻譯邏輯
+# 動態產生翻譯
 def get_translated_row(item, code):
     if code == "us":
         return item["us"]
     elif code == "tw":
         return item["tw"]
-    
-    # 針對東南亞與法語等其他語言，保留雙語友善對照
     base_tw = item["tw"]
     base_us = item["us"]
-    lang_name = LANG_CONFIG[code]["label"]
-    
     return {
-        "progress": f"{base_us['progress']}  \n<small style='color:#6b7280;'>({base_tw['progress']})</small>",
-        "hw": f"{base_us['hw']}",
-        "sum": f"{base_us['sum']}  \n<small style='color:#6b7280;'>({base_tw['sum']})</small>",
+        "progress": f"{base_us['progress']}<br><span style='color:#6b7280; font-size:12px;'>({base_tw['progress']})</span>",
+        "hw": base_us["hw"],
+        "sum": f"{base_us['sum']}<br><span style='color:#6b7280; font-size:12px;'>({base_tw['sum']})</span>",
         "rem": f"{base_us['rem']} / {base_tw['rem']}"
     }
 
-# 5. 組裝乾淨的 HTML 表格
-table_html = """
-<div class="syllabus-table-wrapper">
-<table class="syllabus-table">
-    <thead>
-        <tr>
-            <th class="col-week">週次 (Week)</th>
-            <th class="col-date">上課日期 (Date)</th>
-            <th class="col-progress">教學進度 (Progress)</th>
-            <th class="col-hw">作業進度 (Homework)</th>
-            <th class="col-summary">內容摘要 (Summary)</th>
-            <th class="col-remarks">備註</th>
-        </tr>
-    </thead>
-    <tbody>
-"""
+# 5. 採用單行無縮排方式拼接 HTML 表格，徹底避開 Markdown 解析陷阱
+rows_html = "".join([
+    f'<tr><td class="col-week">{r["week"]}</td><td class="col-date">{r["date"]}</td><td class="col-progress">{get_translated_row(r, current_code)["progress"]}</td><td class="col-hw">{get_translated_row(r, current_code)["hw"]}</td><td class="col-summary">{get_translated_row(r, current_code)["sum"]}</td><td class="col-remarks">{get_translated_row(r, current_code)["rem"]}</td></tr>'
+    for r in weeks_all
+])
 
-for row in weeks_all:
-    c = get_translated_row(row, current_code)
-    table_html += f"""
-        <tr>
-            <td class="col-week">{row["week"]}</td>
-            <td class="col-date">{row["date"]}</td>
-            <td class="col-progress">{c["progress"]}</td>
-            <td class="col-hw">{c["hw"]}</td>
-            <td class="col-summary">{c["sum"]}</td>
-            <td class="col-remarks">{c["rem"]}</td>
-        </tr>
-    """
+table_full = f'<div class="syllabus-table-wrapper"><table class="syllabus-table"><thead><tr><th class="col-week">週次 (Week)</th><th class="col-date">上課日期 (Date)</th><th class="col-progress">教學進度 (Progress)</th><th class="col-hw">作業進度 (Homework)</th><th class="col-summary">內容摘要 (Summary)</th><th class="col-remarks">備註</th></tr></thead><tbody>{rows_html}</tbody></table></div>'
 
-table_html += """
-    </tbody>
-</table>
-</div>
-"""
-
-# 渲染表格
-st.markdown(table_html, unsafe_allow_html=True)
+# 使用 st.html 或純 HTML 渲染
+if hasattr(st, "html"):
+    st.html(table_full)
+else:
+    st.markdown(table_full, unsafe_allow_html=True)
