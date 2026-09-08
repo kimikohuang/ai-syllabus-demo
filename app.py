@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Multilingual Syllabus Portal & Google Sheets Q&A Logger (Complete)
-# 【腳本】多語系互動課綱入口網站（含學生提問具名/匿名登記、即時三語對照、Google Sheet 串接）
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Full Edition)
+# 【腳本】完整版多語系課綱門戶（含個資去識別化名冊、旁聽生自填、三語鏡像助理與 18 週表格）
 # ==============================================================================
 
 import streamlit as st
@@ -24,13 +24,14 @@ LANG_CONFIG = {
     "fr": {"label": "Français", "name": "🇫🇷 French (Français)", "flag": "https://flagcdn.com/w40/fr.png"}
 }
 
+# 讀取 URL 參數，預設官方英文 (us)
 current_code = st.query_params.get("lang", "us")
 if current_code not in LANG_CONFIG:
     current_code = "us"
 
 current_info = LANG_CONFIG[current_code]
 
-# 副標題 7 國語言字典（依據官網官方系所名稱：Department of Business and Management）
+# 副標題 7 國語言字典（依據系所官方正式名稱：Department of Business and Management）
 SUBTITLES = {
     "us": "Fall 2026 (Semester 115-1) · Dept. of Business and Management 2C (3.0 Credits / 3.0 Hours) | Interactive Multilingual Syllabus Portal",
     "tw": "115 學期 四技經管系2丙 (3.0 學分 / 3.0 時數) | 互動式多語系完整課程進度表與資訊門戶",
@@ -41,7 +42,7 @@ SUBTITLES = {
     "fr": "Semestre 115-1 · Dép. Gestion et Management 2C (3.0 Crédits / 3.0 Heures) | Portail Interactif Multilingue du Syllabus"
 }
 
-# 3. 頂部區域：左側標題與動態多語系副標題 + 右側手機掃描 QR Code
+# 3. 頂部區域：左側標題與動態副標題 + 右側手機掃描 QR Code
 header_col1, header_col2 = st.columns([4, 1])
 
 with header_col1:
@@ -62,7 +63,7 @@ with header_col2:
         unsafe_allow_html=True
     )
 
-# 自訂 CSS：按鈕與表格排版
+# 自訂 CSS：按鈕網格與自適應換行表格
 st.markdown("""
 <style>
 .flag-btn-grid {
@@ -402,12 +403,12 @@ if hasattr(st, "html"):
 else:
     st.markdown(table_full, unsafe_allow_html=True)
 
-# 7. 側邊欄：具名/匿名選擇 ＋ 課綱 AI 助教 ＋ Google Sheets 紀錄
+# 7. 側邊欄：安全去識別化身分選單 ＋ 旁聽生自填 ＋ 三語鏡像 AI 助教
 with st.sidebar:
     st.header("🤖 Course AI Assistant")
     st.caption("Ask questions & earn In-Class Practice bonus points! (可具名加分或選擇匿名提問)")
 
-    # 安全去識別化名單（末三碼 ＋ 名字末字，外加匿名選項）
+    # 去識別化名單：末三碼 ＋ 名字最後一字（零個資疑慮）
     student_roster = [
         "👤 Anonymous (匿名提問)",
         "***205 · 輝 (Huy)",
@@ -426,10 +427,20 @@ with st.sidebar:
         "***214 · 安",
         "***215 · 德 (Đức)",
         "***216 · 珍 (Trân)",
-        "***217 · 豪 (Hào)"
+        "***217 · 豪 (Hào)",
+        "➕ Other / Guest (旁聽／加選生自填)"
     ]
 
-    selected_student = st.selectbox("🙋 Select ID (選擇身分):", student_roster)
+    selected_choice = st.selectbox("🙋 Select ID (選擇身分):", student_roster)
+
+    if selected_choice == "➕ Other / Guest (旁聽／加選生自填)":
+        custom_name = st.text_input(
+            "📝 Enter ID or Nickname (請輸入代號或暱稱):",
+            placeholder="e.g., Guest 301 Alex / 旁聽 林同學"
+        )
+        final_student_id = f"Guest: {custom_name}" if custom_name.strip() else "Guest (未具名)"
+    else:
+        final_student_id = selected_choice
 
     user_q = st.text_input("💬 Ask a question...", placeholder="Type in Vietnamese, English, Chinese...")
     
@@ -471,15 +482,14 @@ with st.sidebar:
             {resp_vn}
 
             **🇹🇼 教師對照 (繁體中文):**  
-            **提問者**：`{selected_student}`  
+            **提問者**：`{final_student_id}`  
             **摘要**：{resp_zh}
 
             **🇺🇸 For Class Broadcast (English):**  
             *{resp_en}*
             """)
 
-            # 提示學生已納入參與統計
-            if "Anonymous" not in selected_student:
-                st.caption(f"🎉 Thank you {selected_student.split()[1]}! Your participation has been logged for bonus credits.")
+            if "Anonymous" not in final_student_id:
+                st.caption(f"🎉 Thank you `{final_student_id}`! Your question is recorded for class engagement bonus.")
         else:
             st.warning("Please type a question before submitting. (請輸入問題後再送出)")
