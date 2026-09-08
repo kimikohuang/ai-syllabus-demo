@@ -1,5 +1,5 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Production Ready)
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Final Version)
 # ==============================================================================
 
 import streamlit as st
@@ -30,15 +30,15 @@ if current_code not in LANG_CONFIG:
 
 current_info = LANG_CONFIG[current_code]
 
-# 多語系副標題
+# 多語系副標題（更新為黃可羣老師）
 SUBTITLES = {
-    "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang · Dept. of Business and Management 2C (3.0 Credits)",
+    "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang (黃可羣) · Dept. of Business and Management 2C (3.0 Credits)",
     "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) (3.0 學分 / 3.0 時數)",
-    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang · Khoa Quản trị và Quản lý Kinh doanh 2C (3.0 Tín chỉ)",
-    "id": "Semester 115-1 · Dosen: Kimiko Kechun Huang · Jurusan Bisnis dan Manajemen 2C (3.0 SKS)",
-    "my": "Semester 115-1 · Pensyarah: Kimiko Kechun Huang · Jabatan Perniagaan dan Pengurusan 2C (3.0 Kredit)",
-    "th": "ภาคการศึกษา 115-1 · ผู้สอน: Kimiko Kechun Huang · ภาควิชาธุรกิจและการจัดการ 2C (3.0 หน่วยกิต)",
-    "fr": "Semestre 115-1 · Enseignant : Kimiko Kechun Huang · Dép. Gestion et Management 2C (3.0 Crédits)"
+    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang (黃可羣) · Khoa Quản trị và Quản lý Kinh doanh 2C (3.0 Tín chỉ)",
+    "id": "Semester 115-1 · Dosen: Kimiko Kechun Huang (黃可羣) · Jurusan Bisnis dan Manajemen 2C (3.0 SKS)",
+    "my": "Semester 115-1 · Pensyarah: Kimiko Kechun Huang (黃可羣) · Jabatan Perniagaan dan Pengurusan 2C (3.0 Kredit)",
+    "th": "ภาคการศึกษา 115-1 · ผู้สอน: Kimiko Kechun Huang (黃可羣) · ภาควิชาธุรกิจและการจัดการ 2C (3.0 หน่วยกิต)",
+    "fr": "Semestre 115-1 · Enseignant : Kimiko Kechun Huang (黃可羣) · Dép. Gestion et Management 2C (3.0 Crédits)"
 }
 
 LANG_SELECT_PROMPTS = {
@@ -73,7 +73,6 @@ with header_col2:
     )
 
 with header_col3:
-    # 已正式串接您的 LINE 社群邀請連結
     line_group_url = "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     qr_line_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={line_group_url}"
     st.markdown(
@@ -240,13 +239,13 @@ meta_cards = {
             "id": "🕒 Jam Konsultasi & Aturan LINE", "my": "🕒 Waktu Konsultasi & Peraturan LINE", "th": "🕒 ช่วงเวลาปรึกษาและกฎกลุ่ม LINE", "fr": "🕒 Permanence & Groupe LINE"
         },
         "content": {
-            "us": "**Instructor**: Kimiko Kechun Huang  \n**LINE Rule**: Set nickname as \"Last3Digits + Name\" (e.g., 205 Huy).",
-            "tw": "**授課教師**：黃可健 (Kimiko Kechun Huang)  \n**LINE 規範**：暱稱請設為「學號末三碼 + 名字」（例如：205 Huy）。",
-            "vn": "**Giảng viên**: Kimiko Kechun Huang  \n**Quy định LINE**: Đặt biệt danh là \"3 số cuối mã SV + Tên\" (vd: 205 Huy).",
-            "id": "**Dosen**: Kimiko Kechun Huang  \n**Aturan LINE**: Atur nama \"3 Digit Akhir + Nama\" (cth: 205 Huy).",
-            "my": "**Pensyarah**: Kimiko Kechun Huang  \n**Peraturan LINE**: Tetapkan nama \"3 Digit Terakhir + Nama\" (cth: 205 Huy).",
-            "th": "**ผู้สอน**: Kimiko Kechun Huang  \n**กฎกลุ่ม LINE**: ตั้งชื่อเล่นเป็น \"เลขท้าย 3 ตัว + ชื่อ\" (เช่น 205 Huy)",
-            "fr": "**Enseignant** : Kimiko Kechun Huang  \n**Règle LINE** : Définissez votre pseudo : \"3 derniers chiffres + Nom\" (ex: 205 Huy)."
+            "us": "**Instructor**: Kimiko Kechun Huang (黃可羣)  \n**LINE Rule**: Set nickname as \"Last3Digits + Name\" (e.g., 205 Huy).",
+            "tw": "**授課教師**：黃可羣 (Kimiko Kechun Huang)  \n**LINE 規範**：暱稱請設為「學號末三碼 + 名字」（例如：205 Huy）。",
+            "vn": "**Giảng viên**: Kimiko Kechun Huang (黃可羣)  \n**Quy định LINE**: Đặt biệt danh là \"3 số cuối mã SV + Tên\" (vd: 205 Huy).",
+            "id": "**Dosen**: Kimiko Kechun Huang (黃可羣)  \n**Aturan LINE**: Atur nama \"3 Digit Akhir + Nama\" (cth: 205 Huy).",
+            "my": "**Pensyarah**: Kimiko Kechun Huang (黃可羣)  \n**Peraturan LINE**: Tetapkan nama \"3 Digit Terakhir + Nama\" (cth: 205 Huy).",
+            "th": "**ผู้สอน**: Kimiko Kechun Huang (黃可羣)  \n**กฎกลุ่ม LINE**: ตั้งชื่อเล่นเป็น \"เลขท้าย 3 ตัว + ชื่อ\" (เช่น 205 Huy)",
+            "fr": "**Enseignant** : Kimiko Kechun Huang (黃可羣)  \n**Règle LINE** : Définissez votre pseudo : \"3 derniers chiffres + Nom\" (ex: 205 Huy)."
         }
     }
 }
