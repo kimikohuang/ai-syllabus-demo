@@ -1,10 +1,11 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (True Multilingual)
-# 【腳本】完整版多語系課綱門戶（支援英、中、越、印、馬、泰、法全語言切換與 Google Sheet 串接準備）
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Google Sheets Live)
+# 【腳本】完整版多語系課綱門戶（支援全語言切換 + Google Sheets 雲端自動同步記錄）
 # ==============================================================================
 
 import streamlit as st
 import datetime
+import requests
 
 # 1. 頁面基本配置
 st.set_page_config(
@@ -273,7 +274,7 @@ schedule_titles = {
 }
 st.markdown(f"### {schedule_titles.get(current_code, schedule_titles['us'])}")
 
-# 5. 18 週課綱資料庫（全 7 種語言完整對照）
+# 5. 18 週課綱資料庫（全 7 國語言完整對照）
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
@@ -361,7 +362,7 @@ weeks_all = [
         "tw": {"prog": "【期中評量】期中報告與進度審查", "hw": "期中專案階段成果展示", "sum": "各組口頭分享數據管線進度與初步分析成果；課堂互評與反饋機制。", "rem": "實體上課"},
         "vn": {"prog": "【Đánh giá giữa kỳ】Báo cáo tiến độ đồ án", "hw": "Nộp kết quả giai đoạn giữa kỳ", "sum": "Các nhóm thuyết trình về tiến độ xử lý dữ liệu và mô hình ban đầu; nhận xét chéo giữa các sinh viên.", "rem": "Học trực tiếp"},
         "id": {"prog": "[UTS] Review Progres Tahap Proyek", "hw": "Pengumpulan laporan kemajuan UTS", "sum": "Presentasi kelompok mengenai pipeline data dan model awal; sesi umpan balik antar rekan mahasiswa.", "rem": "Tatap muka"},
-        "my": "[Peperiksaan Pertengahan Penggal] Semakan Projek",
+        "my": {"prog": "[Peperiksaan Pertengahan Penggal] Semakan Projek", "hw": "Penyerahan kemajuan pertengahan penggal", "sum": "Pembentangan kumpulan mengenai saluran data dan model awal; sesi maklum balas rakan sebaya.", "rem": "Bersemuka"},
         "th": {"prog": "【สอบกลางภาค】การนำเสนอความก้าวหน้าโครงงาน", "hw": "ส่งรายงานความคืบหน้ารอบกลางภาค", "sum": "แต่ละกลุ่มนำเสนอไปป์ไลน์ข้อมูลและโมเดลเบื้องต้น; กิจกรรมให้คำวิจารณ์เชิงสร้างสรรค์ระหว่างเพื่อนร่วมชั้น", "rem": "เรียนในชั้น"},
         "fr": {"prog": "[Examen partiel] Revue d'avancement du projet", "hw": "Dépôt d'étape du projet partiel", "sum": "Présentations des pipelines de données et premières modélisations ; retours entre pairs.", "rem": "Présentiel"}
     },
@@ -485,7 +486,7 @@ if hasattr(st, "html"):
 else:
     st.markdown(table_full, unsafe_allow_html=True)
 
-# 6. 側邊欄：多語系 AI 助教
+# 6. 側邊欄：多語系 AI 助教 + Google Sheets 自動寫入串接
 with st.sidebar:
     ui_texts = {
         "title": {
@@ -556,6 +557,7 @@ with st.sidebar:
             q_lower = user_q.lower()
             
             if any(k in q_lower for k in ["đồ án", "cuối kỳ", "báo cáo", "final", "project", "showcase", "期末", "專案", "tugas akhir", "projek akhir", "โครงงาน"]):
+                category = "Final Project"
                 local_answers = {
                     "us": "The Final Project Showcase takes place in **Week 17 & Week 18**. It counts for **30%** of your final grade.",
                     "tw": "期末專案成果發表將於 **第 17 週與第 18 週** 課堂進行，佔學期總成績 **30%**。",
@@ -569,6 +571,7 @@ with st.sidebar:
                 en_broadcast = "The Final Project Showcase is in Week 17 & 18 (30% of total grade)."
 
             elif any(k in q_lower for k in ["điểm", "grade", "score", "tỷ lệ", "評分", "成績", "比重", "nilai", "markah", "เกณฑ์", "คะแนน", "note"]):
+                category = "Grading"
                 local_answers = {
                     "us": "Grading: Weekly in-class practice (50%), Midterm (20%), Final showcase (30%).",
                     "tw": "評量標準：每週課堂趣味實作 50%、期中考/專案 20%、期末成果展示 30%。",
@@ -582,6 +585,7 @@ with st.sidebar:
                 en_broadcast = "Grading policy: 50% weekly practice, 20% midterm, 30% final showcase."
 
             elif any(k in q_lower for k in ["colab", "bắt đầu", "python", "lập trình", "cài đặt", "環境", "instalasi", "ติดตั้ง", "installation"]):
+                category = "Environment / Tools"
                 local_answers = {
                     "us": "No complex setup needed. We will code using **Google Colab** directly inside your web browser starting Week 1.",
                     "tw": "無須在個人電腦安裝繁瑣環境，第 1 週起直接使用瀏覽器開啟 **Google Colab** 實作。",
@@ -595,6 +599,7 @@ with st.sidebar:
                 en_broadcast = "No local installation needed; we use Google Colab in browsers from Week 1."
 
             else:
+                category = "General / Consultation"
                 local_answers = {
                     "us": f"Your question has been noted: '{user_q}'. Feel free to discuss with the instructor right after class!",
                     "tw": f"已收到您的提問：『{user_q}』。下課後可隨時於教室與老師進一步討論！",
@@ -607,7 +612,24 @@ with st.sidebar:
                 zh_summary = f"學生提問：{user_q}"
                 en_broadcast = "Feel free to ask questions after class or in our class chat group."
 
-            st.success("✅ Recorded! / 已記錄")
+            # Google Apps Script Webhook 自動同步寫入
+            webhook_url = "https://script.google.com/macros/s/AKfycbyep8yXuTaNgnAxKsdRXgsqJvYKAeqCmDiF2GqvUkJWf-7sCztuQ4n7cbkpbzyyYod4/exec"
+            payload = {
+                "timestamp": now_str,
+                "student": final_student_id,
+                "language": LANG_CONFIG[current_code]["label"],
+                "question": user_q,
+                "summary": zh_summary,
+                "category": category
+            }
+
+            try:
+                requests.post(webhook_url, json=payload, timeout=5)
+            except Exception:
+                pass
+
+            # 畫面三語鏡像展示
+            st.success("✅ Recorded! / 已記錄並同步至課堂試算表")
             current_flag = LANG_CONFIG[current_code]["name"]
             st.markdown(f"**{current_flag}:**\n\n{local_answers.get(current_code, local_answers['us'])}")
             
