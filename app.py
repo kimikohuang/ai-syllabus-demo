@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Web Application (True Embedded Flags)
-# 【腳本】多語系互動課綱網頁應用（真·國旗鑲嵌於按鈕內 + 防融色微邊框）
+# [Script] Interactive Multilingual Syllabus Web Application (Embedded Flags)
+# 【腳本】多語系互動課綱網頁應用（真·國旗鑲嵌於按鈕內 + 防融色微邊框修正版）
 # ==============================================================================
 
 import streamlit as st
@@ -36,65 +36,61 @@ current_info = LANG_CONFIG[current_code]
 
 st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
 
-# 自訂按鈕 CSS：按鈕底色、陰影、懸停效果，以及國旗的精緻外框（防止白邊融色）
+# 自訂按鈕 CSS：含背景底色、邊框、陰影、懸停反饋，以及國旗防融色微灰邊
 st.markdown("""
 <style>
 .flag-btn-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    margin-bottom: 20px;
+    margin: 12px 0 20px 0;
 }
 .flag-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 8px 12px;
-    background-color: #f8f9fa;
+    padding: 9px 8px;
+    background-color: #f7f9fb;
     border: 1px solid #dcdfe6;
     border-radius: 8px;
     text-decoration: none !important;
-    color: #31333f !important;
+    color: #2c3e50 !important;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 .flag-btn:hover {
     border-color: #ff4b4b;
     background-color: #fff5f5;
     color: #ff4b4b !important;
     transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(255,75,75,0.15);
 }
 .flag-btn.active {
     border-color: #ff4b4b;
     background-color: #ffeaea;
-    color: #ff4b4b !important;
+    color: #d93838 !important;
     font-weight: 700;
+    box-shadow: inset 0 0 0 1px #ff4b4b;
 }
 .flag-img {
     width: 22px;
     height: 15px;
     object-fit: cover;
     border-radius: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.2); /* 精緻微邊框，徹底解決印尼/法國白邊問題 */
+    border: 1px solid #b0b4b9; /* 明確外框：法國、印尼的白色區塊絕對不會被背景吃掉 */
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 渲染 7 顆真正內嵌國旗圖片的互動按鈕
-buttons_html = '<div class="flag-btn-grid">'
-for code, data in LANG_CONFIG.items():
-    active_cls = "active" if code == current_code else ""
-    buttons_html += f'''
-    <a class="flag-btn {active_cls}" href="?lang={code}" target="_self">
-        <img class="flag-img" src="{data['flag']}" alt="{data['label']}">
-        <span>{data['label']}</span>
-    </a>
-    '''
-buttons_html += '</div>'
-st.markdown(buttons_html, unsafe_allow_html=True)
+# 緊湊無縮排字串，避免觸發 Markdown 的程式碼縮排規則
+btn_items = "".join([
+    f'<a class="flag-btn {"active" if code == current_code else ""}" href="?lang={code}" target="_self"><img class="flag-img" src="{data["flag"]}" alt="{data["label"]}"><span>{data["label"]}</span></a>'
+    for code, data in LANG_CONFIG.items()
+])
+st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=True)
 
 st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**  \n*(Conductor's Note: Built with Python & Streamlit in under 95 lines. You will build and deploy apps like this in Week 10!)*")
 
@@ -166,7 +162,7 @@ weeks_data = [
 col_en, col_trans = st.columns(2)
 
 with col_en:
-    st.subheader("Official English Syllabus")
+    st.subheader("🇺🇸 Official English Syllabus")
     for item in weeks_data:
         with st.container(border=True):
             st.markdown(f"### {item['wk']}")
