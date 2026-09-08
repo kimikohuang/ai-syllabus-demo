@@ -1,6 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Web Application (Flag Inside Button)
-# 【腳本】多語系互動課綱網頁應用（國旗鑲入按鈕內 + 防融色微邊框精緻版）
+# [Script] Interactive Multilingual Syllabus Web Application (True Embedded Flags)
+# 【腳本】多語系互動課綱網頁應用（真·國旗鑲嵌於按鈕內 + 防融色微邊框）
 # ==============================================================================
 
 import streamlit as st
@@ -16,61 +16,87 @@ st.set_page_config(
 st.title("🎓 Python AI Applications (Python AI 應用)")
 st.caption("18-Week Interactive Syllabus & Parallel Multilingual Companion | 18 週互動課綱與多語系對照")
 
-# 3. 語言切換狀態管理（預設為繁體中文）
-if "selected_lang" not in st.session_state:
-    st.session_state.selected_lang = "🇹🇼 Traditional Chinese (繁體中文)"
+# 3. 語言定義（含 FlagCDN 高畫質圖片、名稱、對照鍵值）
+LANG_CONFIG = {
+    "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
+    "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
+    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Tiếng Việt (Vietnamese)", "flag": "https://flagcdn.com/w40/vn.png"},
+    "my": {"label": "B. Melayu", "name": "🇲🇾 Bahasa Melayu (Malay)", "flag": "https://flagcdn.com/w40/my.png"},
+    "id": {"label": "B. Indonesia", "name": "🇮🇩 Bahasa Indonesia (Indonesian)", "flag": "https://flagcdn.com/w40/id.png"},
+    "th": {"label": "ภาษาไทย", "name": "🇹🇭 ภาษาไทย (Thai)", "flag": "https://flagcdn.com/w40/th.png"},
+    "fr": {"label": "Français", "name": "🇫🇷 Français (French)", "flag": "https://flagcdn.com/w40/fr.png"}
+}
 
-# 語言設定清單（國旗代碼、按鈕文字、對照標籤）
-languages = [
-    {"code": "us", "label": "English", "name": "🇺🇸 English (Official)"},
-    {"code": "tw", "label": "繁體中文", "name": "🇹🇼 Traditional Chinese (繁體中文)"},
-    {"code": "vn", "label": "Tiếng Việt", "name": "🇻🇳 Vietnamese (Tiếng Việt)"},
-    {"code": "my", "label": "B. Melayu", "name": "🇲🇾 Malay (Bahasa Melayu)"},
-    {"code": "id", "label": "B. Indonesia", "name": "🇮🇩 Indonesian (Bahasa Indonesia)"},
-    {"code": "th", "label": "ภาษาไทย", "name": "🇹🇭 Thai (ภาษาไทย)"},
-    {"code": "fr", "label": "Français", "name": "🇫🇷 French (Français)"},
-]
+# 讀取 URL 參數中的語言，若無則預設為繁體中文 (tw)
+current_code = st.query_params.get("lang", "tw")
+if current_code not in LANG_CONFIG:
+    current_code = "tw"
+
+current_info = LANG_CONFIG[current_code]
 
 st.markdown("**🌐 Select Parallel Language (點擊按鈕切換右欄對照語言):**")
 
-# 自訂按鈕 CSS：為按鈕內的國旗加上淡灰外框與微陰影（防止印尼、法國白邊融入背景）
+# 自訂按鈕 CSS：按鈕底色、陰影、懸停效果，以及國旗的精緻外框（防止白邊融色）
 st.markdown("""
 <style>
-div[data-testid="stButton"] button {
+.flag-btn-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.flag-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: 46px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dcdfe6;
     border-radius: 8px;
-    border: 1px solid #e0e3e8;
-    background-color: #fcfdfe;
+    text-decoration: none !important;
+    color: #31333f !important;
+    font-size: 14px;
     font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
-div[data-testid="stButton"] button:hover {
+.flag-btn:hover {
     border-color: #ff4b4b;
-    color: #ff4b4b;
-    background-color: #fff8f8;
+    background-color: #fff5f5;
+    color: #ff4b4b !important;
+    transform: translateY(-1px);
+}
+.flag-btn.active {
+    border-color: #ff4b4b;
+    background-color: #ffeaea;
+    color: #ff4b4b !important;
+    font-weight: 700;
+}
+.flag-img {
+    width: 22px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.2); /* 精緻微邊框，徹底解決印尼/法國白邊問題 */
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 橫向並列 7 顆按鈕（每顆按鈕包含國旗微縮圖 + 文字）
-cols = st.columns(len(languages))
+# 渲染 7 顆真正內嵌國旗圖片的互動按鈕
+buttons_html = '<div class="flag-btn-grid">'
+for code, data in LANG_CONFIG.items():
+    active_cls = "active" if code == current_code else ""
+    buttons_html += f'''
+    <a class="flag-btn {active_cls}" href="?lang={code}" target="_self">
+        <img class="flag-img" src="{data['flag']}" alt="{data['label']}">
+        <span>{data['label']}</span>
+    </a>
+    '''
+buttons_html += '</div>'
+st.markdown(buttons_html, unsafe_allow_html=True)
 
-for i, lang in enumerate(languages):
-    with cols[i]:
-        # 使用 Streamlit 支援的 Markdown 圖片語法在按鈕標籤中嵌入國旗
-        # 圖片採用 flagcdn 穩定來源
-        btn_label = f":flag-{lang['code']}: {lang['label']}"
-        
-        # 若需要更強的邊框保險，使用標準按鈕點擊更新狀態
-        if st.button(lang['label'], key=f"btn_{lang['code']}", use_container_width=True):
-            st.session_state.selected_lang = lang["name"]
-
-current_lang = st.session_state.selected_lang
-
-st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_lang}**  \n*(Conductor's Note: Built with Python & Streamlit in under 95 lines. You will build and deploy apps like this in Week 10!)*")
+st.info(f"💡 **Current Parallel View / 目前對照語言**: **{current_info['name']}**  \n*(Conductor's Note: Built with Python & Streamlit in under 95 lines. You will build and deploy apps like this in Week 10!)*")
 
 # 4. 課程多語系資料庫
 weeks_data = [
@@ -140,28 +166,25 @@ weeks_data = [
 col_en, col_trans = st.columns(2)
 
 with col_en:
-    st.subheader("🇺🇸 Official English Syllabus")
+    st.subheader("Official English Syllabus")
     for item in weeks_data:
         with st.container(border=True):
             st.markdown(f"### {item['wk']}")
             st.markdown(item["en"])
 
 with col_trans:
-    st.subheader(f"🌏 {current_lang}")
+    st.subheader(f"{current_info['name']}")
     for item in weeks_data:
-        trans_text = item["zh"]
-        if "English" in current_lang:
-            trans_text = item["en"]
-        elif "Vietnamese" in current_lang:
-            trans_text = item["vi"]
-        elif "Malay" in current_lang:
-            trans_text = item["ms"]
-        elif "Indonesian" in current_lang:
-            trans_text = item["id"]
-        elif "Thai" in current_lang:
-            trans_text = item["th"]
-        elif "French" in current_lang:
-            trans_text = item["fr"]
+        lang_mapping = {
+            "tw": item["zh"],
+            "us": item["en"],
+            "vn": item["vi"],
+            "my": item["ms"],
+            "id": item["id"],
+            "th": item["th"],
+            "fr": item["fr"]
+        }
+        trans_text = lang_mapping.get(current_code, item["zh"])
 
         with st.container(border=True):
             st.markdown(f"### {item['wk']} (對照)")
