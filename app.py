@@ -525,26 +525,24 @@ w1_details = {
       4. Launching **Google Colab** (Pair Programming if sharing laptops).
       5. Keyboard shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
       6. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices.
-    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone & Bonus Challenges**
-      7. **Core Milestone (Lab 0)**: Run the script, change `2330.TW` to your favorite global brand (`AAPL`, `SBUX`, etc.), and view the trend.
-      8. **Bonus Challenge 1 (Tweak Parameters)**: Change `period="1y"` to `"5y"` to view multi-year macro trends.
-      9. **Bonus Challenge 2 (Dual Asset)**: Ask Gemini how to plot TSMC and Apple on the same chart.
-      10. **Check-in**: Submit your stock code & insight via the sidebar AI Assistant to complete today's attendance!
+    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone, Bonus & Sidebar Check-in**
+      7. **Core Milestone (Lab 0)**: Run the script, change `2330.TW` to your favorite global brand (`AAPL`, `SBUX`, etc.).
+      8. **Bonus Challenge**: Try 5-year macro trends (`period="5y"`) or ask Gemini for dual-asset comparison.
+      9. **Mandatory Check-in**: Submit your stock ticker & insight via the **sidebar AI Assistant** to record today's attendance & lab completion!
     """,
     "tw": """
     * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
       1. 課程總覽、評量標準（平常 50%、第9週期中 20%、第16週期末發表 30%）與多語系 AI 助教網頁導覽。
-      2. 必備設備提醒：每週請務必攜帶 **筆記型電腦**（Colab 實作）與 **智慧型手機**。
+      2. 必備設備提醒：每週請務必攜帶 **筆記型電腦** 與 **智慧型手機**。
       3. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI。
     * **Part 2 (10:00 - 10:50) ｜ 雲端環境、鍵盤快捷鍵與台積電 Live Demo**
       4. 登入 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
-      5. 鍵盤神級快捷鍵暖身與 `Shift + Enter` 執行。
+      5. 鍵盤快捷鍵暖身與 `Shift + Enter` 執行。
       6. 老師現場示範 4 行 Python 程式碼抓取台積電 (`2330.TW`) 股價。
-    * **Part 3 (11:00 - 11:50) ｜ Lab 0 課堂成就解鎖與追加挑戰**
+    * **Part 3 (11:00 - 11:50) ｜ Lab 0 成就解鎖、加碼挑戰與側邊欄打卡**
       7. **核心成就解鎖 (Lab 0)**：成功跑出台積電或自選股票（如蘋果 `AAPL`、星巴克 `SBUX`）的走勢圖。
-      8. **追加挑戰 1（參數微調）**：將 `period="1y"` 改為 `"5y"` 觀察長線宏觀趨勢。
-      9. **追加挑戰 2（雙線對比）**：詢問 Gemini 如何在同一張圖畫出台積電與蘋果的對比。
-      10. **完成打卡**：於左側側邊欄填寫你的股票代號與心得送出，即完成今日出勤與實作登記！
+      8. **加碼挑戰**：嘗試 5 年長線趨勢 (`period="5y"`) 或詢問 Gemini 進行雙資產對比。
+      9. **重要打卡**：請務必將你的股票代號與觀察心得透過 **左側側邊欄 AI 助教** 送出，作為今日出勤與實作完成證明！
     """
 }
 
@@ -666,21 +664,25 @@ df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=Tr
                 )
                 st.markdown(reflection_markdown)
 
-            # 5. 一鍵推薦給同學 (Share with Classmates)
-            with st.expander("📢 Invite Classmates / 推薦給經管系同學（加退選好課相報）", expanded=False):
-                st.markdown("**Copy and forward this message to your class LINE group (複製以下文字轉發至班群)：**")
+            # 5. 一鍵推薦給同學 (Share with Classmates - English First & Open to All Majors)
+            with st.expander("📢 Invite Classmates / 推薦給全校同學（不限系所、跨域選修好課相報）", expanded=False):
+                st.markdown("**Copy and forward this message to your class LINE group (複製以下英文為主之推薦文轉發至班群)：**")
                 share_text = (
-                    "🔥【經管系優質選修推薦：Python AI 應用】\n"
-                    "這門課完全不用死背程式語法！老師教我們用自然語言 Prompt 指揮 AI 寫 Python、抓台積電與美股即時數據，還能做出手機 Web App！\n"
-                    "課堂強調 Pair Programming 兩人結對協作，初學者超友善！\n\n"
-                    "📍 上課時間：每週四 09:00 - 11:50（創新大樓 506 教室）\n"
-                    "🔗 課程多語系網頁（免登入手機直接看）：https://ai-syllabus.streamlit.app/\n"
-                    "💬 課程專屬 LINE 群（歡迎直接加入諮詢）：\n"
+                    "🔥 [Course Recommendation: Python AI Applications]\n"
+                    "No complex coding syntax required! You will learn how to direct AI with natural language prompts, fetch real-time TSMC & US stock data, and build mobile Web Apps!\n"
+                    "Open to ALL majors and year levels (Not limited to Business & Management). Beginners are warmly welcomed! Pair programming supported.\n\n"
+                    "📍 Time: Every Thursday 09:00 - 11:50 (Room 506, Innovation Bldg)\n"
+                    "🔗 Syllabus Portal: https://ai-syllabus.streamlit.app/\n"
+                    "💬 LINE Community Group:\n"
                     "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog\n"
-                    "歡迎加退選一起來修課拿高分！🚀"
+                    "Join us during the Add/Drop week! 🚀\n\n"
+                    "--- 🇹🇼 中文輔助說明 ---\n"
+                    "🔥【全校跨域選修推薦：Python AI 應用】\n"
+                    "本課程不限科系與年級（非經管系專屬），只要對 AI 應用有興趣皆可選修！完全不用死背語法，帶你用自然語言指揮 AI 做股票分析與手機 App，初學者超友善。\n"
+                    "上課時間：每週四 09:00-11:50（創506），歡迎加退選一起來修課！"
                 )
                 st.code(share_text, language="text")
-                st.caption("💡 歡迎將上方文字複製轉發到班級群組，找好搭檔一起來結對實作！")
+                st.caption("💡 歡迎將上方文字複製轉發到班級或跨系群組！")
 
             # 6. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
