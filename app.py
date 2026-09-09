@@ -528,7 +528,7 @@ w1_details = {
     * **Part 3 (11:00 - 11:50) | Lab 0 Milestone, Bonus & Sidebar Check-in**
       7. **Core Milestone (Lab 0)**: Run the script, change `2330.TW` to your favorite global brand (`AAPL`, `SBUX`, etc.).
       8. **Bonus Challenge**: Try 5-year macro trends (`period="5y"`) or ask Gemini for dual-asset comparison.
-      9. **Mandatory Check-in**: Submit your stock ticker & insight via the **sidebar AI Assistant** to record today's attendance & lab completion!
+      9. **Mandatory Check-in**: Submit your student ID, stock ticker & insight via the **sidebar AI Assistant** to record today's attendance & lab completion!
     """,
     "tw": """
     * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
@@ -542,7 +542,7 @@ w1_details = {
     * **Part 3 (11:00 - 11:50) ｜ Lab 0 成就解鎖、加碼挑戰與側邊欄打卡**
       7. **核心成就解鎖 (Lab 0)**：成功跑出台積電或自選股票（如蘋果 `AAPL`、星巴克 `SBUX`）的走勢圖。
       8. **加碼挑戰**：嘗試 5 年長線趨勢 (`period="5y"`) 或詢問 Gemini 進行雙資產對比。
-      9. **重要打卡**：請務必將你的股票代號與觀察心得透過 **左側側邊欄 AI 助教** 送出，作為今日出勤與實作完成證明！
+      9. **重要打卡 (Check-in)**：請務必將學號、股票代號與觀察心得透過 **左側側邊欄 AI 助教** 送出，作為今日出勤與實作完成證明！
     """
 }
 
@@ -664,25 +664,23 @@ df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=Tr
                 )
                 st.markdown(reflection_markdown)
 
-            # 5. 一鍵推薦給同學 (Share with Classmates - English First & Open to All Majors)
-            with st.expander("📢 Invite Classmates / 推薦給全校同學（不限系所、跨域選修好課相報）", expanded=False):
-                st.markdown("**Copy and forward this message to your class LINE group (複製以下英文為主之推薦文轉發至班群)：**")
+            # 5. 一鍵推薦給同學 (Share with Classmates - English First & Open to All Majors/International Students)
+            with st.expander("📢 Invite Classmates / Share Course (Open to ALL Majors & International Students)", expanded=False):
+                st.markdown("**Copy and forward this message to your class or international student LINE groups:**")
                 share_text = (
-                    "🔥 [Course Recommendation: Python AI Applications]\n"
-                    "No complex coding syntax required! You will learn how to direct AI with natural language prompts, fetch real-time TSMC & US stock data, and build mobile Web Apps!\n"
-                    "Open to ALL majors and year levels (Not limited to Business & Management). Beginners are warmly welcomed! Pair programming supported.\n\n"
+                    "🔥 [Elective Course Recommendation: Python AI Applications]\n"
+                    "No complex coding syntax required! Learn how to direct AI with natural language prompts, fetch real-time TSMC & US stock data, and build mobile Web Apps!\n"
+                    "• **Language**: English-taught (ideal for international students)\n"
+                    "• **Eligibility**: Open to ALL majors and year levels across the university!\n"
+                    "• **Format**: Beginner-friendly with Pair Programming (teams of 1-3)\n\n"
                     "📍 Time: Every Thursday 09:00 - 11:50 (Room 506, Innovation Bldg)\n"
                     "🔗 Syllabus Portal: https://ai-syllabus.streamlit.app/\n"
                     "💬 LINE Community Group:\n"
                     "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog\n"
-                    "Join us during the Add/Drop week! 🚀\n\n"
-                    "--- 🇹🇼 中文輔助說明 ---\n"
-                    "🔥【全校跨域選修推薦：Python AI 應用】\n"
-                    "本課程不限科系與年級（非經管系專屬），只要對 AI 應用有興趣皆可選修！完全不用死背語法，帶你用自然語言指揮 AI 做股票分析與手機 App，初學者超友善。\n"
-                    "上課時間：每週四 09:00-11:50（創506），歡迎加退選一起來修課！"
+                    "Join us during the Add/Drop week! 🚀"
                 )
                 st.code(share_text, language="text")
-                st.caption("💡 歡迎將上方文字複製轉發到班級或跨系群組！")
+                st.caption("💡 Forward this English text to your international student group chats to invite friends from any department!")
 
             # 6. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
