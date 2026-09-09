@@ -191,8 +191,13 @@ st.info(f"💡 **{status_labels.get(current_code, status_labels['us'])}**: **{cu
 meta_cards = {
     "goal": {
         "title": {
-            "us": "🎯 Objectives & Conductor Mindset", "tw": "🎯 教學目標與指揮家思維", "vn": "🎯 Mục tiêu môn học & Tư duy nhạc trưởng",
-            "id": "🎯 Tujuan & Pola Pikir Konduktor", "my": "🎯 Objektif & Minda Konduktor", "th": "🎯 วัตถุประสงค์ & แนวคิดผู้นำคำสั่ง", "fr": "🎯 Objectifs & Chef d'orchestre"
+            "us": "🎯 Objectives & Conductor Mindset", 
+            "tw": "🎯 教學目標與指揮家思維", 
+            "vn": "🎯 Mục tiêu môn học & Tư duy nhạc trưởng",
+            "id": "🎯 Tujuan & Pola Pikir Konduktor", 
+            "my": "🎯 Objektif & Minda Konduktor", 
+            "th": "🎯 วัตถุประสงค์ & แนวคิดผู้นำคำสั่ง", 
+            "fr": "🎯 Objectifs & Chef d'orchestre"
         },
         "content": {
             "us": "As future business managers, you do not need to memorize complex coding syntax! You are the **conductor**, and AI is your musician. Connect freshman Accounting & Economics with sophomore Statistics and Management to build interactive charts and launch web apps on your phone.\n\n*If you can ask a question, you can create with AI!*",
@@ -206,8 +211,13 @@ meta_cards = {
     },
     "grading": {
         "title": {
-            "us": "📊 Grading Policy", "tw": "📊 評量標準", "vn": "📊 Tiêu chí đánh giá",
-            "id": "📊 Kebijakan Penilaian", "my": "📊 Dasar Pemarkahan", "th": "📊 เกณฑ์การประเมินผล", "fr": "📊 Barème d'évaluation"
+            "us": "📊 Grading Policy", 
+            "tw": "📊 評量標準", 
+            "vn": "📊 Tiêu chí đánh giá",
+            "id": "📊 Kebijakan Penilaian", 
+            "my": "📊 Dasar Pemarkahan", 
+            "th": "📊 เกณฑ์การประเมินผล", 
+            "fr": "📊 Barème d'évaluation"
         },
         "content": {
             "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project (W9)**: 20%  \n**Final Project Report & Showcase (W16)**: 30%  \n*(Step-by-step guidance in class. Beginners are warmly welcome!)*",
@@ -221,18 +231,33 @@ meta_cards = {
     },
     "materials": {
         "title": {
-            "us": "💻 Devices & Open Platforms", "tw": "💻 上課設備與開放平台", ...
+            "us": "💻 Devices & Open Platforms", 
+            "tw": "💻 上課設備與開放平台", 
+            "vn": "💻 Thiết bị & Nền tảng mở",
+            "id": "💻 Perangkat & Platform Terbuka", 
+            "my": "💻 Peranti & Platform Terbuka", 
+            "th": "💻 อุปกรณ์และแพลตฟอร์ม", 
+            "fr": "💻 Appareils & Plateformes ouvertes"
         },
         "content": {
             "us": "**Bring to Class**:  \n1. 💻 **Laptop (Required)**: For cloud coding (Google Colab).  \n2. 📱 **Smartphone**: For LINE chat & web apps.  \n3. 🎧 **Transparency Earphones (Recommended)**: Best for voice-prompting AI while hearing classmates and lecture!  \n**Platforms**: Google Colab, Google AI Studio, Streamlit, FRED API.",
             "tw": "**每週必備設備**：  \n1. 💻 **筆記型電腦（必備）**：用於雲端 Colab 編程實作。  \n2. 📱 **智慧型手機**：用於 LINE 社群與 App 預覽。  \n3. 🎧 **透通式耳機/麥克風（強烈推薦）**：結合 AI 語音輸入神技，邊聽邊講且不漏接老師上課與同伴討論！  \n**雲端工具**：Google Colab、Google AI Studio、Streamlit、FRED 總經資料庫。",
-            # (其餘語系維持 fallback 或同步更新)
+            "vn": "**Mang theo khi lên lớp**:  \n1. 💻 **Laptop (Bắt buộc)**: Dùng để lập trình Google Colab.  \n2. 📱 **Điện thoại thông minh**: Dùng cho nhóm LINE và xem trước Web App.  \n3. 🎧 **Tai nghe xuyên âm (Được khuyến nghị)**: Giúp sử dụng giọng nói với AI mà vẫn nghe rõ bài giảng!  \n**Nền tảng**: Google Colab, Google AI Studio, Streamlit, FRED API.",
+            "id": "**Bawa ke Kelas**:  \n1. 💻 **Laptop (Wajib)**: Untuk coding cloud Google Colab.  \n2. 📱 **Ponsel**: Untuk obrolan LINE & web app.  \n3. 🎧 **Earphone Transparan (Disarankan)**: Terbaik untuk perintah suara AI sambil mendengarkan kelas!  \n**Platform**: Google Colab, Google AI Studio, Streamlit, FRED API.",
+            "my": "**Bawa ke Kelas**:  \n1. 💻 **Laptop (Wajib)**: Untuk pengaturcaraan Google Colab.  \n2. 📱 **Telefon Pintar**: Untuk sembang LINE & aplikasi web.  \n3. 🎧 **Earfon Telus (Disyorkan)**: Sesuai untuk arahan suara AI sambil mendengar kuliah!  \n**Platform**: Google Colab, Google AI Studio, Streamlit, FRED API.",
+            "th": "**สิ่งที่ต้องนำมาเรียน**:  \n1. 💻 **แล็ปท็อป (จำเป็น)**: สำหรับ Google Colab  \n2. 📱 **สมาร์ทโฟน**: สำหรับ LINE และเว็บแอป  \n3. 🎧 **หูฟังโหมดโปร่งใส (แนะนำ)**: เหมาะที่สุดสำหรับการสั่งงานด้วยเสียง AI พร้อมฟังบรรยาย!  \n**แพลตฟอร์ม**: Google Colab, Google AI Studio, Streamlit, FRED API.",
+            "fr": "**À apporter en cours**:  \n1. 💻 **Ordinateur portable (Requis)**: Pour Google Colab.  \n2. 📱 **Smartphone**: Pour le chat LINE et les web apps.  \n3. 🎧 **Écouteurs à transparence (Recommandé)**: Idéal pour dicter à l'IA tout en écoutant le cours !  \n**Plateformes**: Google Colab, Google AI Studio, Streamlit, FRED API."
         }
     },
     "office_hour": {
         "title": {
-            "us": "🕒 Office Hours & Contact", "tw": "🕒 諮詢時間與聯絡管道", "vn": "🕒 Giờ tư vấn & Liên hệ",
-            "id": "🕒 Jam Konsultasi & Kontak", "my": "🕒 Waktu Konsultasi & Hubungan", "th": "🕒 เวลาให้คำปรึกษา & การติดต่อ", "fr": "🕒 Permanence & Contact"
+            "us": "🕒 Office Hours & Contact", 
+            "tw": "🕒 諮詢時間與聯絡管道", 
+            "vn": "🕒 Giờ tư vấn & Liên hệ",
+            "id": "🕒 Jam Konsultasi & Kontak", 
+            "my": "🕒 Waktu Konsultasi & Hubungan", 
+            "th": "🕒 เวลาให้คำปรึกษา & การติดต่อ", 
+            "fr": "🕒 Permanence & Contact"
         },
         "content": {
             "us": "**Instructor**: Kimiko Kechun Huang (黃可羣)  \n**Office Hour**: Talk directly right after class in Room 506, or message in our LINE group to set up a meeting on campus.  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**LINE Nickname**: Last 3 digits + Name (e.g. 205 Huy)",
