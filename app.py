@@ -1,4 +1,422 @@
 # ==============================================================================
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant
+# 學生端互動式多語系課綱門戶（方案 B：上機優先 + 18 週大表摺疊收納版）
+# ==============================================================================
+
+import streamlit as st
+import datetime
+import requests
+
+# 1. 頁面基本配置
+st.set_page_config(
+    page_title="Python AI Applications - Syllabus Portal",
+    layout="wide",
+    page_icon="🎓"
+)
+
+# 2. 語言定義
+LANG_CONFIG = {
+    "us": {"label": "English", "name": "🇺🇸 English (Official)", "flag": "https://flagcdn.com/w40/us.png"},
+    "tw": {"label": "繁體中文", "name": "🇹🇼 繁體中文 (Traditional Chinese)", "flag": "https://flagcdn.com/w40/tw.png"},
+    "vn": {"label": "Tiếng Việt", "name": "🇻🇳 Tiếng Việt (Vietnamese)", "flag": "https://flagcdn.com/w40/vn.png"},
+    "id": {"label": "B. Indonesia", "name": "🇮🇩 Bahasa Indonesia (Indonesian)", "flag": "https://flagcdn.com/w40/id.png"},
+    "my": {"label": "B. Melayu", "name": "🇲🇾 Bahasa Melayu (Malay)", "flag": "https://flagcdn.com/w40/my.png"},
+    "th": {"label": "ภาษาไทย", "name": "🇹🇭 ภาษาไทย (Thai)", "flag": "https://flagcdn.com/w40/th.png"},
+    "fr": {"label": "Français", "name": "🇫🇷 Français (French)", "flag": "https://flagcdn.com/w40/fr.png"}
+}
+
+current_code = st.query_params.get("lang", "us")
+if current_code not in LANG_CONFIG:
+    current_code = "us"
+
+current_info = LANG_CONFIG[current_code]
+
+# 多語系副標題
+SUBTITLES = {
+    "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang (黃可羣) · Dept. of Business and Management 2C (3.0 Credits)",
+    "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) (3.0 學分 / 3.0 時數)",
+    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang (黃可羣) · Khoa Quản trị và Quản lý Kinh doanh 2C (3.0 Tín chỉ)",
+    "id": "Semester 115-1 · Dosen: Kimiko Kechun Huang (黃可羣) · Jurusan Bisnis dan Manajemen 2C (3.0 SKS)",
+    "my": "Semester 115-1 · Pensyarah: Kimiko Kechun Huang (黃可羣) · Jabatan Perniagaan dan Pengurusan 2C (3.0 Kredit)",
+    "th": "ภาคการศึกษา 115-1 · ผู้สอน: Kimiko Kechun Huang (黃可羣) · ภาควิชาธุรกิจและการจัดการ 2C (3.0 หน่วยกิต)",
+    "fr": "Semestre 115-1 · Enseignant : Kimiko Kechun Huang (黃可羣) · Dép. Gestion et Management 2C (3.0 Crédits)"
+}
+
+LANG_SELECT_PROMPTS = {
+    "us": "🌐 Select Parallel Language:",
+    "tw": "🌐 點擊按鈕切換語言對照：",
+    "vn": "🌐 Chọn ngôn ngữ song ngữ đối chiếu:",
+    "id": "🌐 Pilih Bahasa Tampilan:",
+    "my": "🌐 Pilih Bahasa Paparan:",
+    "th": "🌐 เลือกภาษาเพื่อแสดงผล:",
+    "fr": "🌐 Sélectionnez la langue d'affichage :"
+}
+
+# 3. 頂部區域：左側標題與教師資訊 + 右側雙 QR Code (網頁 Portal ＋ LINE 社群)
+header_col1, header_col2, header_col3 = st.columns([3, 1, 1])
+
+with header_col1:
+    st.markdown("## 🎓 Python AI Applications (Python AI 應用)")
+    st.caption(SUBTITLES.get(current_code, SUBTITLES["us"]))
+    st.markdown(f"**{LANG_SELECT_PROMPTS.get(current_code, LANG_SELECT_PROMPTS['us'])}**")
+
+with header_col2:
+    app_url = "https://ai-syllabus.streamlit.app"
+    qr_portal_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={app_url}"
+    st.markdown(
+        f"""
+        <div style="text-align: center; background: #ffffff; padding: 4px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <img src="{qr_portal_url}" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #1e3a8a; font-weight: 600; display: block; margin-top: 2px;">📱 Portal QR</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with header_col3:
+    line_group_url = "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+    qr_line_url = f"https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=4&data={line_group_url}"
+    st.markdown(
+        f"""
+        <div style="text-align: center; background: #ffffff; padding: 4px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <img src="{qr_line_url}" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+            <span style="font-size: 11px; color: #06c755; font-weight: 600; display: block; margin-top: 2px;">💬 LINE Chat</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.markdown("""
+<style>
+.flag-btn-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin: 8px 0 16px 0;
+}
+.flag-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 8px;
+    background-color: #f7f9fb;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    text-decoration: none !important;
+    color: #2c3e50 !important;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.flag-btn:hover {
+    border-color: #ff4b4b;
+    background-color: #fff5f5;
+    color: #ff4b4b !important;
+    transform: translateY(-1px);
+}
+.flag-btn.active {
+    border-color: #ff4b4b;
+    background-color: #ffeaea;
+    color: #d93838 !important;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px #ff4b4b;
+}
+.flag-img {
+    width: 22px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid #b0b4b9;
+}
+.syllabus-table-wrapper {
+    width: 100%;
+    margin-top: 15px;
+}
+table.syllabus-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+table.syllabus-table th {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.4;
+}
+table.syllabus-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 13.5px;
+    line-height: 1.5;
+    vertical-align: top;
+    white-space: normal !important;
+    word-break: break-word;
+}
+table.syllabus-table tr:hover td {
+    background-color: #f8fafc;
+}
+.col-week { width: 8%; font-weight: 600; color: #1e3a8a; }
+.col-date { width: 10%; font-family: monospace; }
+.col-progress { width: 22%; font-weight: 600; color: #111827; }
+.col-hw { width: 18%; }
+.col-summary { width: 34%; }
+.col-remarks { width: 8%; text-align: center; }
+</style>
+""", unsafe_allow_html=True)
+
+# 7 國語言按鈕列
+btn_items = "".join([
+    f'<a class="flag-btn {"active" if code == current_code else ""}" href="?lang={code}" target="_self"><img class="flag-img" src="{data["flag"]}" alt="{data["label"]}"><span>{data["label"]}</span></a>'
+    for code, data in LANG_CONFIG.items()
+])
+st.markdown(f'<div class="flag-btn-grid">{btn_items}</div>', unsafe_allow_html=True)
+
+status_labels = {
+    "us": "Current Parallel View", "tw": "目前對照語言", "vn": "Chế độ xem song song hiện tại",
+    "id": "Tampilan Bahasa Saat Ini", "my": "Paparan Bahasa Semasa", "th": "มุมมองภาษาปัจจุบัน", "fr": "Vue de langue actuelle"
+}
+st.info(f"💡 **{status_labels.get(current_code, status_labels['us'])}**: **{current_info['name']}**")
+
+# 4. 四大卡片完整多語系資料庫
+meta_cards = {
+    "goal": {
+        "title": {
+            "us": "🎯 Objectives", "tw": "🎯 教學目標", "vn": "🎯 Mục tiêu môn học",
+            "id": "🎯 Tujuan Pembelajaran", "my": "🎯 Objektif Kursus", "th": "🎯 วัตถุประสงค์ของวิชา", "fr": "🎯 Objectifs"
+        },
+        "content": {
+            "us": "Connect what you learned in freshman Accounting & Economics, and get strong help for sophomore Statistics, Marketing, and Management. Together we will make interactive charts and launch real web apps on your phone.\n\n*No tech background needed. If you can ask a question, you can create with AI!*",
+            "tw": "串聯大一會計與經濟學基礎，並為大二統計、行銷與管理課程提供強力支援。我們將一起打造互動商業圖表，並將真實的 Web 應用發布到手機上。\n\n*無須技術背景，只要會提問就能與 AI 共同創造！*",
+            "vn": "Kết nối kiến thức Kế toán & Kinh tế học năm nhất, hỗ trợ đắc lực cho môn Thống kê, Marketing và Quản trị năm hai. Chúng ta sẽ cùng nhau tạo các biểu đồ kinh doanh tương tác và phát hành ứng dụng web thực tế lên điện thoại.\n\n*Không cần kiến thức kỹ thuật từ trước. Chỉ cần biết đặt câu hỏi, bạn có thể sáng tạo cùng AI!*",
+            "id": "Menghubungkan Akuntansi & Ekonomi tingkat satu, serta mendukung mata kuliah Statistik, Pemasaran, dan Manajemen tingkat dua. Bersama-sama membuat grafik bisnis interaktif dan merilis aplikasi web di ponsel.\n\n*Tidak perlu latar belakang teknologi. Siapa pun bisa berkreasi bersama AI!*",
+            "my": "Menghubungkan Perakaunan & Ekonomi tahun satu, serta menyokong kursus Statistik, Pemasaran, dan Pengurusan tahun dua. Bersama membina carta interaktif dan melancarkan aplikasi web ke telefon pintar.\n\n*Tiada latar belakang teknologi diperlukan. Anda boleh mencipta dengan AI!*",
+            "th": "เชื่อมโยงความรู้บัญชีและเศรษฐศาสตร์ปี 1 สู่สถิติ การตลาด และการจัดการในปี 2 ร่วมสร้างแผนภูมิธุรกิจแบบโต้ตอบและเปิดตัวเว็บแอปจริงบนมือถือของคุณ\n\n*ไม่จำเป็นต้องมีพื้นฐานด้านเทคโนโลยี ทุกคนสร้างสรรค์ร่วมกับ AI ได้!*",
+            "fr": "Faire le lien avec la comptabilité et l'économie de 1ère année, tout en renforçant les cours de statistiques, marketing et gestion de 2e année. Créons ensemble des graphiques interactifs et déployons des applications web sur smartphone.\n\n*Aucun prérequis technique nécessaire. Créez avec l'IA en posant simplement des questions !*"
+        }
+    },
+    "grading": {
+        "title": {
+            "us": "📊 Grading Policy", "tw": "📊 評量標準", "vn": "📊 Tiêu chí đánh giá",
+            "id": "📊 Kebijakan Penilaian", "my": "📊 Dasar Pemarkahan", "th": "📊 เกณฑ์การประเมินผล", "fr": "📊 Barème d'évaluation"
+        },
+        "content": {
+            "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project**: 20%  \n**Final Project Report & Showcase**: 30%  \n*(Step-by-step guidance in class. Beginners are welcome!)*",
+            "tw": "**每週課堂趣味實作練習**：50%  \n**期中測驗或專題**：20%  \n**期末專案報告與成果發表**：30%  \n*(課堂手把手步驟引導，初學者友善！)*",
+            "vn": "**Thực hành vui trên lớp hàng tuần**: 50%  \n**Thi giữa kỳ hoặc Đồ án**: 20%  \n**Báo cáo & Trình bày đồ án cuối kỳ**: 30%  \n*(Hướng dẫn chi tiết từng bước, cực kỳ thân thiện với người mới bắt đầu!)*",
+            "id": "**Praktik Seru Mingguan di Kelas**: 50%  \n**Ujian Tengah Semester / Proyek**: 20%  \n**Laporan & Presentasi Proyek Akhir**: 30%  \n*(Panduan langkah demi langkah di kelas. Sangat ramah pemula!)*",
+            "my": "**Latihan Amali Mingguan di Kelas**: 50%  \n**Peperiksaan Pertengahan Penggal / Projek**: 20%  \n**Laporan & Pembentangan Projek Akhir**: 30%  \n*(Bimbingan langkah demi langkah disediakan. Mesra pemula!)*",
+            "th": "**แบบฝึกหัดในชั้นเรียนรายสัปดาห์**: 50%  \n**การสอบกลางภาคหรือโครงงาน**: 20%  \n**รายงานและการนำเสนอโครงงานปลายภาค**: 30%  \n*(มีคำแนะนำทีละขั้นตอนในชั้นเรียน เหมาะสำหรับผู้เริ่มต้นอย่างยิ่ง!)*",
+            "fr": "**Pratiques interactives en classe**: 50%  \n**Examen partiel ou projet**: 20%  \n**Rapport final et soutenance**: 30%  \n*(Accompagnement pas à pas en classe. Débutants bienvenus !)*"
+        }
+    },
+    "materials": {
+        "title": {
+            "us": "📚 Materials & Platforms", "tw": "📚 指定與參考教材", "vn": "📚 Tài liệu & Nền tảng",
+            "id": "📚 Materi & Platform", "my": "📚 Bahan & Platform", "th": "📚 สื่อการสอนและแพลตฟอร์ม", "fr": "📚 Supports & Plateformes"
+        },
+        "content": {
+            "us": "**Open Access Platforms**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED Economic Data  \n**References**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)",
+            "tw": "**雲端實作平台**：  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. FRED 總經資料庫  \n**主要參考書**：Python for Data Analysis (3rd), Investments (13th), Mankiw Economics (10th)",
+            "vn": "**Nền tảng thực hành mở**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Streamlit Docs  \n4. Dữ liệu kinh tế FRED  \n**Tài liệu tham khảo**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)",
+            "id": "**Platform Praktik Terbuka**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Dokumentasi Streamlit  \n4. Data Ekonomi FRED  \n**Referensi**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)",
+            "my": "**Platform Amali Terbuka**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Dokumentasi Streamlit  \n4. Data Ekonomi FRED  \n**Rujukan**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)",
+            "th": "**แพลตฟอร์มคลาวด์เปิด**:  \n1. Google Colab  \n2. Google AI Studio  \n3. คู่มือ Streamlit  \n4. ข้อมูลเศรษฐกิจ FRED  \n**เอกสารอ้างอิง**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)",
+            "fr": "**Plateformes ouvertes**:  \n1. Google Colab  \n2. Google AI Studio  \n3. Documentation Streamlit  \n4. Données économiques FRED  \n**Références**: McKinney (2022), Bodie et al. (2023), Mankiw (2023)"
+        }
+    },
+    "office_hour": {
+        "title": {
+            "us": "🕒 Office Hours & LINE Group", "tw": "🕒 諮詢時間與 LINE 社群規範", "vn": "🕒 Giờ tư vấn & Quy định nhóm LINE",
+            "id": "🕒 Jam Konsultasi & Aturan LINE", "my": "🕒 Waktu Konsultasi & Peraturan LINE", "th": "🕒 ช่วงเวลาปรึกษาและกฎกลุ่ม LINE", "fr": "🕒 Permanence & Groupe LINE"
+        },
+        "content": {
+            "us": "**Instructor**: Kimiko Kechun Huang (黃可羣)  \n**LINE Rule**: Set nickname as \"Last3Digits + Name\" (e.g., 205 Huy).",
+            "tw": "**授課教師**：黃可羣 (Kimiko Kechun Huang)  \n**LINE 規範**：暱稱請設為「學號末三碼 + 名字」（例如：205 Huy）。",
+            "vn": "**Giảng viên**: Kimiko Kechun Huang (黃可羣)  \n**Quy định LINE**: Đặt biệt danh là \"3 số cuối mã SV + Tên\" (vd: 205 Huy).",
+            "id": "**Dosen**: Kimiko Kechun Huang (黃可羣)  \n**Aturan LINE**: Atur nama \"3 Digit Akhir + Nama\" (cth: 205 Huy).",
+            "my": "**Pensyarah**: Kimiko Kechun Huang (黃可羣)  \n**Peraturan LINE**: Tetapkan nama \"3 Digit Terakhir + Nama\" (cth: 205 Huy).",
+            "th": "**ผู้สอน**: Kimiko Kechun Huang (黃可羣)  \n**กฎกลุ่ม LINE**: ตั้งชื่อเล่นเป็น \"เลขท้าย 3 ตัว + ชื่อ\" (เช่น 205 Huy)",
+            "fr": "**Enseignant** : Kimiko Kechun Huang (黃可羣)  \n**Règle LINE** : Définissez votre pseudo : \"3 derniers chiffres + Nom\" (ex: 205 Huy)."
+        }
+    }
+}
+
+c1, c2, c3, c4 = st.columns(4)
+
+with c1:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['goal']['title'].get(current_code, meta_cards['goal']['title']['us'])}**")
+        st.markdown(meta_cards['goal']['content'].get(current_code, meta_cards['goal']['content']['us']))
+
+with c2:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['grading']['title'].get(current_code, meta_cards['grading']['title']['us'])}**")
+        st.markdown(meta_cards['grading']['content'].get(current_code, meta_cards['grading']['content']['us']))
+
+with c3:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['materials']['title'].get(current_code, meta_cards['materials']['title']['us'])}**")
+        st.markdown(meta_cards['materials']['content'].get(current_code, meta_cards['materials']['content']['us']))
+
+with c4:
+    with st.container(border=True):
+        st.markdown(f"**{meta_cards['office_hour']['title'].get(current_code, meta_cards['office_hour']['title']['us'])}**")
+        st.markdown(meta_cards['office_hour']['content'].get(current_code, meta_cards['office_hour']['content']['us']))
+
+# ==============================================================================
+# 5. 【置頂核心】每週課堂實作步驟（Week 1 預設展開 + Colab/Gemini 傳送門）
+# ==============================================================================
+st.markdown("---")
+expand_section_titles = {
+    "us": "🚀 In-Class Practice & Session Breakdown (Click week to expand)",
+    "tw": "🚀 課堂實作步驟與上機指引（點擊展開各週）",
+    "vn": "🚀 Hướng dẫn thực hành & Chi tiết tiết học (Bấm để mở rộng)",
+    "id": "🚀 Panduan Praktik & Rincian Sesi (Klik untuk memperluas)",
+    "my": "🚀 Panduan Amali & Pecahan Sesi (Klik untuk buka)",
+    "th": "🚀 คำแนะนำการปฏิบัติการในชั้นเรียน (คลิกเพื่อขยาย)",
+    "fr": "🚀 Guide de pratique en classe & Séances (Cliquez pour dérouler)"
+}
+st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
+
+# 第一週詳細內容（精準對齊學校時間：第 2、3、4 節）
+w1_details = {
+    "us": """
+    * **Session 2 (09:00 - 09:50) | Concept & Onboarding**
+      1. Course orientation, grading policies (50% Lab, 20% Midterm, 30% Final), and interactive portal overview.
+      2. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
+    * **Session 3 (10:00 - 10:50) | Cloud Setup & Live Demo**
+      3. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop).
+      4. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
+    * **Session 4 (11:00 - 11:50) | Hands-on Lab 0 & AI Dual-Track**
+      5. **Lab 0**: In-class exploration; run the script and customize it to fetch Apple (`AAPL`).
+      6. **AI Dual-Track**: Use Colab in-cell AI for coding, and switch to Google Gemini when free credits or tokens run out.
+    """,
+    "tw": """
+    * **第 2 節 (09:00 - 09:50) ｜ 觀念引導與門戶導覽**
+      1. 課程總覽、評量標準（平常 50%、期中 20%、期末 30%）與多語系 AI 助教網頁導覽。
+      2. 建立「指揮家思維 (Conductor Mindset)」：學習如何運用自然語言與 AI 協同編程，無須死記複雜語法。
+    * **第 3 節 (10:00 - 10:50) ｜ 雲端環境與即時示範 (Live Demo)**
+      3. 帶領全班登入瀏覽器與 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
+      4. 老師現場示範第一段 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
+    * **第 4 節 (11:00 - 11:50) ｜ 課堂實作與雙軌 AI 輔助 (Lab 0)**
+      5. **Lab 0 實作**：同學實際動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
+      6. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
+    """,
+    "vn": """
+    * **Tiết 2 (09:00 - 09:50) | Khái niệm & Định hướng**
+      1. Tổng quan khóa học, quy chế điểm số (Thực hành 50%, Giữa kỳ 20%, Đồ án 30%) và giới thiệu cổng thông tin.
+      2. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần ghi nhớ cú pháp.
+    * **Tiết 3 (10:00 - 10:50) | Cài đặt Cloud & Trình diễn trực tiếp**
+      3. Đăng nhập môi trường đám mây **Google Colab** (Lập trình cặp nếu không mang máy tính).
+      4. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) theo thời gian thực và vẽ biểu đồ xu hướng.
+    * **Tiết 4 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
+      5. **Lab 0**: Sinh viên chạy mã nguồn và tùy chỉnh để lấy dữ liệu cổ phiếu Apple (`AAPL`).
+      6. **Hỗ trợ AI kép**: Sử dụng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini để hỏi đáp.
+    """,
+    "id": """
+    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengantar**
+      1. Tinjauan kursus, kebijakan penilaian (Praktik 50%, UTS 20%, Akhir 30%), dan navigasi portal.
+      2. **Pola Pikir Konduktor**: Membangun solusi bisnis bersama AI menggunakan bahasa alami.
+    * **Sesi 3 (10:00 - 10:50) | Setup Cloud & Live Demo**
+      3. Membuka browser dan masuk ke **Google Colab** (Pair Programming jika tidak membawa laptop).
+      4. Demo Dosen: Mengambil harga saham TSMC (`2330.TW`) dan memplot grafik tren secara langsung.
+    * **Sesi 4 (11:00 - 11:50) | Praktik Lab 0 & AI Ganda**
+      5. **Lab 0**: Mahasiswa menjalankan kode dan mengubah simbol saham menjadi Apple (`AAPL`).
+      6. **Strategi AI Ganda**: Gunakan AI bawaan Colab untuk coding cepat, dan beralih ke Google Gemini jika limit habis.
+    """,
+    "my": """
+    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengenalan**
+      1. Gambaran keseluruhan kursus, dasar pemarkahan, dan panduan portal interaktif.
+      2. **Minda Konduktor**: Belajar membina bersama AI menggunakan bahasa semula jadi.
+    * **Sesi 3 (10:00 - 10:50) | Persediaan Awan & Demo Langsung**
+      3. Log masuk ke **Google Colab** di pelayar (Pair Programming jika tiada komputer riba).
+      4. Demo pensyarah: Mengambil data saham TSMC (`2330.TW`) dan melukis carta trend.
+    * **Sesi 4 (11:00 - 11:50) | Amali Lab 0 & Dwi-Trek AI**
+      5. **Lab 0**: Pelajar menjalankan skrip dan menukar simbol saham kepada Apple (`AAPL`).
+      6. **Dwi-Trek AI**: Gunakan AI terbina dalam Colab, beralih ke Google Gemini apabila had percuma tamat.
+    """,
+    "th": """
+    * **คาบที่ 2 (09:00 - 09:50) | แนวคิด & การปฐมนิเทศ**
+      1. ภาพรวมรายวิชา, สัดส่วนคะแนน (ปฏิบัติ 50%, กลางภาค 20%, ปลายภาค 30%) และการใช้งานระบบ
+      2. **แนวคิดผู้นำคำสั่ง (Conductor Mindset)**: สั่งการ AI ด้วยภาษาธรรมชาติโดยไม่ต้องท่องจำโค้ด
+    * **คาบที่ 3 (10:00 - 10:50) | ติดตั้งคลาวด์ & สาธิตสด**
+      3. ล็อกอินเข้าใช้งาน **Google Colab** บนเว็บ (จับคู่ Pair Programming สำหรับผู้ที่ไม่มีแล็ปท็อป)
+      4. ผู้สอนสาธิตสด: ดึงข้อมูลราคาหุ้น TSMC (`2330.TW`) และสร้างกราฟแนวโน้มอัตโนมัติ
+    * **คาบที่ 4 (11:00 - 11:50) | ปฏิบัติการ Lab 0 & เสริมพลังด้วย AI คู่ขนาน**
+      5. **Lab 0**: ลงมือรันโค้ดจริง และทดลองเปลี่ยนรหัสหุ้นเป็น Apple (`AAPL`)
+      6. **กลยุทธ์ AI คู่ขนาน**: ใช้ AI ใน Colab ควบคู่กับ Google Gemini เมื่อโควตาใช้งานฟรีเต็ม
+    """,
+    "fr": """
+    * **Séance 2 (09:00 - 09:50) | Concepts & Présentation**
+      1. Présentation du cours, barème d'évaluation et visite du portail d'apprentissage.
+      2. **Posture de chef d'orchestre** : Programmer avec l'IA en langage naturel sans mémoriser la syntaxe.
+    * **Séance 3 (10:00 - 10:50) | Configuration Cloud & Démo en direct**
+      3. Accès à **Google Colab** via le navigateur (travail en binôme si pas d'ordinateur).
+      4. Démonstration live : Récupération des cours de TSMC (`2330.TW`) et tracé graphique.
+    * **Séance 4 (11:00 - 11:50) | TP 0 & Double assistance IA**
+      5. **TP 0** : Pratique en classe ; exécutez le script et personnalisez-le pour Apple (`AAPL`).
+      6. **Double assistance IA** : Utilisez l'IA intégrée de Colab et basculez sur Google Gemini en cas de dépassement de quota.
+    """
+}
+
+# 多語系傳送門按鈕標籤
+portal_btn_labels = {
+    "us": ("🛠️ Quick Access Links (Week 1)", "🚀 Open Google Colab", "💡 Open Google Gemini (Backup AI)"),
+    "tw": ("🛠️ 課堂實作快速傳送門 (第 1 週)", "🚀 打開 Google Colab (雲端筆記本)", "💡 開啟 Google Gemini (AI 助教備用分頁)"),
+    "vn": ("🛠️ Đường dẫn truy cập nhanh (Tuần 1)", "🚀 Mở Google Colab", "💡 Mở Google Gemini (AI dự phòng)"),
+    "id": ("🛠️ Tautan Akses Cepat (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Cadangan)"),
+    "my": ("🛠️ Pautan Akses Pantas (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Sandaran)"),
+    "th": ("🛠️ ทางลัดเข้าใช้งานด่วน (สัปดาห์ที่ 1)", "🚀 เปิด Google Colab", "💡 เปิด Google Gemini (AI สำรอง)"),
+    "fr": ("🛠️ Liens d'accès rapide (Semaine 1)", "🚀 Ouvrir Google Colab", "💡 Ouvrir Google Gemini (IA relais)")
+}
+cur_btn_meta = portal_btn_labels.get(current_code, portal_btn_labels["us"])
+
+# 渲染 18 週抽屜（第一週預設展開）
+for i in range(1, 19):
+    week_title_map = {
+        "us": f"Week {i} Detailed Agenda (3-Hour Breakdown)",
+        "tw": f"第 {i} 週詳細三節課進行步驟與上機指引",
+        "vn": f"Tuần {i} - Chi tiết 3 tiết học",
+        "id": f"Minggu {i} - Rincian Sesi",
+        "my": f"Minggu {i} - Butiran Sesi",
+        "th": f"สัปดาห์ที่ {i} - รายละเอียดบทเรียน",
+        "fr": f"Semaine {i} - Détail des séances"
+    }
+    w_title = week_title_map.get(current_code, week_title_map["us"])
+    
+    with st.expander(w_title, expanded=(i == 1)):
+        if i == 1:
+            st.markdown(w1_details.get(current_code, w1_details["us"]))
+            st.markdown("---")
+            st.markdown(f"#### {cur_btn_meta[0]}")
+            btn_col1, btn_col2 = st.columns(2)
+            with btn_col1:
+                st.link_button(cur_btn_meta[1], "https://colab.research.google.com/", use_container_width=True)
+            with btn_col2:
+                st.link_button(cur_btn_meta[2], "https://gemini.google.com/", use_container_width=True)
+        else:
+            placeholders = {
+                "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
+                "tw": f"第 {i} 週的詳細三節課 1-5 點操作指引正在準備中，敬請期待！",
+                "vn": f"Chi tiết cho Tuần {i} sẽ sớm được cập nhật.",
+                "id": f"Rincian untuk Minggu {i} akan segera hadir.",
+                "my": f"Butiran untuk Minggu {i} akan dikemas kini.",
+                "th": f"รายละเอียดของสัปดาห์ที่ {i} จะอัปเดตเร็วๆ นี้",
+                "fr": f"Le détail de la semaine {i} sera bientôt disponible."
+            }
+            st.info(placeholders.get(current_code, placeholders["us"]))
+
+# ==============================================================================
 # 6. 【學期藍圖】18 週課程完整大表格（摺疊收納版）
 # ==============================================================================
 st.markdown("---")
@@ -217,9 +635,167 @@ rows_html = "".join([
 
 table_full = f'<div class="syllabus-table-wrapper"><table class="syllabus-table"><thead><tr><th class="col-week">{cur_h[0]}</th><th class="col-date">{cur_h[1]}</th><th class="col-progress">{cur_h[2]}</th><th class="col-hw">{cur_h[3]}</th><th class="col-summary">{cur_h[4]}</th><th class="col-remarks">{cur_h[5]}</th></tr></thead><tbody>{rows_html}</tbody></table></div>'
 
-# 核心改動：將 18 週大表放入預設收合的 expander 中
+# 核心：將 18 週大表收納在點擊展開的 expander 中
 with st.expander(schedule_expander_titles.get(current_code, schedule_expander_titles["us"]), expanded=False):
     if hasattr(st, "html"):
         st.html(table_full)
     else:
         st.markdown(table_full, unsafe_allow_html=True)
+
+# ==============================================================================
+# 7. 側邊欄：多語系 AI 助教 + Google Sheets 自動同步
+# ==============================================================================
+with st.sidebar:
+    ui_texts = {
+        "title": {
+            "us": "🤖 Course AI Assistant", "tw": "🤖 課程 AI 助教", "vn": "🤖 Trợ lý AI Khóa học",
+            "id": "🤖 Asisten AI Kursus", "my": "🤖 Pembantu AI Kursus", "th": "🤖 ผู้ช่วย AI ประจำวิชา", "fr": "🤖 Assistant IA du Cours"
+        },
+        "caption": {
+            "us": "Ask questions to earn in-class engagement bonus! (Anonymous available)",
+            "tw": "提出問題可獲得課堂平時參與加分！（亦可自由選擇匿名）",
+            "vn": "Đặt câu hỏi để nhận điểm cộng tích cực trên lớp! (Có thể ẩn danh)",
+            "id": "Ajukan pertanyaan untuk bonus keaktifan kelas! (Bisa anonim)",
+            "my": "Kemukakan soalan untuk bonus penyertaan kelas! (Boleh tanpa nama)",
+            "th": "ถามคำถามเพื่อรับคะแนนการมีส่วนร่วมในชั้นเรียน! (ไม่เปิดเผยตัวตนได้)",
+            "fr": "Posez des questions pour gagner des points de participation ! (Anonymat possible)"
+        },
+        "select_label": {
+            "us": "🙋 Select ID:", "tw": "🙋 選擇身分:", "vn": "🙋 Chọn danh tính:",
+            "id": "🙋 Pilih Identitas:", "my": "🙋 Pilih Identiti:", "th": "🙋 เลือกตัวตนของคุณ:", "fr": "🙋 Choisissez votre identifiant:"
+        },
+        "placeholder": {
+            "us": "Type your question...", "tw": "請輸入您的問題...", "vn": "Nhập câu hỏi của bạn...",
+            "id": "Ketik pertanyaan Anda...", "my": "Tulis soalan anda...", "th": "พิมพ์คำถามของคุณ...", "fr": "Posez votre question..."
+        },
+        "btn_submit": {
+            "us": "🚀 Submit Question", "tw": "🚀 送出問題", "vn": "🚀 Gửi câu hỏi",
+            "id": "🚀 Kirim Pertanyaan", "my": "🚀 Hantar Soalan", "th": "🚀 ส่งคำถาม", "fr": "🚀 Poser la question"
+        }
+    }
+
+    st.header(ui_texts["title"].get(current_code, ui_texts["title"]["us"]))
+    st.caption(ui_texts["caption"].get(current_code, ui_texts["caption"]["us"]))
+
+    student_roster = [
+        "👤 Anonymous (匿名提問)",
+        "***205 · 輝 (Huy)",
+        "***201 · 輝 (Huy)",
+        "***202 · 葳",
+        "***203 · 心 (Tâm)",
+        "***204 · 江",
+        "***205 · 寶 (Bảo)",
+        "***206 · 娟 (Quyên)",
+        "***208 · 泰 (Thái)",
+        "***209 · 輝 (Huy)",
+        "***210 · 希 (Hy)",
+        "***211 · 甯",
+        "***212 · 莊 (Trang)",
+        "***213 · 勇 (Dũng)",
+        "***214 · 安",
+        "***215 · 德 (Đức)",
+        "***216 · 珍 (Trân)",
+        "***217 · 豪 (Hào)",
+        "➕ Other / Guest (旁聽／加選生自填)"
+    ]
+
+    selected_choice = st.selectbox(ui_texts["select_label"].get(current_code, "🙋 Select ID:"), student_roster)
+
+    if selected_choice == "➕ Other / Guest (旁聽／加選生自填)":
+        custom_name = st.text_input("📝 Enter ID / Nickname (輸入暱稱或學號):", placeholder="e.g. Guest 301 Alex")
+        final_student_id = f"Guest: {custom_name}" if custom_name.strip() else "Guest"
+    else:
+        final_student_id = selected_choice
+
+    user_q = st.text_input("💬", placeholder=ui_texts["placeholder"].get(current_code, "Type your question..."))
+    
+    if st.button(ui_texts["btn_submit"].get(current_code, "🚀 Submit"), use_container_width=True):
+        if user_q:
+            now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            q_lower = user_q.lower()
+            
+            if any(k in q_lower for k in ["đồ án", "cuối kỳ", "báo cáo", "final", "project", "showcase", "期末", "專案", "tugas akhir", "projek akhir", "โครงงาน"]):
+                category = "Final Project"
+                local_answers = {
+                    "us": "The Final Project Showcase takes place in **Week 17 & Week 18**. It counts for **30%** of your final grade.",
+                    "tw": "期末專案成果發表將於 **第 17 週與第 18 週** 課堂進行，佔學期總成績 **30%**。",
+                    "vn": "Đồ án cuối kỳ sẽ báo cáo trực tiếp vào **Tuần 17 & Tuần 18**, chiếm **30%** tổng điểm môn học.",
+                    "id": "Presentasi Proyek Akhir berlangsung pada **Minggu ke-17 & 18**, berbobot **30%** dari nilai akhir.",
+                    "my": "Pembentangan Projek Akhir diadakan pada **Minggu ke-17 & 18**, menyumbang **30%** daripada markah akhir.",
+                    "th": "การนำเสนอโครงงานปลายภาคจะมีขึ้นใน **สัปดาห์ที่ 17 และ 18** โดยคิดเป็น **30%** ของเกรดรวม",
+                    "fr": "La présentation des projets finaux aura lieu lors des **semaines 17 et 18** (30% de la note finale)."
+                }
+                zh_summary = "詢問期末專案發表時程與佔比"
+                en_broadcast = "The Final Project Showcase is in Week 17 & 18 (30% of total grade)."
+
+            elif any(k in q_lower for k in ["điểm", "grade", "score", "tỷ lệ", "評分", "成績", "比重", "nilai", "markah", "เกณฑ์", "คะแนน", "note"]):
+                category = "Grading"
+                local_answers = {
+                    "us": "Grading: Weekly in-class practice (50%), Midterm (20%), Final showcase (30%).",
+                    "tw": "評量標準：每週課堂趣味實作 50%、期中考/專案 20%、期末成果展示 30%。",
+                    "vn": "Tiêu chí chấm điểm: Thực hành trên lớp 50%, Giữa kỳ 20%, Đồ án cuối kỳ 30%.",
+                    "id": "Penilaian: Praktik mingguan 50%, UTS 20%, Proyek akhir 30%.",
+                    "my": "Pemarkahan: Amali mingguan 50%, Pertengahan penggal 20%, Projek akhir 30%.",
+                    "th": "เกณฑ์คะแนน: แบบฝึกหัดในชั้นเรียน 50%, กลางภาค 20%, โครงงานปลายภาค 30%",
+                    "fr": "Évaluation : Pratique en classe 50%, Partiel 20%, Projet final 30%."
+                }
+                zh_summary = "詢問課程評分比重"
+                en_broadcast = "Grading policy: 50% weekly practice, 20% midterm, 30% final showcase."
+
+            elif any(k in q_lower for k in ["colab", "bắt đầu", "python", "lập trình", "cài đặt", "環境", "instalasi", "ติดตั้ง", "installation"]):
+                category = "Environment / Tools"
+                local_answers = {
+                    "us": "No complex setup needed. We will code using **Google Colab** directly inside your web browser starting Week 1.",
+                    "tw": "無須在個人電腦安裝繁瑣環境，第 1 週起直接使用瀏覽器開啟 **Google Colab** 實作。",
+                    "vn": "Không cần cài đặt phức tạp. Chúng ta sẽ dùng **Google Colab** trực tiếp trên trình duyệt từ Tuần 1.",
+                    "id": "Tidak perlu instalasi rumit. Kita menggunakan **Google Colab** langsung di browser mulai Minggu 1.",
+                    "my": "Tiada pemasangan rumit diperlukan. Kita akan gunakan **Google Colab** terus di pelayar bermula Minggu 1.",
+                    "th": "ไม่ต้องติดตั้งโปรแกรมให้ยุ่งยาก เราจะเขียนโค้ดด้วย **Google Colab** บนเบราว์เซอร์ตั้งแต่สัปดาห์ที่ 1",
+                    "fr": "Aucune installation requise. Nous utiliserons **Google Colab** directement dans le navigateur dès la semaine 1."
+                }
+                zh_summary = "詢問開發環境安裝"
+                en_broadcast = "No local installation needed; we use Google Colab in browsers from Week 1."
+
+            else:
+                category = "General / Consultation"
+                local_answers = {
+                    "us": f"Your question has been noted: '{user_q}'. Feel free to discuss with the instructor right after class!",
+                    "tw": f"已收到您的提問：『{user_q}』。下課後可隨時於教室與老師進一步討論！",
+                    "vn": f"Câu hỏi của bạn: '{user_q}' đã được ghi nhận. Bạn có thể trao đổi thêm với giảng viên sau giờ học!",
+                    "id": f"Pertanyaan Anda: '{user_q}' telah dicatat. Silakan berdiskusi dengan dosen setelah kelas!",
+                    "my": f"Soalan anda: '{user_q}' telah direkodkan. Sila berbincang dengan pensyarah selepas kelas!",
+                    "th": f"บันทึกคำถามของคุณแล้ว: '{user_q}' สามารถสอบถามเพิ่มเติมกับผู้สอนได้ทันทีหลังเลิกเรียน",
+                    "fr": f"Votre question a bien été notée : '{user_q}'. N'hésitez pas à en parler à la fin du cours !"
+                }
+                zh_summary = f"學生提問：{user_q}"
+                en_broadcast = "Feel free to ask questions after class or in our class chat group."
+
+            webhook_url = "https://script.google.com/macros/s/AKfycbyep8yXuTaNgnAxKsdRXgsqJvYKAeqCmDiF2GqvUkJWf-7sCztuQ4n7cbkpbzyyYod4/exec"
+            payload = {
+                "timestamp": now_str,
+                "student": final_student_id,
+                "language": LANG_CONFIG[current_code]["label"],
+                "question": user_q,
+                "summary": zh_summary,
+                "category": category
+            }
+
+            try:
+                requests.post(webhook_url, json=payload, timeout=5)
+            except Exception:
+                pass
+
+            st.success("✅ Recorded! / 已記錄並同步至課堂試算表")
+            current_flag = LANG_CONFIG[current_code]["name"]
+            st.markdown(f"**{current_flag}:**\n\n{local_answers.get(current_code, local_answers['us'])}")
+            
+            if current_code != "tw":
+                st.markdown(f"**🇹🇼 教師對照 (繁體中文):**\n- 提問者: `{final_student_id}`\n- 核心摘要: {zh_summary}")
+                
+            if current_code != "us":
+                st.markdown(f"**🇺🇸 For Class Broadcast (English):**\n*{en_broadcast}*")
+
+            if "Anonymous" not in final_student_id:
+                st.caption(f"🎉 Participation logged for `{final_student_id}`.")
+        else:
+            st.warning("Please type a question. (請輸入問題)")
