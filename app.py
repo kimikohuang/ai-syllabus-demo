@@ -1,6 +1,6 @@
 # ==============================================================================
 # [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant
-# 學生端多語系課綱門戶（含教室創506、必備筆電/手機、聯絡信箱、快捷鍵速查與雙軌AI）
+# 學生端多語系課綱門戶（100% 精準對齊明志科大官方教學進度表）
 # ==============================================================================
 
 import streamlit as st
@@ -35,7 +35,7 @@ current_info = LANG_CONFIG[current_code]
 SUBTITLES = {
     "us": "Fall 2026 (Semester 115-1) · Instructor: Kimiko Kechun Huang (黃可羣) · Dept. of Business and Management 2C · Room: Innovation Bldg 506 (創506)",
     "tw": "115 學期 四技經管系2丙 · 授課教師：黃可羣 (Kimiko Kechun Huang) · 上課教室：創新大樓 506 教室 (創506) · 3.0 學分",
-    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang (黃可羣) · Khoa Quản trị và Quản lý Kinh doanh 2C · Phòng học: Tòa Đổi mới 506 (創506)",
+    "vn": "Học kỳ 115-1 · Giảng viên: Kimiko Kechun Huang (黃可羣) · Khoa Quản trị và Quản lý Kinh doanh 2C · Phòng: Tòa Đổi mới 506 (創506)",
     "id": "Semester 115-1 · Dosen: Kimiko Kechun Huang (黃可羣) · Jurusan Bisnis dan Manajemen 2C · Ruang: Gedung Inovasi 506 (創506)",
     "my": "Semester 115-1 · Pensyarah: Kimiko Kechun Huang (黃可羣) · Jabatan Perniagaan dan Pengurusan 2C · Bilik: Bangunan Inovasi 506 (創506)",
     "th": "ภาคการศึกษา 115-1 · ผู้สอน: Kimiko Kechun Huang (黃可羣) · ภาควิชาธุรกิจและการจัดการ 2C · ห้องเรียน: อาคารนวัตกรรม 506 (創506)",
@@ -52,7 +52,7 @@ LANG_SELECT_PROMPTS = {
     "fr": "🌐 Sélectionnez la langue d'affichage :"
 }
 
-# 3. 頂部區域：左側標題與教師資訊 + 右側雙 QR Code
+# 3. 頂部區域：標題與 QR Codes
 header_col1, header_col2, header_col3 = st.columns([3, 1, 1])
 
 with header_col1:
@@ -187,21 +187,21 @@ status_labels = {
 }
 st.info(f"💡 **{status_labels.get(current_code, status_labels['us'])}**: **{current_info['name']}**")
 
-# 4. 四大卡片完整多語系資料庫（更新 Materials & Devices）
+# 4. 四大卡片完整多語系資料庫（完全對齊官方教學目標與 Office Hour 規定）
 meta_cards = {
     "goal": {
         "title": {
-            "us": "🎯 Objectives", "tw": "🎯 教學目標", "vn": "🎯 Mục tiêu môn học",
-            "id": "🎯 Tujuan Pembelajaran", "my": "🎯 Objektif Kursus", "th": "🎯 วัตถุประสงค์ของวิชา", "fr": "🎯 Objectifs"
+            "us": "🎯 Objectives & Conductor Mindset", "tw": "🎯 教學目標與指揮家思維", "vn": "🎯 Mục tiêu môn học & Tư duy nhạc trưởng",
+            "id": "🎯 Tujuan & Pola Pikir Konduktor", "my": "🎯 Objektif & Minda Konduktor", "th": "🎯 วัตถุประสงค์ & แนวคิดผู้นำคำสั่ง", "fr": "🎯 Objectifs & Chef d'orchestre"
         },
         "content": {
-            "us": "Connect freshman Accounting & Economics with sophomore Statistics and Management. Together we build interactive charts and launch live web apps on your phone.\n\n*No tech background needed. If you can ask a question, you can create with AI!*",
-            "tw": "串聯大一會計與經濟學基礎，並為大二統計、行銷與管理課程提供強力支援。我們將一起打造互動商業圖表，並將真實的 Web 應用發布到手機上。\n\n*無須技術背景，只要會提問就能與 AI 共同創造！*",
-            "vn": "Kết nối kiến thức Kế toán & Kinh tế học năm nhất với Thống kê và Quản trị năm hai. Cùng nhau xây dựng biểu đồ tương tác và phát hành ứng dụng web thực tế lên điện thoại.\n\n*Không cần kiến thức kỹ thuật từ trước. Bạn có thể sáng tạo cùng AI!*",
-            "id": "Menghubungkan Akuntansi & Ekonomi tingkat satu dengan Statistik dan Manajemen tingkat dua. Bersama membangun grafik interaktif dan meluncurkan aplikasi web di ponsel.\n\n*Tidak perlu latar belakang teknologi. Berkreasilah bersama AI!*",
-            "my": "Menghubungkan Perakaunan & Ekonomi tahun satu dengan Statistik dan Pengurusan tahun dua. Bersama membina carta interaktif dan melancarkan aplikasi web ke telefon.\n\n*Tiada asas teknologi diperlukan. Anda boleh mencipta bersama AI!*",
-            "th": "เชื่อมโยงความรู้บัญชีและเศรษฐศาสตร์ปี 1 สู่สถิติและการจัดการปี 2 ร่วมสร้างแผนภูมิแบบโต้ตอบและเปิดตัวเว็บแอปจริงบนมือถือ\n\n*ไม่จำเป็นต้องมีพื้นฐานด้านเทคโนโลยี ทุกคนสร้างสรรค์ร่วมกับ AI ได้!*",
-            "fr": "Faire le lien avec la comptabilité et l'économie de 1ère année, tout en renforçant les cours de 2e année. Créons ensemble des applications web interactives sur smartphone.\n\n*Aucun prérequis technique nécessaire !*"
+            "us": "As future business managers, you do not need to memorize complex coding syntax! You are the **conductor**, and AI is your musician. Connect freshman Accounting & Economics with sophomore Statistics and Management to build interactive charts and launch web apps on your phone.\n\n*If you can ask a question, you can create with AI!*",
+            "tw": "作為未來的商業經理人，你不需要死記複雜的程式語法！你是樂團的**指揮家**，AI 則是你的樂手。串聯大一會計與經濟學基礎，支援大二統計、行銷與管理課程，共同打造互動商業圖表並發布手機 Web App。\n\n*只要會提問，就能與 AI 共同創造！*",
+            "vn": "Là nhà quản lý kinh doanh tương lai, bạn không cần ghi nhớ cú pháp code! Bạn là **nhạc trưởng**, AI là nhạc công. Kết nối Kế toán & Kinh tế năm nhất với Thống kê và Quản trị năm hai để xây dựng biểu đồ tương tác và phát hành Web App.\n\n*Chỉ cần biết đặt câu hỏi, bạn có thể sáng tạo cùng AI!*",
+            "id": "Sebagai calon manajer bisnis, Anda tidak perlu menghafal sintaksis kode yang rumit! Anda adalah **konduktor**, dan AI adalah musisi Anda. Hubungkan Akuntansi & Ekonomi tingkat satu dengan Statistik dan Manajemen tingkat dua untuk membuat grafik interaktif dan web app di ponsel.\n\n*Jika Anda bisa bertanya, Anda bisa berkreasi dengan AI!*",
+            "my": "Sebagai pengurus perniagaan masa depan, anda tidak perlu menghafal sintaks kod yang rumit! Anda adalah **konduktor**, dan AI adalah pemuzik anda. Hubungkan Perakaunan & Ekonomi tahun satu dengan Statistik dan Pengurusan tahun dua untuk membina carta interaktif dan aplikasi web.\n\n*Jika anda boleh bertanya, anda boleh mencipta dengan AI!*",
+            "th": "ในฐานะผู้จัดการธุรกิจในอนาคต คุณไม่จำเป็นต้องท่องจำไวยากรณ์โค้ดที่ซับซ้อน! คุณคือ**ผู้นำวงคอนดักเตอร์** และ AI คือนักดนตรีของคุณ เชื่อมโยงบัญชีและเศรษฐศาสตร์ปี 1 สู่สถิติและการจัดการปี 2 เพื่อสร้างชาร์ตและเว็บแอปบนมือถือ\n\n*ขอแค่ถามเป็น คุณก็สร้างสรรค์ร่วมกับ AI ได้!*",
+            "fr": "En tant que futurs managers, nul besoin d'apprendre par cœur le code complexe ! Vous êtes le **chef d'orchestre**, l'IA est votre musicien. Reliez la comptabilité et l'économie aux statistiques et à la gestion pour créer des applications web interactives sur smartphone.\n\n*Si vous savez poser des questions, vous savez créer avec l'IA !*"
         }
     },
     "grading": {
@@ -210,43 +210,43 @@ meta_cards = {
             "id": "📊 Kebijakan Penilaian", "my": "📊 Dasar Pemarkahan", "th": "📊 เกณฑ์การประเมินผล", "fr": "📊 Barème d'évaluation"
         },
         "content": {
-            "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project**: 20%  \n**Final Project Report & Showcase**: 30%  \n*(Step-by-step guidance in class. Beginners are welcome!)*",
-            "tw": "**每週課堂趣味實作練習**：50%  \n**期中測驗或專題**：20%  \n**期末專案報告與成果發表**：30%  \n*(課堂手把手步驟引導，初學者友善！)*",
-            "vn": "**Thực hành vui trên lớp hàng tuần**: 50%  \n**Thi giữa kỳ hoặc Đồ án**: 20%  \n**Báo cáo & Trình bày đồ án cuối kỳ**: 30%  \n*(Hướng dẫn chi tiết từng bước, thân thiện với người mới bắt đầu!)*",
-            "id": "**Praktik Seru Mingguan di Kelas**: 50%  \n**Ujian Tengah Semester / Proyek**: 20%  \n**Laporan & Presentasi Proyek Akhir**: 30%  \n*(Panduan langkah demi langkah di kelas. Ramah pemula!)*",
-            "my": "**Latihan Amali Mingguan di Kelas**: 50%  \n**Peperiksaan Pertengahan Penggal / Projek**: 20%  \n**Laporan & Pembentangan Projek Akhir**: 30%  \n*(Bimbingan langkah demi langkah disediakan. Mesra pemula!)*",
-            "th": "**แบบฝึกหัดในชั้นเรียนรายสัปดาห์**: 50%  \n**การสอบกลางภาคหรือโครงงาน**: 20%  \n**รายงานและการนำเสนอโครงงานปลายภาค**: 30%  \n*(มีคำแนะนำทีละขั้นตอนในชั้นเรียน เหมาะสำหรับผู้เริ่มต้น!)*",
-            "fr": "**Pratiques interactives en classe**: 50%  \n**Examen partiel ou projet**: 20%  \n**Rapport final et soutenance**: 30%  \n*(Accompagnement pas à pas en classe. Débutants bienvenus !)*"
+            "us": "**Weekly In-Class Fun Practice**: 50%  \n**Midterm Exam or Project (W9)**: 20%  \n**Final Project Report & Showcase (W16)**: 30%  \n*(Step-by-step guidance in class. Beginners are warmly welcome!)*",
+            "tw": "**每週課堂趣味實作練習**：50%  \n**期中測驗或專題 (第 9 週)**：20%  \n**期末專案報告與成果發表 (第 16 週)**：30%  \n*(課堂手把手步驟引導，初學者友善！)*",
+            "vn": "**Thực hành vui trên lớp hàng tuần**: 50%  \n**Thi giữa kỳ / Đồ án (Tuần 9)**: 20%  \n**Báo cáo & Trình bày đồ án (Tuần 16)**: 30%  \n*(Hướng dẫn chi tiết từng bước, chào đón người mới bắt đầu!)*",
+            "id": "**Praktik Seru Mingguan di Kelas**: 50%  \n**Ujian Tengah Semester / Proyek (M9)**: 20%  \n**Laporan & Presentasi Proyek Akhir (M16)**: 30%  \n*(Panduan langkah demi langkah di kelas. Sangat ramah pemula!)*",
+            "my": "**Latihan Amali Mingguan di Kelas**: 50%  \n**Peperiksaan Pertengahan Penggal / Projek (M9)**: 20%  \n**Laporan & Pembentangan Akhir (M16)**: 30%  \n*(Bimbingan langkah demi langkah dalam kelas. Mesra pemula!)*",
+            "th": "**แบบฝึกหัดในชั้นเรียนรายสัปดาห์**: 50%  \n**สอบกลางภาคหรือโครงงาน (สัปดาห์ 9)**: 20%  \n**รายงานและการนำเสนอโครงงานปลายภาค (สัปดาห์ 16)**: 30%  \n*(มีคำแนะนำทีละขั้นตอนในชั้นเรียน เหมาะสำหรับผู้เริ่มต้นอย่างยิ่ง!)*",
+            "fr": "**Pratiques interactives en classe**: 50%  \n**Examen partiel ou projet (Semaine 9)**: 20%  \n**Rapport final et soutenance (Semaine 16)**: 30%  \n*(Accompagnement pas à pas en classe. Débutants bienvenus !)*"
         }
     },
     "materials": {
         "title": {
-            "us": "💻 Devices & Platforms", "tw": "💻 上課設備與雲端平台", "vn": "💻 Thiết bị & Nền tảng",
-            "id": "💻 Perangkat & Platform", "my": "💻 Peranti & Platform", "th": "💻 อุปกรณ์และแพลตฟอร์ม", "fr": "💻 Appareils & Plateformes"
+            "us": "💻 Devices & Open Platforms", "tw": "💻 上課設備與開放平台", "vn": "💻 Thiết bị & Nền tảng mở",
+            "id": "💻 Perangkat & Platform Terbuka", "my": "💻 Peranti & Platform Terbuka", "th": "💻 อุปกรณ์และแพลตฟอร์มเปิด", "fr": "💻 Appareils & Plateformes"
         },
         "content": {
-            "us": "**Bring to Class**:  \n1. 💻 **Laptop (Required)**: For cloud coding (Google Colab).  \n2. 📱 **Smartphone**: For LINE chat & web apps.  \n**Platforms**: Colab, Gemini, Streamlit, FRED API.",
-            "tw": "**每週必備設備**：  \n1. 💻 **筆記型電腦（必備）**：用於雲端 Colab 編程實作。  \n2. 📱 **智慧型手機**：用於 LINE 社群、提問與 App 成果預覽。  \n**雲端工具**：Google Colab、Gemini、Streamlit、FRED。",
-            "vn": "**Thiết bị cần mang theo**:  \n1. 💻 **Laptop (Bắt buộc)**: Để thực hành lập trình trên Colab.  \n2. 📱 **Smartphone**: Dành cho nhóm LINE & xem trước ứng dụng.  \n**Nền tảng**: Colab, Gemini, Streamlit, FRED API.",
-            "id": "**Perangkat yang Dibawa**:  \n1. 💻 **Laptop (Wajib)**: Untuk coding di Google Colab.  \n2. 📱 **Smartphone**: Untuk grup LINE & pratinjau web app.  \n**Platform**: Colab, Gemini, Streamlit, FRED API.",
-            "my": "**Peranti yang Perlu Dibawa**:  \n1. 💻 **Komputer Riba (Wajib)**: Untuk amali kod di Google Colab.  \n2. 📱 **Telefon Pintar**: Untuk grup LINE & pratonton web app.  \n**Platform**: Colab, Gemini, Streamlit, FRED API.",
-            "th": "**สิ่งที่ต้องนำมาเรียน**:  \n1. 💻 **แล็ปท็อป (จำเป็น)**: สำหรับเขียนโค้ดบน Google Colab  \n2. 📱 **สมาร์ทโฟน**: สำหรับกลุ่ม LINE และดูตัวอย่างเว็บแอป  \n**แพลตฟอร์ม**: Colab, Gemini, Streamlit, ข้อมูล FRED",
-            "fr": "**Matériel requis** :  \n1. 💻 **Ordinateur portable (Requis)** : Pour le code sur Colab.  \n2. 📱 **Smartphone** : Pour LINE et prévisualiser les apps.  \n**Plateformes** : Colab, Gemini, Streamlit, FRED API."
+            "us": "**Bring to Class**:  \n1. 💻 **Laptop (Required)**: For cloud coding (Google Colab).  \n2. 📱 **Smartphone**: For LINE chat & web apps.  \n**Platforms**: Google Colab, Google AI Studio, Streamlit, FRED Economic Data.",
+            "tw": "**每週必備設備**：  \n1. 💻 **筆記型電腦（必備）**：用於雲端 Colab 編程實作。  \n2. 📱 **智慧型手機**：用於 LINE 社群、提問與 App 成果預覽。  \n**雲端工具**：Google Colab、Google AI Studio、Streamlit、FRED 總經資料庫。",
+            "vn": "**Thiết bị cần mang theo**:  \n1. 💻 **Laptop (Bắt buộc)**: Cho lập trình đám mây (Google Colab).  \n2. 📱 **Smartphone**: Cho nhóm LINE & xem trước ứng dụng.  \n**Nền tảng**: Google Colab, Google AI Studio, Streamlit, Dữ liệu kinh tế FRED.",
+            "id": "**Perangkat yang Dibawa**:  \n1. 💻 **Laptop (Wajib)**: Untuk coding di Google Colab.  \n2. 📱 **Smartphone**: Untuk grup LINE & pratinjau web app.  \n**Platform**: Google Colab, Google AI Studio, Streamlit, Data Ekonomi FRED.",
+            "my": "**Peranti yang Perlu Dibawa**:  \n1. 💻 **Komputer Riba (Wajib)**: Untuk amali di Google Colab.  \n2. 📱 **Telefon Pintar**: Untuk grup LINE & pratonton web app.  \n**Platform**: Google Colab, Google AI Studio, Streamlit, Data Ekonomi FRED.",
+            "th": "**สิ่งที่ต้องนำมาเรียน**:  \n1. 💻 **แล็ปท็อป (จำเป็น)**: สำหรับโค้ดดิ้งบน Google Colab  \n2. 📱 **สมาร์ทโฟน**: สำหรับกลุ่ม LINE และดูผลลัพธ์เว็บแอป  \n**แพลตฟอร์ม**: Google Colab, Google AI Studio, Streamlit, ข้อมูลเศรษฐกิจ FRED",
+            "fr": "**Matériel requis** :  \n1. 💻 **Ordinateur portable (Requis)** : Pour Google Colab.  \n2. 📱 **Smartphone** : Pour LINE et les web apps.  \n**Plateformes** : Google Colab, Google AI Studio, Streamlit, FRED API."
         }
     },
     "office_hour": {
         "title": {
-            "us": "🕒 Contact & LINE Policy", "tw": "🕒 聯絡信箱與 LINE 社群規範", "vn": "🕒 Email liên hệ & Quy định LINE",
-            "id": "🕒 Email & Aturan LINE", "my": "🕒 Emel & Peraturan LINE", "th": "🕒 อีเมลติดต่อและกฎกลุ่ม LINE", "fr": "🕒 Contact & Règles LINE"
+            "us": "🕒 Office Hours & Contact", "tw": "🕒 諮詢時間與聯絡管道", "vn": "🕒 Giờ tư vấn & Liên hệ",
+            "id": "🕒 Jam Konsultasi & Kontak", "my": "🕒 Waktu Konsultasi & Hubungan", "th": "🕒 เวลาให้คำปรึกษา & การติดต่อ", "fr": "🕒 Permanence & Contact"
         },
         "content": {
-            "us": "**Instructor**: Kimiko Kechun Huang (黃可羣)  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**Room**: Innovation Bldg 506 (創506)  \n**LINE Nickname**: Last3Digits + Name (e.g. 205 Huy)",
-            "tw": "**授課教師**：黃可羣 (Kimiko Kechun Huang)  \n**官方信箱**：`kimikohuang@mail.mcut.edu.tw`  \n**教室**：創新大樓 506 教室 (創506)  \n**LINE 暱稱**：學號末三碼 + 名字（例如：205 Huy）",
-            "vn": "**Giảng viên**: Kimiko Kechun Huang (黃可羣)  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**Phòng**: Tòa Đổi mới 506 (創506)  \n**Quy định LINE**: 3 số cuối mã SV + Tên (vd: 205 Huy)",
-            "id": "**Dosen**: Kimiko Kechun Huang (黃可羣)  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**Ruang**: Gedung Inovasi 506 (創506)  \n**Aturan LINE**: 3 Digit Akhir + Nama (cth: 205 Huy)",
-            "my": "**Pensyarah**: Kimiko Kechun Huang (黃可羣)  \n**Emel**: `kimikohuang@mail.mcut.edu.tw`  \n**Bilik**: Bangunan Inovasi 506 (創506)  \n**Peraturan LINE**: 3 Digit Terakhir + Nama (cth: 205 Huy)",
-            "th": "**ผู้สอน**: Kimiko Kechun Huang (黃可羣)  \n**อีเมล**: `kimikohuang@mail.mcut.edu.tw`  \n**ห้องเรียน**: อาคารนวัตกรรม 506 (創506)  \n**กฎ LINE**: เลขท้าย 3 ตัว + ชื่อ (เช่น 205 Huy)",
-            "fr": "**Enseignant** : Kimiko Kechun Huang (黃可羣)  \n**Email** : `kimikohuang@mail.mcut.edu.tw`  \n**Salle** : Bâtiment Innovation 506 (創506)  \n**Règle LINE** : 3 derniers chiffres + Nom (ex: 205 Huy)"
+            "us": "**Instructor**: Kimiko Kechun Huang (黃可羣)  \n**Office Hour**: Talk directly right after class in Room 506, or message in our LINE group to set up a meeting on campus.  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**LINE Nickname**: Last 3 digits + Name (e.g. 205 Huy)",
+            "tw": "**授課教師**：黃可羣 (Kimiko Kechun Huang)  \n**諮詢時間**：每週四下課後於 506 教室面談，或於 LINE 社群私訊預約校內諮詢。  \n**公務信箱**：`kimikohuang@mail.mcut.edu.tw`  \n**LINE 暱稱**：學號末三碼 + 名字（例如：205 Huy）",
+            "vn": "**Giảng viên**: Kimiko Kechun Huang (黃可羣)  \n**Giờ tư vấn**: Trao đổi trực tiếp sau giờ học tại Phòng 506, hoặc nhắn trong nhóm LINE để hẹn lịch gặp tại trường.  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**Quy định LINE**: 3 số cuối mã SV + Tên (vd: 205 Huy)",
+            "id": "**Dosen**: Kimiko Kechun Huang (黃可羣)  \n**Jam Konsultasi**: Konsultasi langsung setelah kelas di Ruang 506, atau buat janji temu via grup LINE.  \n**Email**: `kimikohuang@mail.mcut.edu.tw`  \n**Aturan LINE**: 3 Digit Akhir + Nama (cth: 205 Huy)",
+            "my": "**Pensyarah**: Kimiko Kechun Huang (黃可羣)  \n**Waktu Konsultasi**: Berbincang terus selepas kelas di Bilik 506, atau mesej dalam grup LINE untuk janji temu.  \n**Emel**: `kimikohuang@mail.mcut.edu.tw`  \n**Peraturan LINE**: 3 Digit Terakhir + Nama (cth: 205 Huy)",
+            "th": "**ผู้สอน**: Kimiko Kechun Huang (黃可羣)  \n**เวลาปรึกษา**: ปรึกษาได้ทันทีหลังเลิกเรียนที่ห้อง 506 หรือส่งข้อความนัดหมายในกลุ่ม LINE  \n**อีเมล**: `kimikohuang@mail.mcut.edu.tw`  \n**กฎ LINE**: เลขท้าย 3 ตัว + ชื่อ (เช่น 205 Huy)",
+            "fr": "**Enseignant** : Kimiko Kechun Huang (黃可羣)  \n**Permanence** : Directement après le cours en salle 506, ou sur rendez-vous via le groupe LINE.  \n**Email** : `kimikohuang@mail.mcut.edu.tw`  \n**Règle LINE** : 3 derniers chiffres + Nom (ex: 205 Huy)"
         }
     }
 }
@@ -274,199 +274,199 @@ with c4:
         st.markdown(meta_cards['office_hour']['content'].get(current_code, meta_cards['office_hour']['content']['us']))
 
 # ==============================================================================
-# 5. 【學期藍圖：置頂】18 週課程完整大表格（摺疊收納版）
+# 5. 【學期藍圖：置頂】18 週課程完整大表格（100% 精準對照學校進度表）
 # ==============================================================================
 st.markdown("---")
 schedule_expander_titles = {
-    "us": "🗓️ View Full 18-Week Syllabus Breakdown (Click to Expand)",
-    "tw": "🗓️ 查看完整 18 週課程進度總表（點擊展開查閱）",
-    "vn": "🗓️ Xem toàn bộ lịch trình 18 tuần (Bấm để mở rộng)",
-    "id": "🗓️ Lihat Silabus Lengkap 18 Minggu (Klik untuk Memperluas)",
-    "my": "🗓️ Lihat Sukatan Pelajaran Penuh 18 Minggu (Klik untuk Buka)",
-    "th": "🗓️ ดูแผนการสอนฉบับสมบูรณ์ 18 สัปดาห์ (คลิกเพื่อขยาย)",
-    "fr": "🗓️ Consulter le calendrier complet sur 18 semaines (Cliquez pour dérouler)"
+    "us": "🗓️ View Official 18-Week Syllabus Breakdown (Click to Expand)",
+    "tw": "🗓️ 查看官方完整 18 週教學進度總表（點擊展開查閱）",
+    "vn": "🗓️ Xem toàn bộ lịch trình 18 tuần chính thức (Bấm để mở rộng)",
+    "id": "🗓️ Lihat Silabus Lengkap 18 Minggu Resmi (Klik untuk Memperluas)",
+    "my": "🗓️ Lihat Sukatan Pelajaran Rasmi 18 Minggu (Klik untuk Buka)",
+    "th": "🗓️ ดูแผนการสอนอย่างเป็นทางการ 18 สัปดาห์ (คลิกเพื่อขยาย)",
+    "fr": "🗓️ Consulter le calendrier officiel sur 18 semaines (Cliquez pour dérouler)"
 }
 
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
-        "us": {"prog": "Course Onboarding & Vibe Coding", "hw": "Lab 0: In-class fun exploration", "sum": "Course overview; prompt-driven programming with natural language; Google Colab setup; conductor mindset.", "rem": "In-person (創506)"},
-        "tw": {"prog": "課程導覽與自然語言編程", "hw": "Lab 0: 課堂趣味實作探索", "sum": "課程總覽；自然語言提示詞編程；Colab 環境配置；指揮家思維建立。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Khởi động khóa học & Vibe Coding", "hw": "Lab 0: Khám phá thú vị tại lớp", "sum": "Tổng quan môn học; lập trình bằng câu lệnh tự nhiên; cài đặt Google Colab; tư duy nhạc trưởng.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Pengenalan Kursus & Vibe Coding", "hw": "Lab 0: Eksplorasi seru di kelas", "sum": "Tinjauan kursus; pemrograman berbasis prompt bahasa alami; pengaturan Colab; pola pikir konduktor.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Pengenalan Kursus & Vibe Coding", "hw": "Lab 0: Penerokaan menarik dalam kelas", "sum": "Gambaran keseluruhan kursus; pengaturcaraan bahasa semula jadi; persediaan Colab; minda konduktor.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "ปฐมนิเทศรายวิชา & Vibe Coding", "hw": "Lab 0: กิจกรรมสำรวจในชั้นเรียน", "sum": "ภาพรวมวิชา; การเขียนโค้ดด้วยภาษาธรรมชาติผ่านข้อความพร้อมต์; ติดตั้ง Colab; ปลูกฝังแนวคิดผู้นำคำสั่ง", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Introduction au cours & Vibe Coding", "hw": "Lab 0 : Découverte pratique en classe", "sum": "Présentation générale ; programmation en langage naturel ; configuration Colab ; posture de chef d'orchestre.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Course Onboarding & Vibe Coding", "hw": "Lab 0: In-class fun exploration", "sum": "Course overview; prompt-driven programming with natural language; Google Colab setup; zero syntax stress.", "rem": "創506"},
+        "tw": {"prog": "課程導覽與自然語言編程", "hw": "Lab 0: 課堂趣味實作探索", "sum": "課程總覽；自然語言提示詞編程；Google Colab 環境配置；零語法壓力。", "rem": "創506"},
+        "vn": {"prog": "Khởi động khóa học & Vibe Coding", "hw": "Lab 0: Khám phá thú vị tại lớp", "sum": "Tổng quan môn học; lập trình bằng câu lệnh tự nhiên; cài đặt Colab; không áp lực cú pháp.", "rem": "創506"},
+        "id": {"prog": "Pengenalan Kursus & Vibe Coding", "hw": "Lab 0: Eksplorasi seru di kelas", "sum": "Tinjauan kursus; pemrograman berbasis prompt bahasa alami; setup Colab; bebas stres sintaks.", "rem": "創506"},
+        "my": {"prog": "Pengenalan Kursus & Vibe Coding", "hw": "Lab 0: Penerokaan menarik dalam kelas", "sum": "Gambaran keseluruhan kursus; pengaturcaraan bahasa semula jadi; persediaan Colab; sifar tekanan sintaks.", "rem": "創506"},
+        "th": {"prog": "ปฐมนิเทศรายวิชา & Vibe Coding", "hw": "Lab 0: กิจกรรมสำรวจในชั้นเรียน", "sum": "ภาพรวมวิชา; เขียนโค้ดด้วยภาษาธรรมชาติผ่านข้อความพร้อมต์; ติดตั้ง Colab; ปราศจากความเครียดเรื่องไวยากรณ์", "rem": "創506"},
+        "fr": {"prog": "Introduction au cours & Vibe Coding", "hw": "Lab 0 : Découverte pratique en classe", "sum": "Présentation du cours ; programmation en langage naturel ; configuration Colab ; zéro stress de syntaxe.", "rem": "創506"}
     },
     {
         "week": "Week 2", "date": "2026/09/17",
-        "us": {"prog": "Market Data Engineering: Apple & TSMC", "hw": "In-class live practice", "sum": "Add/drop period; fetching daily stock prices with Python; DataFrame processing; visual trend charts.", "rem": "In-person (創506)"},
-        "tw": {"prog": "市場數據工程：台積電與蘋果", "hw": "課堂即時實作與練習", "sum": "加退選期間；Python 擷取每日股價；資料表 DataFrame 處理與繪製走勢圖。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Kỹ thuật dữ liệu thị trường: Apple & TSMC", "hw": "Thực hành trực tiếp trên lớp", "sum": "Thu thập giá cổ phiếu hàng ngày với Python; xử lý DataFrame; biểu đồ xu hướng trực quan.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Rekayasa Data Pasar: Apple & TSMC", "hw": "Latihan langsung di kelas", "sum": "Periode tambah/batal matkul; mengambil harga saham harian dengan Python; manipulasi DataFrame; grafik tren visual.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Kejuruteraan Data Pasaran: Apple & TSMC", "hw": "Latihan langsung dalam kelas", "sum": "Tempoh tambah/gugur kursus; mengambil data harga saham harian; manipulasi DataFrame; carta trend visual.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "วิศวกรรมข้อมูลตลาด: Apple & TSMC", "hw": "ฝึกปฏิบัติตามสดในชั้นเรียน", "sum": "ช่วงเพิ่ม-ถอนรายวิชา; ดึงข้อมูลราคาหุ้นรายวันด้วย Python; ประมวลผลตาราง DataFrame; แผนภูมิแนวโน้ม", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Ingénierie des données de marché : Apple & TSMC", "hw": "Exercice guidé en classe", "sum": "Période d'ajustement ; extraction de cours boursiers avec Python ; manipulation de DataFrame ; graphiques.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Market Data Engineering: Apple & TSMC", "hw": "In-class live practice", "sum": "Add/drop period; fetching daily stock prices with Python; creating visual trend charts; friendly onboarding.", "rem": "創506"},
+        "tw": {"prog": "市場數據工程：台積電與蘋果", "hw": "課堂即時實作與練習", "sum": "加退選期間；Python 擷取每日股價；資料表 DataFrame 處理與繪製走勢圖；友善入門。", "rem": "創506"},
+        "vn": {"prog": "Kỹ thuật dữ liệu thị trường: Apple & TSMC", "hw": "Thực hành trực tiếp trên lớp", "sum": "Giai đoạn thêm/hủy môn; lấy giá cổ phiếu hàng ngày; vẽ biểu đồ xu hướng trực quan; làm quen nhẹ nhàng.", "rem": "創506"},
+        "id": {"prog": "Rekayasa Data Pasar: Apple & TSMC", "hw": "Latihan langsung di kelas", "sum": "Periode tambah/batal matkul; mengambil harga saham harian; grafik tren visual; onboarding ramah.", "rem": "創506"},
+        "my": {"prog": "Kejuruteraan Data Pasaran: Apple & TSMC", "hw": "Latihan langsung dalam kelas", "sum": "Tempoh tambah/gugur kursus; mengambil harga saham harian; carta trend visual; pengenalan mesra.", "rem": "創506"},
+        "th": {"prog": "วิศวกรรมข้อมูลตลาด: Apple & TSMC", "hw": "ฝึกปฏิบัติตามสดในชั้นเรียน", "sum": "ช่วงเพิ่ม-ถอนรายวิชา; ดึงข้อมูลราคาหุ้นรายวันด้วย Python; สร้างกราฟแนวโน้ม; เริ่มต้นอย่างเป็นมิตร", "rem": "創506"},
+        "fr": {"prog": "Ingénierie des données de marché : Apple & TSMC", "hw": "Exercice guidé en classe", "sum": "Période d'ajustement ; extraction de cours boursiers avec Python ; graphiques visuels ; onboarding doux.", "rem": "創506"}
     },
     {
         "week": "Week 3", "date": "2026/09/24",
-        "us": {"prog": "Global EV Trends: Tesla vs. Leaders", "hw": "Lab 1: EV trends notebook", "sum": "Roster finalized; comparing global EV leaders and supply chain; calculating daily returns and volatility.", "rem": "In-person (創506)"},
-        "tw": {"prog": "全球電動車趨勢：Tesla 與全球車廠", "hw": "Lab 1: 電動車趨勢筆記本", "sum": "選課名單確定；全球電動車供應鏈與龍頭對比；計算日報酬率與波動度指標。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Xu hướng xe điện toàn cầu: Tesla & Các hãng lớn", "hw": "Lab 1: Vở bài tập xu hướng xe điện", "sum": "Chốt danh sách lớp; so sánh các hãng xe điện và chuỗi cung ứng; tính tỷ suất sinh lời và độ biến động.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Tren EV Global: Tesla vs Pemimpin Industri", "hw": "Lab 1: Notebook tren EV", "sum": "Daftar mahasiswa final; membandingkan produsen EV dan rantai pasok; menghitung return harian & volatilitas.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Trend EV Global: Tesla vs Peneraju Industri", "hw": "Lab 1: Buku nota trend EV", "sum": "Senarai kursus muktamad; analisis rantaian bekalan EV; pengiraan pulangan harian dan turun naik pasaran.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "แนวโน้มยานยนต์ไฟฟ้าโลก: Tesla เทียบผู้นำตลาด", "hw": "Lab 1: สมุดโค้ดวิเคราะห์แนวโน้ม EV", "sum": "สรุปรายชื่อผู้ลงทะเบียน; เปรียบเทียบห่วงโซ่อุปทาน EV; คำนวณผลตอบแทนรายวันและความผันผวน", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Tendances mondiales des VE : Tesla vs Leaders", "hw": "TP 1 : Notebook tendances VE", "sum": "Inscriptions closes ; analyse comparative du secteur des VE ; calcul des rendements journaliers et volatilité.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Global EV Trends: Tesla vs. Worldwide Market Leaders", "hw": "Lab 1: EV market trends notebook", "sum": "Roster finalized; comparing global EV leaders and key supply chain players; calculating daily returns and simple risk metrics.", "rem": "創506"},
+        "tw": {"prog": "全球電動車趨勢：Tesla 與全球車廠龍頭", "hw": "Lab 1: 電動車市場趨勢筆記本", "sum": "選課名單確定；全球電動車供應鏈與龍頭對比；計算日報酬率與簡易風險指標。", "rem": "創506"},
+        "vn": {"prog": "Xu hướng xe điện toàn cầu: Tesla vs Các hãng lớn", "hw": "Lab 1: Vở bài tập xu hướng xe điện", "sum": "Chốt danh sách lớp; so sánh các hãng xe điện và chuỗi cung ứng; tính tỷ suất sinh lời và rủi ro cơ bản.", "rem": "創506"},
+        "id": {"prog": "Tren EV Global: Tesla vs Pemimpin Industri Dunia", "hw": "Lab 1: Notebook tren pasar EV", "sum": "Daftar mahasiswa final; membandingkan produsen EV dan rantai pasok; menghitung return harian & risiko.", "rem": "創506"},
+        "my": {"prog": "Trend EV Global: Tesla vs Peneraju Industri Global", "hw": "Lab 1: Buku nota trend pasaran EV", "sum": "Senarai kursus muktamad; analisis rantaian bekalan EV; pengiraan pulangan harian dan metrik risiko mudah.", "rem": "創506"},
+        "th": {"prog": "แนวโน้มยานยนต์ไฟฟ้าโลก: Tesla เทียบผู้นำตลาดโลก", "hw": "Lab 1: สมุดโค้ดวิเคราะห์แนวโน้มตลาด EV", "sum": "สรุปรายชื่อลงทะเบียน; เปรียบเทียบผู้นำ EV และห่วงโซ่อุปทานหลัก; คำนวณผลตอบแทนรายวันและดัชนีความเสี่ยงเบื้องต้น", "rem": "創506"},
+        "fr": {"prog": "Tendances mondiales des VE : Tesla vs Leaders mondiaux", "hw": "TP 1 : Notebook tendances du marché VE", "sum": "Inscriptions closes ; comparatif du secteur des VE ; calcul des rendements journaliers et métriques de risque simples.", "rem": "創506"}
     },
     {
         "week": "Week 4", "date": "2026/10/01",
-        "us": {"prog": "Quantitative Trading Strategies", "hw": "Lab 2: Moving average strategy report", "sum": "Moving average concepts (20MA vs 60MA); rule-based trading vs Buy & Hold; returns and drawdown.", "rem": "In-person (創506)"},
-        "tw": {"prog": "量化交易策略實戰", "hw": "Lab 2: 移動平均線策略報告", "sum": "均線交叉法則（20MA vs 60MA）；規則化策略與買進持有對比；報酬率與回撤評估。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Chiến lược giao dịch định lượng", "hw": "Lab 2: Báo cáo chiến lược đường trung bình", "sum": "Khái niệm đường trung bình MA (20MA vs 60MA); so sánh giao dịch theo quy tắc và Mua & Nắm giữ.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Strategi Trading Kuantitatif", "hw": "Lab 2: Laporan strategi moving average", "sum": "Konsep Moving Average (20MA vs 60MA); strategi berbasis aturan vs Beli & Simpan; evaluasi return & drawdown.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Strategi Dagangan Kuantitatif", "hw": "Lab 2: Laporan strategi moving average", "sum": "Konsep purata bergerak (20MA vs 60MA); perbandingan strategi berasaskan peraturan vs Beli & Pegang.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "กลยุทธ์การซื้อขายเชิงปริมาณ", "hw": "Lab 2: รายงานกลยุทธ์เส้นค่าเฉลี่ยเคลื่อนที่", "sum": "แนวคิดเส้นค่าเฉลี่ย MA (20MA vs 60MA); การเทรดตามกฎระเบียบเทียบกับซื้อถือยาว; การวิเคราะห์ Drawdown", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Stratégies de trading quantitatif", "hw": "TP 2 : Rapport sur les moyennes mobiles", "sum": "Moyennes mobiles (20MA vs 60MA) ; trading systématique vs Buy & Hold ; rendements et drawdown.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Quantitative Trading Strategies", "hw": "Lab 2: Moving average strategy report", "sum": "Moving average concepts (20MA vs 60MA); comparing trading rules vs. Buy & Hold; evaluating returns and safety.", "rem": "創506"},
+        "tw": {"prog": "量化交易策略實戰", "hw": "Lab 2: 移動平均線策略報告", "sum": "均線交叉法則（20MA vs 60MA）；規則化交易與買進持有對比；報酬率與安全性評估。", "rem": "創506"},
+        "vn": {"prog": "Chiến lược giao dịch định lượng", "hw": "Lab 2: Báo cáo chiến lược đường trung bình", "sum": "Khái niệm đường trung bình MA (20MA vs 60MA); so sánh giao dịch theo quy tắc vs Mua & Nắm giữ; đánh giá lợi nhuận & an toàn.", "rem": "創506"},
+        "id": {"prog": "Strategi Trading Kuantitatif", "hw": "Lab 2: Laporan strategi moving average", "sum": "Konsep Moving Average (20MA vs 60MA); membandingkan aturan trading vs Beli & Simpan; evaluasi return & keamanan.", "rem": "創506"},
+        "my": {"prog": "Strategi Dagangan Kuantitatif", "hw": "Lab 2: Laporan strategi moving average", "sum": "Konsep purata bergerak (20MA vs 60MA); perbandingan strategi berasaskan peraturan vs Beli & Pegang; penilaian pulangan & keselamatan.", "rem": "創506"},
+        "th": {"prog": "กลยุทธ์การซื้อขายเชิงปริมาณ", "hw": "Lab 2: รายงานกลยุทธ์เส้นค่าเฉลี่ยเคลื่อนที่", "sum": "แนวคิดเส้นค่าเฉลี่ย MA (20MA vs 60MA); เปรียบเทียบการเทรดตามกฎระเบียบ vs ซื้อถือยาว; ประเมินผลตอบแทนและความปลอดภัย", "rem": "創506"},
+        "fr": {"prog": "Stratégies de trading quantitatif", "hw": "TP 2 : Rapport sur les moyennes mobiles", "sum": "Moyennes mobiles (20MA vs 60MA) ; règles de trading vs Buy & Hold ; évaluation des rendements et de la sécurité.", "rem": "創506"}
     },
     {
         "week": "Week 5", "date": "2026/10/08",
-        "us": {"prog": "Portfolio Construction & Diversification", "hw": "In-class drill: Two-asset allocation", "sum": "Correlation matrix; Markowitz portfolio concepts; asset weighting simulation and trade-offs.", "rem": "In-person (創506)"},
-        "tw": {"prog": "投資組合建構與分散風險", "hw": "課堂演練：雙資產權重配置", "sum": "資產相關係數矩陣；Markowitz 投資組合概念；權重配置模擬與報酬風險平衡。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Xây dựng danh mục đầu tư & Đa dạng hóa rủi ro", "hw": "Bài tập tại lớp: Phân bổ tài sản", "sum": "Ma trận tương quan; mô hình danh mục đầu tư Markowitz; mô phỏng tỷ trọng tài sản và đánh đổi rủi ro.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Konstruksi Portofolio & Diversifikasi", "hw": "Latihan kelas: Alokasi dua aset", "sum": "Matriks korelasi; dasar portofolio Markowitz; simulasi bobot aset dan trade-off return-risiko.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Pembinaan Portfolio & Kepelbagaian Risiko", "hw": "Latihan kelas: Peruntukan dua aset", "sum": "Matriks korelasi; konsep portfolio Markowitz; simulasi wajaran aset serta pertukaran risiko-pulangan.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "การจัดพอร์ตการลงทุนและการกระจายความเสี่ยง", "hw": "แบบฝึกหัดในชั้น: จัดสรรสัดส่วน 2 สินทรัพย์", "sum": "เมทริกซ์สหสัมพันธ์; แนวคิดพอร์ตมาร์โควิทซ์; แบบจำลองการถ่วงน้ำหนักสินทรัพย์และผลตอบแทนความเสี่ยง", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Construction de portefeuille & Diversification", "hw": "Exercice : Allocation bi-actifs", "sum": "Matrice de corrélation ; théorie moderne de Markowitz ; simulation d'arbitrage risque-rendement.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Macro Economy & Global Currencies", "hw": "Lab 3: Economic trends & FX report", "sum": "Connecting to FRED database; analyzing benchmark interest rates, inflation trends, and currency exchange rates.", "rem": "創506"},
+        "tw": {"prog": "總體經濟指標與全球匯率觀測", "hw": "Lab 3: 總經趨勢與匯率觀測報告", "sum": "串接聖路易斯聯準會 FRED 資料庫；分析指標基準利率、通貨膨脹走勢與外匯匯率變動。", "rem": "創506"},
+        "vn": {"prog": "Kinh tế vĩ mô & Tiền tệ toàn cầu", "hw": "Lab 3: Báo cáo xu hướng kinh tế & tỷ giá", "sum": "Kết nối cơ sở dữ liệu FRED; phân tích lãi suất chuẩn, xu hướng lạm phát và tỷ giá hối đoái ngoại tệ.", "rem": "創506"},
+        "id": {"prog": "Ekonomi Makro & Mata Uang Global", "hw": "Lab 3: Laporan tren ekonomi & valas", "sum": "Menghubungkan database FRED; menganalisis suku bunga acuan, tren inflasi, dan nilai tukar mata uang.", "rem": "創506"},
+        "my": {"prog": "Ekonomi Makro & Mata Wang Global", "hw": "Lab 3: Laporan trend ekonomi & pertukaran asing", "sum": "Menyambung ke pangkalan data FRED; menganalisis kadar faedah penanda aras, trend inflasi, dan kadar pertukaran wang.", "rem": "創506"},
+        "th": {"prog": "เศรษฐกิจมหภาคและอัตราแลกเปลี่ยนโลก", "hw": "Lab 3: รายงานแนวโน้มเศรษฐกิจและอัตราแลกเปลี่ยน", "sum": "เชื่อมต่อฐานข้อมูล FRED; วิเคราะห์อัตราดอกเบี้ยนโยบาย แนวโน้มเงินเฟ้อ และอัตราแลกเปลี่ยนเงินตราต่างประเทศ", "rem": "創506"},
+        "fr": {"prog": "Macroéconomie & Devises mondiales", "hw": "TP 3 : Rapport sur les tendances macro et le Forex", "sum": "Connexion à la base FRED ; analyse des taux d'intérêt directeurs, de l'inflation et des taux de change.", "rem": "創506"}
     },
     {
         "week": "Week 6", "date": "2026/10/15",
-        "us": {"prog": "Macro Dashboard: FRED API Integration", "hw": "Lab 3: Macro tracker notebook", "sum": "Fetching data via FRED API; inflation (CPI) and interest rates; macroeconomic data engineering.", "rem": "In-person (創506)"},
-        "tw": {"prog": "總體經濟儀表板：FRED API 整合", "hw": "Lab 3: 總經指標觀測站", "sum": "串接聖路易斯聯準會 FRED API；通膨率（CPI）與聯邦基準利率數據工程與視覺化。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Bảng điều khiển kinh tế vĩ mô: Tích hợp API FRED", "hw": "Lab 3: Sổ tay theo dõi vĩ mô", "sum": "Khai thác dữ liệu qua FRED API; chỉ số lạm phát (CPI) và lãi suất; xử lý dữ liệu kinh tế vĩ mô.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Dashboard Makroekonomi: Integrasi API FRED", "hw": "Lab 3: Notebook pemantau makro", "sum": "Mengambil data via API FRED; inflasi (CPI) dan suku bunga acuan; visualisasi indikator ekonomi.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Papan Pemuka Makroekonomi: Integrasi API FRED", "hw": "Lab 3: Buku nota penjejak makro", "sum": "Penyepaduan API FRED; analisis inflasi (CPI) dan kadar faedah; visualisasi data ekonomi makro.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "แดชบอร์ดเศรษฐกิจมหภาค: เชื่อมต่อ API FRED", "hw": "Lab 3: สมุดโค้ดติดตามดัชนีมหภาค", "sum": "เชื่อมต่อ FRED API; วิเคราะห์อัตราเงินเฟ้อ (CPI) และอัตราดอกเบี้ย; การจัดการข้อมูลเศรษฐกิจ", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Tableau de bord macro : API FRED", "hw": "TP 3 : Notebook de suivi macro", "sum": "Intégration de l'API de la FRED ; taux d'inflation (CPI) et taux d'intérêt ; pipeline de données macro.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Corporate Health & Global Industry Champions", "hw": "Lab 4: Automated company health tool", "sum": "Reading financial statements; evaluating profitability, debt ratios, and DuPont ROE for global and regional market leaders.", "rem": "創506"},
+        "tw": {"prog": "企業財務健康診斷與產業冠軍剖析", "hw": "Lab 4: 自動化企業健康診斷工具", "sum": "公開財務報表剖析；評估獲利能力、負債比率與杜邦 ROE 分析法，診斷國內外產業龍頭。", "rem": "創506"},
+        "vn": {"prog": "Sức khỏe doanh nghiệp & Các nhà vô địch ngành", "hw": "Lab 4: Công cụ tự động đánh giá doanh nghiệp", "sum": "Đọc báo cáo tài chính; đánh giá khả năng sinh lời, tỷ lệ nợ và mô hình DuPont ROE cho các doanh nghiệp dẫn đầu.", "rem": "創506"},
+        "id": {"prog": "Kesehatan Perusahaan & Juara Industri Global", "hw": "Lab 4: Alat otomatis kesehatan perusahaan", "sum": "Membaca laporan keuangan; evaluasi profitabilitas, rasio utang, dan analisis DuPont ROE bagi pemimpin pasar.", "rem": "創506"},
+        "my": {"prog": "Kesihatan Korporat & Peneraju Industri Global", "hw": "Lab 4: Alat automatik kesihatan syarikat", "sum": "Membaca penyata kewangan; menilai keberuntungan, nisbah hutang, dan DuPont ROE untuk peneraju pasaran.", "rem": "創506"},
+        "th": {"prog": "สุขภาพทางการเงินขององค์กรและผู้นำอุตสาหกรรมโลก", "hw": "Lab 4: เครื่องมือตรวจสุขภาพองค์กรอัตโนมัติ", "sum": "อ่านงบการเงิน; ประเมินความสามารถในการทำกำไร อัตราส่วนหนี้สิน และโมเดล DuPont ROE สำหรับบริษัทชั้นนำระดับโลก", "rem": "創506"},
+        "fr": {"prog": "Santé d'entreprise & Champions industriels mondiaux", "hw": "TP 4 : Outil automatisé de santé financière", "sum": "Lecture des états financiers ; analyse de rentabilité, ratios d'endettement et modèle DuPont ROE.", "rem": "創506"}
     },
     {
         "week": "Week 7", "date": "2026/10/22",
-        "us": {"prog": "Financial Statement Feature Engineering", "hw": "In-class drill: Financial health scorecard", "sum": "Parsing corporate financial statements; calculating gross margins, operating ratios, and radar charts.", "rem": "In-person (創506)"},
-        "tw": {"prog": "財務報表特徵工程與評分卡", "hw": "課堂練習：財務健康儀表板", "sum": "公開財務報表數據剖析；毛利率、營業利益率與流動比率指標計算與雷達圖呈現。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Kỹ thuật trích xuất báo cáo tài chính", "hw": "Thực hành: Bảng điểm sức khỏe tài chính", "sum": "Phân tích báo cáo tài chính doanh nghiệp; tính biên lợi nhuận gộp, tỷ số hoạt động và biểu đồ radar.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Rekayasa Fitur Laporan Keuangan", "hw": "Latihan: Scorecard kesehatan finansial", "sum": "Parsing laporan keuangan; menghitung margin kotor, rasio likuiditas dan visualisasi grafik radar.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Kejuruteraan Ciri Penyata Kewangan", "hw": "Latihan: Kad skor kesihatan kewangan", "sum": "Analisis penyata kewangan syarikat; pengiraan margin kasar dan nisbah kecairan; paparan carta radar.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "วิศวกรรมฟีเจอร์งบการเงินและการให้คะแนน", "hw": "แบบฝึกหัด: ดัชนีวัดสุขภาพการเงิน", "sum": "แยกข้อมูลรายงานทางการเงิน; คำนวณอัตรากำไรขั้นต้น อัตราส่วนสภาพคล่อง และพล็อตชาร์ตเรดาร์", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Ingénierie financière & Scorecard", "hw": "Exercice : Tableau de santé financière", "sum": "Extraction des états financiers ; calcul des marges brutes, ratios de liquidité et graphiques radar.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Google AI Studio: Virtual Analyst", "hw": "Lab 5: AI prompt tuning practice", "sum": "Exploring Google AI Studio; configuring system instructions; building an AI copilot for business news summarization.", "rem": "創506"},
+        "tw": {"prog": "Google AI Studio：虛擬商業分析師打造", "hw": "Lab 5: AI 提示詞微調實作練習", "sum": "探索 Google AI Studio 平臺；配置系統角色指令（System Instructions）；打造商業新聞摘要專屬 Copilot。", "rem": "創506"},
+        "vn": {"prog": "Google AI Studio: Nhà phân tích ảo", "hw": "Lab 5: Thực hành tinh chỉnh prompt AI", "sum": "Khám phá Google AI Studio; cấu hình chỉ thị hệ thống; xây dựng trợ lý AI tóm tắt tin tức kinh doanh.", "rem": "創506"},
+        "id": {"prog": "Google AI Studio: Analis Virtual", "hw": "Lab 5: Latihan tuning prompt AI", "sum": "Eksplorasi Google AI Studio; konfigurasi instruksi sistem; membangun AI copilot untuk ringkasan berita bisnis.", "rem": "創506"},
+        "my": {"prog": "Google AI Studio: Penganalisis Maya", "hw": "Lab 5: Latihan penalaan prompt AI", "sum": "Meneroka Google AI Studio; mengkonfigurasi arahan sistem; membina copilot AI untuk meringkaskan berita perniagaan.", "rem": "創506"},
+        "th": {"prog": "Google AI Studio: นักวิเคราะห์ธุรกิจเสมือนจริง", "hw": "Lab 5: ปฏิบัติการปรับแต่งคำสั่ง Prompt สำหรับ AI", "sum": "สำรวจ Google AI Studio; กำหนดคำสั่งระบบ (System Instructions); สร้าง AI Copilot สำหรับสรุปข่าวธุรกิจ", "rem": "創506"},
+        "fr": {"prog": "Google AI Studio : Analyste virtuel", "hw": "TP 5 : Pratique de conception de prompts d'IA", "sum": "Découverte de Google AI Studio ; configuration des instructions système ; création d'un copilote d'analyse de presse.", "rem": "創506"}
     },
     {
         "week": "Week 8", "date": "2026/10/29",
-        "us": {"prog": "Midterm Project Guidance & Architecture Review", "hw": "Midterm architecture draft", "sum": "Clarifying business problem; verifying data pipelines; code refactoring and troubleshooting clinic.", "rem": "In-person (創506)"},
-        "tw": {"prog": "期中專案指導與架構審查", "hw": "期中專案架構初稿提交", "sum": "個人/小組專案商業邏輯梳理；數據源確認；代碼重構與問題診斷工作坊。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Hướng dẫn đồ án giữa kỳ & Đánh giá kiến trúc", "hw": "Nộp bản thảo kiến trúc đồ án", "sum": "Làm rõ bài toán kinh doanh; xác minh đường ống dữ liệu; tái cấu trúc mã nguồn và phòng khám sửa lỗi.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Bimbingan Proyek UTS & Review Arsitektur", "hw": "Pengumpulan draf arsitektur proyek", "sum": "Klarifikasi masalah bisnis; verifikasi alur data; refactoring kode dan klinik pemecahan masalah.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Bimbingan Projek Pertengahan Penggal", "hw": "Draf reka bentuk seni bina projek", "sum": "Penerangan model perniagaan; pengesahan saluran data; penambahbaikan kod dan sesi klinik nyahpepijat.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "ให้คำปรึกษาโครงงานกลางภาค & ตรวจสถาปัตยกรรมระบบ", "hw": "ส่งร่างโครงสร้างระบบโครงงาน", "sum": "ปรับแต่งตรรกะทางธุรกิจ; ตรวจสอบความถูกต้องของข้อมูล; คลินิกให้คำแนะนำและแก้ปัญหาโค้ด", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Orientation du projet partiel & Revue technique", "hw": "Ébauche de l'architecture du projet", "sum": "Clarification de la valeur métier ; validation des flux de données ; atelier de refactorisation.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Multilingual News Sentiment", "hw": "Lab 6: Market sentiment dashboard", "sum": "Using Gemini API; analyzing positive and negative market sentiment from financial news headlines and public comments.", "rem": "創506"},
+        "tw": {"prog": "多語系財經新聞市場情緒分析", "hw": "Lab 6: 市場情緒即時監控儀表板", "sum": "串接 Gemini API；深度剖析多國語言財經新聞標題與大眾輿情正面/負面情緒指數。", "rem": "創506"},
+        "vn": {"prog": "Phân tích tâm lý tin tức đa ngôn ngữ", "hw": "Lab 6: Bảng theo dõi tâm lý thị trường", "sum": "Sử dụng Gemini API; phân tích cảm xúc tích cực và tiêu cực từ tiêu đề tin tức tài chính và bình luận xã hội.", "rem": "創506"},
+        "id": {"prog": "Sentimen Berita Pasar Multibahasa", "hw": "Lab 6: Dashboard sentimen pasar", "sum": "Menggunakan API Gemini; menganalisis sentimen pasar positif & negatif dari judul berita finansial dan opini publik.", "rem": "創506"},
+        "my": {"prog": "Sentimen Berita Pasaran Pelbagai Bahasa", "hw": "Lab 6: Papan pemuka sentimen pasaran", "sum": "Menggunakan API Gemini; menganalisis sentimen positif dan negatif daripada tajuk berita kewangan dan ulasan awam.", "rem": "創506"},
+        "th": {"prog": "วิเคราะห์ความรู้สึกจากข่าวการเงินหลายภาษา", "hw": "Lab 6: แดชบอร์ดติดตามความรู้สึกตลาด", "sum": "ใช้งาน Gemini API; วิเคราะห์ดัชนีความรู้สึกเชิงบวกและเชิงลบจากพาดหัวข่าวการเงินและความคิดเห็นสาธารณะ", "rem": "創506"},
+        "fr": {"prog": "Analyse de sentiment d'actualités multilingues", "hw": "TP 6 : Tableau de bord de sentiment de marché", "sum": "Utilisation de l'API Gemini ; analyse des sentiments haussiers/baissiers à partir des flux d'actualités financières.", "rem": "創506"}
     },
     {
         "week": "Week 9", "date": "2026/11/05",
-        "us": {"prog": "[Midterm Exam] Project Stage Review", "hw": "Midterm progress submission", "sum": "Group progress presentations on data pipelines and preliminary models; peer feedback sessions.", "rem": "In-person (創506)"},
-        "tw": {"prog": "【期中評量】期中報告與進度審查", "hw": "期中專案階段成果展示", "sum": "各組口頭分享數據管線進度與初步分析成果；課堂互評與反饋機制。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "【Đánh giá giữa kỳ】Báo cáo tiến độ đồ án", "hw": "Nộp kết quả giai đoạn giữa kỳ", "sum": "Các nhóm thuyết trình về tiến độ xử lý dữ liệu và mô hình ban đầu; nhận xét chéo giữa các sinh viên.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "[UTS] Review Progres Tahap Proyek", "hw": "Pengumpulan laporan kemajuan UTS", "sum": "Presentasi kelompok mengenai pipeline data dan model awal; sesi umpan balik antar rekan mahasiswa.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "[Peperiksaan Pertengahan Penggal] Semakan Projek", "hw": "Penyerahan kemajuan pertengahan penggal", "sum": "Pembentangan kumpulan mengenai saluran data dan model awal; sesi maklum balas rakan sebaya.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "【สอบกลางภาค】การนำเสนอความก้าวหน้าโครงงาน", "hw": "ส่งรายงานความคืบหน้ารอบกลางภาค", "sum": "แต่ละกลุ่มนำเสนอไปป์ไลน์ข้อมูลและโมเดลเบื้องต้น; กิจกรรมให้คำวิจารณ์เชิงสร้างสรรค์ระหว่างเพื่อนร่วมชั้น", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "[Examen partiel] Revue d'avancement du projet", "hw": "Dépôt d'étape du projet partiel", "sum": "Présentations des pipelines de données et premières modélisations ; retours entre pairs.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Midterm Examination Week", "hw": "Midterm Practical Review", "sum": "Official Midterm Exam Week; in-class hands-on assessment of core AI prompts and financial calculations.", "rem": "Midterm Exam"},
+        "tw": {"prog": "【期中評量週】實作成果審查", "hw": "期中上機實務總複習與評量", "sum": "學校期中考週；課堂核心 AI 提示詞編程實作與商業財務指標計算上機評量。", "rem": "期中評量"},
+        "vn": {"prog": "【Tuần thi giữa kỳ】Đánh giá thực hành", "hw": "Ôn tập và kiểm tra thực hành giữa kỳ", "sum": "Tuần thi giữa kỳ chính thức; đánh giá thực hành trên lớp về câu lệnh prompt AI và tính toán tài chính cốt lõi.", "rem": "Thi giữa kỳ"},
+        "id": {"prog": "[Minggu UTS] Evaluasi Praktik", "hw": "Review dan Penilaian Praktik UTS", "sum": "Minggu UTS resmi; asesmen langsung di kelas mengenai prompt AI inti dan perhitungan finansial bisnis.", "rem": "Ujian Tengah Semester"},
+        "my": {"prog": "[Minggu Peperiksaan Pertengahan Penggal]", "hw": "Semakan Amali Pertengahan Penggal", "sum": "Minggu Peperiksaan Pertengahan Penggal rasmi; penilaian amali dalam kelas melibatkan prompt AI dan pengiraan kewangan.", "rem": "Peperiksaan"},
+        "th": {"prog": "【สัปดาห์สอบกลางภาค】การประเมินผลภาคปฏิบัติ", "hw": "ทบทวนและประเมินผลปฏิบัติการกลางภาค", "sum": "สัปดาห์สอบกลางภาคอย่างเป็นทางการ; การประเมินผลในชั้นเรียนเรื่องการสั่งการ AI และการคำนวณทางการเงิน", "rem": "สอบกลางภาค"},
+        "fr": {"prog": "[Semaine des examens partiels]", "hw": "Évaluation pratique de mi-semestre", "sum": "Semaine officielle d'examens partiels ; évaluation pratique sur machine des prompts d'IA et calculs financiers.", "rem": "Examen"}
     },
     {
         "week": "Week 10", "date": "2026/11/12",
-        "us": {"prog": "Streamlit Interactive Web Development", "hw": "Lab 4: Build your first interactive app", "sum": "Transitioning from notebooks to web apps; widgets, sliders, input forms; live UI computation.", "rem": "In-person (創506)"},
-        "tw": {"prog": "Streamlit 互動 Web 應用開發入門", "hw": "Lab 4: 打造第一個互動網頁", "sum": "從 Notebook 走向 Web App；滑桿、按鈕與下拉選單元件；即時計算與介面排版。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Phát triển ứng dụng Web tương tác với Streamlit", "hw": "Lab 4: Xây dựng ứng dụng đầu tay", "sum": "Chuyển từ Notebook sang Web App; các thanh trượt, nút bấm, biểu mẫu; giao diện tương tác thời gian thực.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Pengembangan Web Interaktif Streamlit", "hw": "Lab 4: Bangun web interaktif pertama", "sum": "Transisi dari notebook ke aplikasi web; komponen slider, tombol, formulir input; kalkulasi UI langsung.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Pembangunan Web Interaktif Streamlit", "hw": "Lab 4: Bina aplikasi web interaktif pertama", "sum": "Peralihan daripada notebook ke aplikasi web; widget slider, butang borang; paparan masa nyata.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "พัฒนาเว็บแอปพลิเคชันเชิงโต้ตอบด้วย Streamlit", "hw": "Lab 4: สร้างเว็บอินเทอร์แอคทีฟแรกของคุณ", "sum": "ก้าวข้ามจากสมุดโค้ดสู่เว็บแอป; วิดเจ็ต ตัวเลื่อน ปุ่มกด ฟอร์มกรอกข้อมูล; การคำนวณแบบสดบนหน้าเว็บ", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Développement web interactif avec Streamlit", "hw": "TP 4 : Créez votre première application web", "sum": "Du notebook à l'application web ; composants interactifs, curseurs, formulaires ; calculs en direct.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Interactive Web Apps with Streamlit", "hw": "Lab 7: Web app interface script", "sum": "Transforming Python scripts into interactive web applications; adding dropdown menus, sliders, and buttons.", "rem": "創506"},
+        "tw": {"prog": "Streamlit 互動 Web 應用開發入門", "hw": "Lab 7: 互動網頁介面開發腳本", "sum": "將 Python 數據分析腳本轉化為互動式 Web 應用程式；加入下拉選單、數值滑桿與功能按鈕。", "rem": "創506"},
+        "vn": {"prog": "Ứng dụng Web tương tác với Streamlit", "hw": "Lab 7: Kịch bản giao diện Web App", "sum": "Chuyển mã Python thành ứng dụng web tương tác; thêm menu thả xuống, thanh trượt và các nút bấm.", "rem": "創506"},
+        "id": {"prog": "Aplikasi Web Interaktif dengan Streamlit", "hw": "Lab 7: Skrip antarmuka aplikasi web", "sum": "Mengubah skrip Python menjadi aplikasi web interaktif; menambahkan menu dropdown, slider, dan tombol.", "rem": "創506"},
+        "my": {"prog": "Aplikasi Web Interaktif dengan Streamlit", "hw": "Lab 7: Skrip antara muka aplikasi web", "sum": "Menukar skrip Python kepada aplikasi web interaktif; menambah menu dropdown, slider, dan butang tindakan.", "rem": "創506"},
+        "th": {"prog": "สร้างเว็บแอปพลิเคชันเชิงโต้ตอบด้วย Streamlit", "hw": "Lab 7: สคริปต์ส่วนติดต่อผู้ใช้ของเว็บแอป", "sum": "เปลี่ยนสคริปต์ Python ให้กลายเป็นเว็บแอปที่โต้ตอบได้; เพิ่มเมนูดรอปดาวน์ ตัวเลื่อนปรับค่า และปุ่มกด", "rem": "創506"},
+        "fr": {"prog": "Applications web interactives avec Streamlit", "hw": "TP 7 : Script d'interface pour application web", "sum": "Transformation de scripts Python en applications web interactives ; ajout de menus déroulants, curseurs et boutons.", "rem": "創506"}
     },
     {
         "week": "Week 11", "date": "2026/11/19",
-        "us": {"prog": "Cloud Deployment: GitHub + Streamlit Cloud", "hw": "Lab 5: Deploying live web app", "sum": "Git and GitHub version control; CI/CD cloud deployment; permanent custom URL and QR Code sharing.", "rem": "In-person (創506)"},
-        "tw": {"prog": "雲端部署實戰：GitHub ＋ Streamlit Cloud", "hw": "Lab 5: 應用程式永久上線", "sum": "Git 與 GitHub 版本控制；雲端持續整合（CI/CD）；生成專屬公開網址與 QR Code 分享。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Triển khai đám mây: GitHub + Streamlit Cloud", "hw": "Lab 5: Đưa ứng dụng lên mạng", "sum": "Quản lý phiên bản Git & GitHub; tự động hóa CI/CD; tạo đường link URL tùy chỉnh và mã QR chia sẻ.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Deployment Cloud: GitHub + Streamlit Cloud", "hw": "Lab 5: Rilis aplikasi web aktif", "sum": "Kontrol versi Git & GitHub; alur otomatisasi CI/CD cloud; bagikan link URL permanen dan kode QR.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Penyebaran Awan: GitHub + Streamlit Cloud", "hw": "Lab 5: Pelancaran aplikasi web secara langsung", "sum": "Kawalan versi Git dan GitHub; automasi CI/CD awan; pautan URL kekal dan perkongsian Kod QR.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "การปรับใช้บนคลาวด์: GitHub + Streamlit Cloud", "hw": "Lab 5: เผยแพร่เว็บแอปสู่สาธารณะ", "sum": "ระบบควบคุมเวอร์ชัน Git & GitHub; กระบวนการ CI/CD คลาวด์; แชร์ลิงก์ถาวรและ QR Code สำหรับมือถือ", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Déploiement Cloud : GitHub + Streamlit Cloud", "hw": "TP 5 : Mise en ligne de l'application", "sum": "Gestion de versions avec Git & GitHub ; intégration CI/CD ; partage via URL dédiée et QR Code.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Cloud Deployment & Mobile UI", "hw": "Lab 8: Deploy app to the web", "sum": "Publishing web applications online for free; testing responsive layouts on smartphones; mobile accessibility check.", "rem": "創506"},
+        "tw": {"prog": "雲端部署實戰與手機響應式介面優化", "hw": "Lab 8: 雲端 Web 應用正式發布上線", "sum": "將 Web 應用程式免費發布至雲端永久運行；在手機上實機測試響應式排版與跨螢幕無障礙體驗。", "rem": "創506"},
+        "vn": {"prog": "Triển khai đám mây & Giao diện di động", "hw": "Lab 8: Phát hành ứng dụng lên web", "sum": "Xuất bản ứng dụng web lên mạng miễn phí; kiểm thử giao diện thích ứng trên điện thoại thông minh.", "rem": "創506"},
+        "id": {"prog": "Deployment Cloud & UI Mobile", "hw": "Lab 8: Rilis aplikasi ke web publik", "sum": "Mempublikasikan aplikasi web online secara gratis; menguji tata letak responsif pada smartphone.", "rem": "創506"},
+        "my": {"prog": "Penyebaran Awan & Antara Muka Mudah Alih", "hw": "Lab 8: Sebarkan aplikasi ke web secara langsung", "sum": "Menerbitkan aplikasi web atas talian secara percuma; menguji reka bentuk responsif pada telefon pintar.", "rem": "創506"},
+        "th": {"prog": "การปรับใช้บนคลาวด์ & UI สำหรับสมาร์ทโฟน", "hw": "Lab 8: นำเว็บแอปขึ้นสู่อินเทอร์เน็ตสาธารณะ", "sum": "เผยแพร่เว็บแอปพลิเคชันออนไลน์ฟรี; ทดสอบการจัดหน้าจอแบบตอบสนองบนสมาร์ทโฟน", "rem": "創506"},
+        "fr": {"prog": "Déploiement Cloud & Interface Mobile", "hw": "TP 8 : Mise en ligne de l'application", "sum": "Publication gratuite d'applications web ; tests de compatibilité et responsive design sur smartphones.", "rem": "創506"}
     },
     {
         "week": "Week 12", "date": "2026/11/26",
-        "us": {"prog": "AI Agent Integration: LLM API Setup", "hw": "Lab 6: Business intelligence chat agent", "sum": "Google AI Studio and Gemini API; prompt conditioning; embedding intelligent reasoning in web apps.", "rem": "In-person (創506)"},
-        "tw": {"prog": "AI 智慧助理串接：LLM API 整合", "hw": "Lab 6: 商業智能問答助手", "sum": "Google AI Studio 與 Gemini API 調度；將 AI 文本分析功能嵌入 Web 應用程式。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Tích hợp trợ lý thông minh: Cài đặt API LLM", "hw": "Lab 6: Trợ lý trò chuyện thông minh", "sum": "Google AI Studio & API Gemini; tinh chỉnh câu lệnh prompt; tích hợp trí tuệ nhân tạo vào Web App.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Integrasi Asisten AI: Setup API LLM", "hw": "Lab 6: Asisten obrolan analitik bisnis", "sum": "Google AI Studio & API Gemini; prompt engineering terarah; menanamkan nalar cerdas ke aplikasi web.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Integrasi Ejen AI: Konfigurasi API LLM", "hw": "Lab 6: Ejen sembang kecerdasan perniagaan", "sum": "Google AI Studio dan API Gemini; kejuruteraan prompt; membenamkan penaakulan pintar ke dalam aplikasi.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "การเชื่อมต่อเอเจนต์ AI: ตั้งค่า API ของ LLM", "hw": "Lab 6: บอทถามตอบอัจฉริยะทางธุรกิจ", "sum": "Google AI Studio และ Gemini API; การวางข้อกำหนดคำสั่ง Prompt; นำการประมวลผลอัจฉริยะลงสู่เว็บ", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Intégration d'Agent IA : API de LLM", "hw": "TP 6 : Assistant conversationnel d'affaires", "sum": "Google AI Studio et API Gemini ; conditionnement de prompts ; injection d'intelligence dans l'app.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Earnings Call & Annual Report Reader", "hw": "Lab 9: Automated risk summary report", "sum": "Using AI to parse corporate quarterly filings and earnings call transcripts; extracting key risks and growth drivers in seconds.", "rem": "創506"},
+        "tw": {"prog": "法說會逐字稿與財報風險智慧解析", "hw": "Lab 9: 自動化企業風險摘要報告", "sum": "運用 AI 秒速剖析企業季報與法說會逐字稿；精準萃取營運關鍵風險因子與未來成長驅動力。", "rem": "創506"},
+        "vn": {"prog": "Phân tích cuộc họp báo tài chính & Báo cáo thường niên", "hw": "Lab 9: Báo cáo tóm tắt rủi ro tự động", "sum": "Dùng AI bóc tách hồ sơ quý và biên bản họp báo cáo tài chính; trích xuất rủi ro chính và động lực tăng trưởng trong vài giây.", "rem": "創506"},
+        "id": {"prog": "Pembaca Laporan Tahunan & Earnings Call", "hw": "Lab 9: Laporan ringkasan risiko otomatis", "sum": "Memanfaatkan AI untuk membedah laporan kuartalan dan transkrip earnings call; ekstraksi risiko dan pendorong pertumbuhan.", "rem": "創506"},
+        "my": {"prog": "Pembaca Panggilan Pendapatan & Laporan Tahunan", "hw": "Lab 9: Laporan ringkasan risiko automatik", "sum": "Menggunakan AI untuk menghurai pemfailan suku tahunan dan transkrip panggilan pendapatan; mengekstrak risiko utama.", "rem": "創506"},
+        "th": {"prog": "ระบบอ่านรายงานประจำปีและการแถลงผลประกอบการ", "hw": "Lab 9: รายงานสรุปความเสี่ยงองค์กรอัตโนมัติ", "sum": "ใช้ AI แยกวิเคราะห์รายงานทางการเงินรายไตรมาสและการแถลงผลงาน; ดึงข้อมูลความเสี่ยงสำคัญและปัจจัยหนุนการเติบโต", "rem": "創506"},
+        "fr": {"prog": "Lecteur d'Earnings Call & Rapports annuels", "hw": "TP 9 : Synthèse automatisée des risques", "sum": "Utilisation de l'IA pour analyser les rapports trimestriels et les conférences de résultats financiers.", "rem": "創506"}
     },
     {
         "week": "Week 13", "date": "2026/12/03",
-        "us": {"prog": "ESG & Sentiment Analysis for Business", "hw": "In-class lab: ESG keyword extractor", "sum": "Corporate ESG report analysis; keyword entity extraction; sentiment scoring and corporate governance.", "rem": "In-person (創506)"},
-        "tw": {"prog": "ESG 企業永續與文字情感分析", "hw": "課堂實作：永續報告書關鍵字提取", "sum": "企業 ESG 永續報告書解析；自然語言關鍵詞萃取；情緒分析與商業聲譽評分。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "ESG & Phân tích sắc thái văn bản kinh doanh", "hw": "Thực hành: Trích xuất từ khóa ESG", "sum": "Phân tích báo cáo phát triển bền vững ESG; trích xuất thực thể từ khóa; chấm điểm cảm xúc thương hiệu.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "ESG & Analisis Sentimen Teks Bisnis", "hw": "Praktik kelas: Ekstraksi kata kunci ESG", "sum": "Analisis laporan keberlanjutan ESG; ekstraksi entitas teks kata kunci; skor sentimen dan reputasi korporat.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "ESG & Analisis Sentimen Teks Perniagaan", "hw": "Latihan kelas: Pengekstrak kata kunci ESG", "sum": "Analisis laporan kemampanan korporat ESG; pengekstrakan entiti; pemarkahan sentimen reputasi jenama.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "ESG และการวิเคราะห์ความรู้สึกในข้อความธุรกิจ", "hw": "แบบฝึกหัด: ระบบดึงคำสำคัญรายงาน ESG", "sum": "การสกัดรายงานความยั่งยืนขององค์กร; สกัดคำสำคัญเชิงหมวดหมู่; การให้คะแนนความรู้สึกต่อแบรนด์", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "ESG & Analyse de sentiment d'entreprise", "hw": "Exercice : Extracteur de termes ESG", "sum": "Analyse de rapports RSE/ESG ; extraction d'entités textuelles ; scoring de sentiment et gouvernance.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Multimodal AI: Smart Receipt Scanner", "hw": "Lab 10: Receipt scanner project", "sum": "Gemini Vision; parsing invoices and receipts; auto-generating accounting entries and inbound inventory sorting logic.", "rem": "創506"},
+        "tw": {"prog": "多模態 AI 影像辨識：智慧發票報帳助手", "hw": "Lab 10: 智慧單據辨識專題", "sum": "運用 Gemini Vision 多模態視覺能力；辨識發票與收據；自動生成會計分錄與進貨分類盤點邏輯。", "rem": "創506"},
+        "vn": {"prog": "AI đa phương thức: Máy quét hóa đơn thông minh", "hw": "Lab 10: Dự án quét hóa đơn tự động", "sum": "Gemini Vision; phân tích hóa đơn và biên lai; tự động tạo bút toán kế toán và phân loại hàng tồn kho nhập kho.", "rem": "創506"},
+        "id": {"prog": "AI Multimodal: Pemindai Struk & Faktur Cerdas", "hw": "Lab 10: Proyek pemindai struk belanja", "sum": "Gemini Vision; parsing invoice dan kuitansi; otomatis membuat jurnal akuntansi dan klasifikasi inventaris masuk.", "rem": "創506"},
+        "my": {"prog": "AI Multimodal: Pengimbas Resit Pintar", "hw": "Lab 10: Projek pengimbas resit automatik", "sum": "Gemini Vision; menganalisis invois dan resit; menjana catatan perakaunan automatik dan pengisihan inventori.", "rem": "創506"},
+        "th": {"prog": "AI หลายรูปแบบ: ระบบสแกนใบเสร็จอัจฉริยะ", "hw": "Lab 10: โครงงานสแกนใบเสร็จและใบแจ้งหนี้", "sum": "Gemini Vision; แยกแยะใบแจ้งหนี้และใบเสร็จ; สร้างบันทึกทางบัญชีอัตโนมัติและจัดหมวดหมู่สินค้าคงคลัง", "rem": "創506"},
+        "fr": {"prog": "IA Multimodale : Scanner de reçus et factures", "hw": "TP 10 : Projet de numérisation de reçus", "sum": "Gemini Vision ; analyse de factures et tickets ; génération automatique d'écritures comptables et inventaire.", "rem": "創506"}
     },
     {
         "week": "Week 14", "date": "2026/12/10",
-        "us": {"prog": "UI/UX & Professional Dashboard Design", "hw": "Final project UI refinement", "sum": "Multi-column grid layouts; color palettes; mobile-first responsive design best practices.", "rem": "In-person (創506)"},
-        "tw": {"prog": "使用者體驗優化與專業儀表板設計", "hw": "期末專案 UI/UX 優化", "sum": "多欄位卡片排版；主題配色（Light/Dark）；跨螢幕手機響應式設計調校。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Thiết kế UI/UX & Bảng điều khiển chuyên nghiệp", "hw": "Hoàn thiện giao diện đồ án", "sum": "Bố cục lưới đa cột; bảng màu trực quan; tối ưu hóa thiết kế thích ứng ưu tiên di động (Mobile-first).", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Desain UI/UX & Dashboard Profesional", "hw": "Penyempurnaan UI proyek akhir", "sum": "Tata letak grid multi-kolom; skema warna terpadu; praktik terbaik desain responsif ramah seluler.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Reka Bentuk UI/UX & Papan Pemuka Profesional", "hw": "Penambahbaikan antara muka projek", "sum": "Susun atur grid pelbagai lajur; skim warna estetik; amalan terbaik reka bentuk responsif mudah alih.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "การออกแบบ UI/UX & แดชบอร์ดระดับมืออาชีพ", "hw": "ขัดเกลาหน้าตา UI ของโครงงานปลายภาค", "sum": "การจัดวางเค้าโครงแบบหลายคอลัมน์; โทนสีที่เป็นระเบียบ; การปรับหน้าจอให้ตอบสนองบนสมาร์ทโฟน", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Design UI/UX & Tableaux de bord professionnels", "hw": "Peaufinage de l'UI du projet", "sum": "Mises en page multi-colonnes ; harmonies graphiques ; bonnes pratiques de design mobile-first.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Dynamic Charts: Interactive Visuals", "hw": "Project Sprint: Pro candlestick charts", "sum": "Creating interactive financial charts; zooming, tooltips, and volume overlays; polishing mobile user interfaces.", "rem": "創506"},
+        "tw": {"prog": "動態商業視覺化：互動專業 K 線圖", "hw": "專案衝刺：專業動態 K 線圖表", "sum": "打造互動式金融圖表；縮放檢視、懸浮數值資訊卡與成交量疊加分析；精修手機操作介面。", "rem": "創506"},
+        "vn": {"prog": "Biểu đồ động: Trực quan hóa tương tác", "hw": "Tăng tốc dự án: Biểu đồ nến chuyên nghiệp", "sum": "Tạo biểu đồ tài chính tương tác; phóng to, xem tooltip và lớp phủ khối lượng; tối ưu giao diện di động.", "rem": "創506"},
+        "id": {"prog": "Grafik Dinamis: Visualisasi Interaktif", "hw": "Sprint Proyek: Grafik candlestick pro", "sum": "Membuat grafik keuangan interaktif; fitur zoom, tooltip angka, dan overlay volume; memoles antarmuka ponsel.", "rem": "創506"},
+        "my": {"prog": "Carta Dinamik: Visual Interaktif", "hw": "Pecutan Projek: Carta candlestick profesional", "sum": "Membina carta kewangan interaktif; zum, petua alat, dan tindanan volum; memperhalusi UI mudah alih.", "rem": "創506"},
+        "th": {"prog": "แผนภูมิไดนามิก: การแสดงภาพเชิงโต้ตอบ", "hw": "สปรินต์โครงงาน: กราฟแท่งเทียนระดับมืออาชีพ", "sum": "สร้างแผนภูมิการเงินแบบอินเทอร์แอคทีฟ; ซูมเข้าออก กล่องข้อความเมื่อชี้เมาส์ และกราฟปริมาณซื้อขาย", "rem": "創506"},
+        "fr": {"prog": "Graphiques dynamiques : Visuels interactifs", "hw": "Sprint Projet : Chandeliers boursiers pro", "sum": "Conception de graphiques financiers interactifs ; zoom, infobulles et volumes ; finition de l'interface mobile.", "rem": "創506"}
     },
     {
         "week": "Week 15", "date": "2026/12/17",
-        "us": {"prog": "AI Ethics, Data Privacy & Security", "hw": "Lab 7: Compliance checklist", "sum": "Confidentiality; secrets management for API keys; defending against prompt injections in production.", "rem": "In-person (創506)"},
-        "tw": {"prog": "AI 倫理、資料隱私與資安防護", "hw": "Lab 7: 資安合規自我檢核表", "sum": "商業機密界線；API Key 環境變數隱藏安全實踐；提示詞注入（Prompt Injection）防禦。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Đạo đức AI, Quyền riêng tư & Bảo mật dữ liệu", "hw": "Lab 7: Bảng kiểm tra tuân thủ", "sum": "Bảo mật kinh doanh; quản lý an toàn khóa API; phòng thủ chống tấn công chèn lệnh (Prompt Injection).", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Etika AI, Privasi Data & Keamanan Sistem", "hw": "Lab 7: Checklist kepatuhan keamanan", "sum": "Kerahasiaan data bisnis; manajemen kunci API yang aman; mitigasi serangan prompt injection.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Etika AI, Privasi Data & Keselamatan", "hw": "Lab 7: Senarai semak pematuhan privasi", "sum": "Kerahsiaan maklumat; pengurusan selamat kunci API; perlindungan daripada serangan suntikan prompt.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "จริยธรรม AI, ความเป็นส่วนตัว & ความปลอดภัยข้อมูล", "hw": "Lab 7: ตรวจเช็กลิสต์ความสอดคล้องความปลอดภัย", "sum": "ขอบเขตความลับทางธุรกิจ; การจัดการคีย์ API ในไฟล์ลับ; การป้องกันการโจมตี Prompt Injection", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Éthique de l'IA, Données & Cybersécurité", "hw": "TP 7 : Checklist de conformité", "sum": "Confidentialité d'affaires ; gestion sécurisée des clés d'API ; protection contre le prompt injection.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "AI Ethics, Data Privacy & Security", "hw": "Lab 11: Prompt defense & key safety", "sum": "AI compliance and digital ethics; public vs. confidential data boundaries; API key protection; safe app deployment.", "rem": "創506"},
+        "tw": {"prog": "AI 倫理、資料隱私與資安防護", "hw": "Lab 11: 提示詞防禦與金鑰資安實作", "sum": "AI 合規性與數位倫理；公開資訊與商業機密界線；API 金鑰環境變數隱藏安全；安全發布應用。", "rem": "創506"},
+        "vn": {"prog": "Đạo đức AI, Quyền riêng tư & Bảo mật dữ liệu", "hw": "Lab 11: Phòng thủ câu lệnh & Bảo vệ khóa", "sum": "Tuân thủ AI và đạo đức kỹ thuật số; ranh giới dữ liệu bí mật kinh doanh; bảo vệ khóa API; triển khai an toàn.", "rem": "創506"},
+        "id": {"prog": "Etika AI, Privasi Data & Keamanan Sistem", "hw": "Lab 11: Pertahanan prompt & keamanan kunci", "sum": "Kepatuhan AI dan etika digital; batas rahasia bisnis; perlindungan kunci API; penerapan web yang aman.", "rem": "創506"},
+        "my": {"prog": "Etika AI, Privasi Data & Keselamatan", "hw": "Lab 11: Pertahanan prompt & kunci API selamat", "sum": "Pematuhan AI dan etika digital; sempadan rahsia perdagangan; perlindungan kunci API; penyebaran selamat.", "rem": "創506"},
+        "th": {"prog": "จริยธรรม AI ความเป็นส่วนตัวและความปลอดภัยข้อมูล", "hw": "Lab 11: ป้องกันการแทรกคำสั่งและรักษาคีย์ API", "sum": "ความสอดคล้องทางกฎหมายและจริยธรรม AI; ขอบเขตความลับทางธุรกิจ; การเก็บรักษาคีย์ API อย่างปลอดภัย", "rem": "創506"},
+        "fr": {"prog": "Éthique de l'IA, Données & Cybersécurité", "hw": "TP 11 : Défense de prompt & Clés sécurisées", "sum": "Conformité de l'IA et éthique numérique ; secret des affaires ; protection des clés d'API ; déploiement sécurisé.", "rem": "創506"}
     },
     {
         "week": "Week 16", "date": "2026/12/24",
-        "us": {"prog": "Final Project Rehearsal & Stress Testing", "hw": "End-to-end user testing", "sum": "Peer review clinics; edge-case stress testing; performance debugging and UX hardening.", "rem": "In-person (創506)"},
-        "tw": {"prog": "期中專案演練與壓力測試", "hw": "應用程式端對端完整測試", "sum": "同儕測試（Peer Review）；極端輸入測試；網頁載入效能調優與除錯。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "Tổng duyệt đồ án cuối kỳ & Thử nghiệm chịu tải", "hw": "Kiểm thử người dùng toàn diện", "sum": "Đánh giá chéo ngang hàng; thử nghiệm các trường hợp biên; tinh chỉnh hiệu năng và hoàn thiện sản phẩm.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "Geladi Bersih Proyek Akhir & Uji Beban", "hw": "Pengujian pengguna menyeluruh", "sum": "Sesi peer-review antar kelompok; pengujian kondisi batas ekstrem; optimasi performa dan debugging.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "Latihan Akhir Projek & Ujian Tekanan", "hw": "Pengujian aplikasi dari hujung ke hujung", "sum": "Ulasan rakan sebaya; ujian situasi melampau; penalaan prestasi masa tindak balas dan pepijat.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "ซ้อมใหญ่โครงงานปลายภาค & การทดสอบโหลด", "hw": "การทดสอบการใช้งานจริงแบบครบวงจร", "sum": "การประเมินผลโดยกลุ่มเพื่อนร่วมรุ่น; การทดสอบกรณีขอบเขตสุดขั้ว; ตรวจสอบและปรับปรุงประสิทธิภาพเว็บ", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "Répétition générale du projet & Stress test", "hw": "Tests utilisateurs de bout en bout", "sum": "Ateliers de revue par les pairs ; tests de charge et cas limites ; optimisation des temps de chargement.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Final Project Showcase", "hw": "Final Deliverable: Live Web App", "sum": "In-class project showcase; live demonstration of interactive FinTech web applications; peer feedback and evaluation.", "rem": "Final Demo Day"},
+        "tw": {"prog": "【期末成果發表會】專題展示與互評", "hw": "期末交付成果：上線運作 Web App", "sum": "課堂現場專題成果發表會；學生上台現場展示可互動之金融科技 Web 應用程式；同儕互評與回饋交流。", "rem": "成果發表會"},
+        "vn": {"prog": "【Báo cáo đồ án cuối kỳ】Trình diễn sản phẩm", "hw": "Sản phẩm bàn giao: Web App trực tuyến", "sum": "Trình bày đồ án trực tiếp trên lớp; demo trực tiếp ứng dụng FinTech có thể tương tác; nhận xét và đánh giá chéo.", "rem": "Demo Day"},
+        "id": {"prog": "[Showcase Proyek Akhir] Demo Produk", "hw": "Pengumpulan Akhir: Live Web App", "sum": "Presentasi proyek akhir di kelas; demonstrasi langsung aplikasi web FinTech interaktif; evaluasi rekan sejawat.", "rem": "Demo Day"},
+        "my": {"prog": "[Pameran Projek Akhir] Demonstrasi Langsung", "hw": "Penyerahan Akhir: Aplikasi Web Aktif", "sum": "Pembentangan projek akhir dalam kelas; demonstrasi langsung aplikasi web FinTech interaktif; maklum balas rakan sebaya.", "rem": "Hari Demo"},
+        "th": {"prog": "【นำเสนอผลงานโครงงานปลายภาค】สาธิตสด", "hw": "ผลงานส่งมอบขั้นสุดท้าย: เว็บแอปที่ใช้งานได้จริง", "sum": "การนำเสนอโครงงานสดในชั้นเรียน; สาธิตการทำงานจริงของเว็บแอปพลิเคชัน FinTech แบบอินเทอร์แอคทีฟ; การประเมินผลโดยเพื่อนร่วมชั้น", "rem": "วันนำเสนอผลงาน"},
+        "fr": {"prog": "[Showcase final des projets] Démonstration", "hw": "Livrable final : Application web en ligne", "sum": "Présentation des projets en direct en classe ; démonstrations d'applications FinTech interactives ; retours et évaluation.", "rem": "Demo Day"}
     },
     {
         "week": "Week 17", "date": "2026/12/31",
-        "us": {"prog": "[Final Showcase] Interactive App Demo (Day 1)", "hw": "Final app & documentation release", "sum": "Live presentation of deployed FinTech web applications; expert feedback and peer exchange.", "rem": "In-person (創506)"},
-        "tw": {"prog": "【期末發表】專題成果展示會 (Day 1)", "hw": "期末專題報告與網頁交付", "sum": "學生分組上台發表互動式金融科技 Web 應用；業界專家/師長講評交流。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "【Báo cáo cuối kỳ】Thuyết trình ứng dụng (Ngày 1)", "hw": "Bàn giao ứng dụng & tài liệu", "sum": "Thuyết trình trực tiếp ứng dụng FinTech trên sân khấu lớp học; nhận góp ý và trao đổi thực tế.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "[Showcase Akhir] Demo Aplikasi Interaktif (Hari 1)", "hw": "Rilis aplikasi akhir & dokumentasi", "sum": "Presentasi langsung aplikasi web FinTech yang telah live; umpan balik penguji dan tanya jawab.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "[Pameran Akhir] Demonstrasi Aplikasi (Hari 1)", "hw": "Penyerahan aplikasi akhir & dokumentasi", "sum": "Pembentangan langsung aplikasi web FinTech atas talian; maklum balas penilai dan perbincangan.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "【นำเสนอผลงานปลายภาค】สาธิตเว็บแอป (วันที่ 1)", "hw": "ส่งมอบเว็บแอปและคู่มือฉบับสมบูรณ์", "sum": "นำเสนอแอปพลิเคชัน FinTech แบบสดในห้องเรียน; รับข้อเสนอแนะจากผู้ทรงคุณวุฒิและเพื่อนร่วมชั้น", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "[Showcase final] Démo d'application en direct (J1)", "hw": "Livraison de l'application et documentation", "sum": "Présentation des applications FinTech déployées ; retours d'évaluation et échanges avec la salle.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Independent Study: FinTech Multimedia", "hw": "Independent project enhancement", "sum": "Self-directed learning per school policy: viewing industry multimedia tutorials; refining code logic and mobile UI.", "rem": "Flexible Learning"},
+        "tw": {"prog": "【自主學習活動】FinTech 多媒體研習", "hw": "自主專案程式優化與精進", "sum": "依學校自主學習規定：自主觀看業界多媒體影音教材；持續精進專案程式邏輯與手機排版體驗。", "rem": "自主學習週"},
+        "vn": {"prog": "Học tập tự chủ: Đa phương tiện FinTech", "hw": "Nâng cấp dự án độc lập", "sum": "Tự học theo quy định của nhà trường: xem tài liệu video công nghệ tài chính; tinh chỉnh mã nguồn và giao diện di động.", "rem": "Học tập linh hoạt"},
+        "id": {"prog": "Studi Mandiri: Multimedia FinTech", "hw": "Penyempurnaan proyek mandiri", "sum": "Pembelajaran mandiri sesuai kebijakan kampus: menonton tutorial video industri; menyempurnakan kode dan UI seluler.", "rem": "Studi Mandiri"},
+        "my": {"prog": "Kajian Mandiri: Multimedia FinTech", "hw": "Penambahbaikan projek kendiri", "sum": "Pembelajaran kendiri mengikut dasar universiti: menonton tutorial multimedia industri; memperkemas kod dan UI mudah alih.", "rem": "Pembelajaran Fleksibel"},
+        "th": {"prog": "กิจกรรมการเรียนรู้ด้วยตนเอง: มัลติมีเดีย FinTech", "hw": "การปรับปรุงโครงงานด้วยตนเอง", "sum": "การเรียนรู้ตามอัธยาศัยตามนโยบายมหาวิทยาลัย: ศึกษาสื่อมัลติมีเดียอุตสาหกรรม; ขัดเกลาตรรกะโค้ดและ UI มือถือ", "rem": "สัปดาห์เรียนรู้ยืดหยุ่น"},
+        "fr": {"prog": "Étude autonome : Multimédia FinTech", "hw": "Amélioration autonome du projet", "sum": "Apprentissage autonome selon les directives de l'université : visionnage de tutoriels industriels ; perfectionnement du code.", "rem": "Apprentissage flexible"}
     },
     {
         "week": "Week 18", "date": "2027/01/07",
-        "us": {"prog": "[Final Showcase] Demo (Day 2) & Wrap-up", "hw": "Learning portfolio compilation", "sum": "Showcase round 2; course synthesis; mapping AI skills to future careers in financial analytics.", "rem": "In-person (創506)"},
-        "tw": {"prog": "【期末發表】專題成果展示會 (Day 2) 與總結", "hw": "學習歷程檔案彙整", "sum": "第二階段專題成果發表；全學期知識回顧；生成式 AI 與商業分析職涯藍圖展拓。", "rem": "實體上課 (創506)"},
-        "vn": {"prog": "【Báo cáo cuối kỳ】Thuyết trình (Ngày 2) & Tổng kết", "hw": "Tổng hợp hồ sơ học tập cá nhân", "sum": "Thuyết trình đợt 2; đúc kết kiến thức toàn khóa; định hướng phát triển sự nghiệp cùng AI tài chính.", "rem": "Trực tiếp (創506)"},
-        "id": {"prog": "[Showcase Akhir] Demo (Hari 2) & Kesimpulan", "hw": "Penyusunan portofolio belajar", "sum": "Showcase sesi 2; rangkuman materi satu semester; pemetaan keterampilan AI ke karier analitik bisnis.", "rem": "Tatap muka (創506)"},
-        "my": {"prog": "[Showcase Akhir] Demo (Hari 2) & Penutup", "hw": "Penyusunan portfolio pembelajaran", "sum": "Showcase pusingan 2; sintesis kursus; aplikasi kemahiran AI dalam kerjaya analitik perniagaan.", "rem": "Bersemuka (創506)"},
-        "th": {"prog": "【นำเสนอผลงานปลายภาค】สาธิต (วันที่ 2) & สรุปบทเรียน", "hw": "รวบรวมแฟ้มสะสมผลงานการเรียนรู้", "sum": "นำเสนอรอบที่สอง; สรุปเนื้อหาสำคัญตลอดทั้งภาคการศึกษา; แผนที่เส้นทางอาชีพวิเคราะห์ธุรกิจด้วย AI", "rem": "ในชั้น (創506)"},
-        "fr": {"prog": "[Showcase final] Démo (J2) & Bilan du semestre", "hw": "Consolidation du portfolio d'apprentissage", "sum": "Deuxième session de présentations ; synthèse générale ; opportunités professionnelles dans l'IA financière.", "rem": "Présentiel (創506)"}
+        "us": {"prog": "Independent Study: Case Studies & Portfolio", "hw": "Final portfolio submission", "sum": "Self-directed learning per school policy: reviewing AI case studies; submitting final project portfolio.", "rem": "Flexible Learning"},
+        "tw": {"prog": "【自主學習活動】AI 商業案例與歷程彙整", "hw": "學期學習歷程檔案最終交付", "sum": "依學校自主學習規定：研讀國際 AI 商業應用案例；彙整並繳交全學期學習歷程檔案。", "rem": "自主學習週"},
+        "vn": {"prog": "Học tập tự chủ: Tình huống AI & Hồ sơ", "hw": "Nộp hồ sơ học tập cuối kỳ", "sum": "Tự học theo quy chế: nghiên cứu tình huống kinh doanh AI; hoàn thiện và nộp hồ sơ học tập cả kỳ.", "rem": "Học tập linh hoạt"},
+        "id": {"prog": "Studi Mandiri: Studi Kasus AI & Portofolio", "hw": "Pengumpulan portofolio akhir", "sum": "Pembelajaran mandiri sesuai kebijakan kampus: meninjau studi kasus AI; mengumpulkan portofolio belajar akhir.", "rem": "Studi Mandiri"},
+        "my": {"prog": "Kajian Mandiri: Kajian Kes AI & Portfolio", "hw": "Penyerahan portfolio akhir", "sum": "Pembelajaran kendiri mengikut dasar: meneliti kajian kes perniagaan AI; mengumpul dan menyerahkan portfolio semester.", "rem": "Pembelajaran Fleksibel"},
+        "th": {"prog": "กิจกรรมการเรียนรู้ด้วยตนเอง: กรณีศึกษา AI & พอร์ตโฟลิโอ", "hw": "ส่งแฟ้มสะสมผลงานฉบับสมบูรณ์", "sum": "การเรียนรู้ด้วยตนเองตามนโยบาย: ศึกษากรณีศึกษาทางธุรกิจ AI; รวบรวมและส่งแฟ้มสะสมงานการเรียนรู้ตลอดภาคเรียน", "rem": "สัปดาห์เรียนรู้ยืดหยุ่น"},
+        "fr": {"prog": "Étude autonome : Études de cas d'IA & Portfolio", "hw": "Dépôt final du portfolio", "sum": "Apprentissage autonome : étude de cas concrets d'IA dans les affaires ; consolidation et dépôt du portfolio d'apprentissage.", "rem": "Apprentissage flexible"}
     }
 ]
 
@@ -493,7 +493,6 @@ rows_html = "".join([
 
 table_full = f'<div class="syllabus-table-wrapper"><table class="syllabus-table"><thead><tr><th class="col-week">{cur_h[0]}</th><th class="col-date">{cur_h[1]}</th><th class="col-progress">{cur_h[2]}</th><th class="col-hw">{cur_h[3]}</th><th class="col-summary">{cur_h[4]}</th><th class="col-remarks">{cur_h[5]}</th></tr></thead><tbody>{rows_html}</tbody></table></div>'
 
-# 18 週大表：放置於上方，預設收合供點擊展開
 with st.expander(schedule_expander_titles.get(current_code, schedule_expander_titles["us"]), expanded=False):
     if hasattr(st, "html"):
         st.html(table_full)
@@ -501,7 +500,7 @@ with st.expander(schedule_expander_titles.get(current_code, schedule_expander_ti
         st.markdown(table_full, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開 + 快捷鍵速查 + 傳送門）
+# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開）
 # ==============================================================================
 st.markdown("---")
 expand_section_titles = {
@@ -519,10 +518,10 @@ st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles
 w1_details = {
     "us": """
     * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour (Room 506)**
-      1. Course orientation, grading policies (50% Lab, 20% Midterm, 30% Final), and interactive portal overview.
-      2. Device Requirements: Please bring your **Laptop** (for Colab) and **Smartphone** (for LINE chat & testing) to every class.
-      3. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
-      4. Showcase: How this entire portal was created with Python + Streamlit!
+      1. Course orientation, grading policies (50% Lab, 20% Midterm W9, 30% Final Showcase W16), and portal overview.
+      2. Device Requirements: Please bring your **Laptop** (for Colab) and **Smartphone** (for LINE chat & mobile app preview).
+      3. Introducing the **Conductor Mindset**: Lead AI with natural language prompts without memorizing syntax.
+      4. Inspiration: The very portal you are viewing right now was built entirely using Python + Streamlit!
     * **Part 2 (10:00 - 10:50) | Cloud Setup, Shortcuts & Live Demo**
       5. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop today).
       6. Keyboard Shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
@@ -533,7 +532,7 @@ w1_details = {
     """,
     "tw": """
     * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
-      1. 課程總覽、評量標準（平常 50%、期中 20%、期末 30%）與多語系 AI 助教網頁導覽。
+      1. 課程總覽、評量標準（平常 50%、第9週期中 20%、第16週期末發表 30%）與多語系 AI 助教網頁導覽。
       2. 必備設備提醒：每週請務必攜帶 **筆記型電腦**（Colab 實作）與 **智慧型手機**（LINE 互動與網頁預覽）。
       3. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI，無須死記複雜語法。
       4. 激勵展示：眼前的手機課綱與 AI 助教網頁，就是用純 Python 與 Streamlit 打造的成果！
@@ -547,13 +546,13 @@ w1_details = {
     """,
     "vn": """
     * **Part 1 (09:00 - 09:50) | Khái niệm, Tư duy nhạc trưởng & Giới thiệu cổng thông tin (Phòng 506)**
-      1. Tổng quan khóa học, quy chế chấm điểm (50% Lab, 20% Giữa kỳ, 30% Đồ án) và giới thiệu cổng thông tin.
-      2. Yêu cầu thiết bị: Vui lòng mang theo **Laptop** (cho Colab) và **Smartphone** (cho LINE) mỗi buổi học.
-      3. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần nhớ cú pháp.
-      4. Truyền cảm hứng: Toàn bộ cổng thông tin này được xây dựng bằng Python + Streamlit!
+      1. Tổng quan môn học, cơ cấu điểm (50% Lab, 20% Giữa kỳ T9, 30% Đồ án T16) và tham quan cổng thông tin.
+      2. Yêu cầu thiết bị: Vui lòng mang theo **Laptop** (cho Colab) và **Smartphone** (cho LINE) mỗi tuần.
+      3. **Tư duy nhạc trưởng**: Điều khiển AI bằng câu lệnh tự nhiên mà không cần ghi nhớ cú pháp.
+      4. Truyền cảm hứng: Cổng thông tin bạn đang xem được xây dựng hoàn toàn bằng Python + Streamlit!
     * **Part 2 (10:00 - 10:50) | Cài đặt Cloud, Phím tắt & Trình diễn trực tiếp**
-      5. Đăng nhập môi trường **Google Colab** (Lập trình cặp Pair Programming nếu không mang laptop hôm nay).
-      6. Khởi động phím tắt bàn phím (`Ctrl/Cmd + C, V, Z` và `Shift + Enter` để chạy code).
+      5. Đăng nhập môi trường **Google Colab** (Lập trình cặp Pair Programming nếu chưa có máy).
+      6. Khởi động phím tắt (`Ctrl/Cmd + C, V, Z` và `Shift + Enter` để chạy code).
       7. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) và vẽ biểu đồ xu hướng.
     * **Part 3 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
       8. **Lab 0**: Sinh viên chạy code và tùy chỉnh lấy dữ liệu cổ phiếu Apple (`AAPL`).
@@ -561,7 +560,6 @@ w1_details = {
     """
 }
 
-# 快捷鍵與工作流小備忘
 shortcuts_info = {
     "us": """
 | Action (功能) | Windows | Mac | Description (說明) |
@@ -594,7 +592,6 @@ dual_track_info = {
 """
 }
 
-# 多語系傳送門按鈕標籤
 portal_btn_labels = {
     "us": ("🛠️ Quick Access Links (Week 1)", "🚀 Open Google Colab", "💡 Open Google Gemini (Backup AI)"),
     "tw": ("🛠️ 課堂實作快速傳送門 (第 1 週)", "🚀 打開 Google Colab (雲端筆記本)", "💡 開啟 Google Gemini (AI 助教備用分頁)"),
@@ -606,7 +603,6 @@ portal_btn_labels = {
 }
 cur_btn_meta = portal_btn_labels.get(current_code, portal_btn_labels["us"])
 
-# 渲染 18 週抽屜（第一週預設展開）
 for i in range(1, 19):
     week_title_map = {
         "us": f"Week {i} Detailed Agenda (3-Hour Breakdown)",
@@ -723,22 +719,22 @@ with st.sidebar:
             if any(k in q_lower for k in ["đồ án", "cuối kỳ", "báo cáo", "final", "project", "showcase", "期末", "專案", "tugas akhir", "projek akhir", "โครงงาน"]):
                 category = "Final Project"
                 local_answers = {
-                    "us": "The Final Project Showcase takes place in **Week 17 & Week 18**. It counts for **30%** of your final grade.",
-                    "tw": "期末專案成果發表將於 **第 17 週與第 18 週** 課堂進行，佔學期總成績 **30%**。",
-                    "vn": "Đồ án cuối kỳ sẽ báo cáo trực tiếp vào **Tuần 17 & Tuần 18**, chiếm **30%** tổng điểm môn học.",
-                    "id": "Presentasi Proyek Akhir berlangsung pada **Minggu ke-17 & 18**, berbobot **30%** dari nilai akhir.",
-                    "my": "Pembentangan Projek Akhir diadakan pada **Minggu ke-17 & 18**, menyumbang **30%** daripada markah akhir.",
-                    "th": "การนำเสนอโครงงานปลายภาคจะมีขึ้นใน **สัปดาห์ที่ 17 และ 18** โดยคิดเป็น **30%** ของเกรดรวม",
-                    "fr": "La présentation des projets finaux aura lieu lors des **semaines 17 et 18** (30% de la note finale)."
+                    "us": "The Final Project Showcase takes place in **Week 16 (Dec 24)**. Weeks 17 & 18 are flexible independent learning. It counts for **30%** of your final grade.",
+                    "tw": "期末專案成果發表將於 **第 16 週 (12/24)** 課堂舉行（第 17-18 週為學校彈性自主學習），佔學期總成績 **30%**。",
+                    "vn": "Đồ án cuối kỳ sẽ báo cáo vào **Tuần 16 (24/12)** (Tuần 17-18 là tự học linh hoạt), chiếm **30%** tổng điểm môn học.",
+                    "id": "Presentasi Proyek Akhir berlangsung pada **Minggu ke-16 (24 Des)**, berbobot **30%** dari nilai akhir.",
+                    "my": "Pembentangan Projek Akhir diadakan pada **Minggu ke-16 (24 Dis)**, menyumbang **30%** markah akhir.",
+                    "th": "การนำเสนอโครงงานปลายภาคจะมีขึ้นใน **สัปดาห์ที่ 16 (24 ธ.ค.)** โดยคิดเป็น **30%** ของเกรดรวม",
+                    "fr": "La présentation des projets finaux aura lieu en **semaine 16 (24 déc.)** (30% de la note finale)."
                 }
                 zh_summary = "詢問期末專案發表時程與佔比"
-                en_broadcast = "The Final Project Showcase is in Week 17 & 18 (30% of total grade)."
+                en_broadcast = "The Final Project Showcase is in Week 16 (Dec 24) (30% of total grade)."
 
             elif any(k in q_lower for k in ["điểm", "grade", "score", "tỷ lệ", "評分", "成績", "比重", "nilai", "markah", "เกณฑ์", "คะแนน", "note"]):
                 category = "Grading"
                 local_answers = {
-                    "us": "Grading: Weekly in-class practice (50%), Midterm (20%), Final showcase (30%).",
-                    "tw": "評量標準：每週課堂趣味實作 50%、期中考/專案 20%、期末成果展示 30%。",
+                    "us": "Grading: Weekly in-class practice (50%), Midterm W9 (20%), Final showcase W16 (30%).",
+                    "tw": "評量標準：每週課堂趣味實作 50%、期中考/專案 20%、第 16 週期末成果展示 30%。",
                     "vn": "Tiêu chí chấm điểm: Thực hành trên lớp 50%, Giữa kỳ 20%, Đồ án cuối kỳ 30%.",
                     "id": "Penilaian: Praktik mingguan 50%, UTS 20%, Proyek akhir 30%.",
                     "my": "Pemarkahan: Amali mingguan 50%, Pertengahan penggal 20%, Projek akhir 30%.",
@@ -765,16 +761,16 @@ with st.sidebar:
             else:
                 category = "General / Consultation"
                 local_answers = {
-                    "us": f"Your question has been noted: '{user_q}'. Feel free to discuss with the instructor right after class!",
-                    "tw": f"已收到您的提問：『{user_q}』。下課後可隨時於教室與老師進一步討論！",
-                    "vn": f"Câu hỏi của bạn: '{user_q}' đã được ghi nhận. Bạn có thể trao đổi thêm với giảng viên sau giờ học!",
-                    "id": f"Pertanyaan Anda: '{user_q}' telah dicatat. Silakan berdiskusi dengan dosen setelah kelas!",
-                    "my": f"Soalan anda: '{user_q}' telah direkodkan. Sila berbincang dengan pensyarah selepas kelas!",
-                    "th": f"บันทึกคำถามของคุณแล้ว: '{user_q}' สามารถสอบถามเพิ่มเติมกับผู้สอนได้ทันทีหลังเลิกเรียน",
-                    "fr": f"Votre question a bien été notée : '{user_q}'. N'hésitez pas à en parler à la fin du cours !"
+                    "us": f"Your question has been noted: '{user_q}'. Feel free to discuss with the instructor right after class in Room 506!",
+                    "tw": f"已收到您的提問：『{user_q}』。下課後可於 506 教室與老師進一步討論！",
+                    "vn": f"Câu hỏi của bạn: '{user_q}' đã được ghi nhận. Bạn có thể trao đổi với giảng viên sau giờ học tại Phòng 506!",
+                    "id": f"Pertanyaan Anda: '{user_q}' telah dicatat. Silakan berdiskusi di Ruang 506 setelah kelas!",
+                    "my": f"Soalan anda: '{user_q}' telah direkodkan. Sila berbincang selepas kelas di Bilik 506!",
+                    "th": f"บันทึกคำถามของคุณแล้ว: '{user_q}' สามารถสอบถามกับผู้สอนได้ที่ห้อง 506 หลังเลิกเรียน",
+                    "fr": f"Votre question a bien été notée : '{user_q}'. N'hésitez pas à en parler en salle 506 après le cours !"
                 }
                 zh_summary = f"學生提問：{user_q}"
-                en_broadcast = "Feel free to ask questions after class or in our class chat group."
+                en_broadcast = "Feel free to ask questions after class in Room 506 or in our class chat group."
 
             webhook_url = "https://script.google.com/macros/s/AKfycbyep8yXuTaNgnAxKsdRXgsqJvYKAeqCmDiF2GqvUkJWf-7sCztuQ4n7cbkpbzyyYod4/exec"
             payload = {
