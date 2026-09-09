@@ -619,19 +619,58 @@ for i in range(1, 19):
         if i == 1:
             st.markdown(w1_details.get(current_code, w1_details["us"]))
             
-            with st.expander("⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)", expanded=False):
-                st.markdown(shortcuts_info.get(current_code, shortcuts_info["us"]))
-                
-            with st.expander("💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)", expanded=False):
-                st.markdown(dual_track_info.get(current_code, dual_track_info["us"]))
-            
-            st.markdown("---")
-            st.markdown(f"#### {cur_btn_meta[0]}")
-            btn_col1, btn_col2 = st.columns(2)
-            with btn_col1:
-                st.link_button(cur_btn_meta[1], "https://colab.research.google.com/", use_container_width=True)
-            with btn_col2:
-                st.link_button(cur_btn_meta[2], "https://gemini.google.com/", use_container_width=True)
+            with st.expander(
+                "⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)",
+                expanded=False,
+            ):
+              st.markdown(
+                  shortcuts_info.get(current_code, shortcuts_info["us"])
+              )
+
+            # 階層式小摺疊 2：雙軌 AI 實作工作流指南
+            with st.expander(
+                "💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)",
+                expanded=False,
+            ):
+              st.markdown(
+                  dual_track_info.get(current_code, dual_track_info["us"])
+              )
+
+            # 階層式小摺疊 3：【全新】Live Demo 4 行程式碼與 Prompt 快速複製區
+            with st.expander(
+                "📈 Live Demo: TSMC 4-Line Python & Prompt (台積電股價 4 行程式碼與提示詞)",
+                expanded=True,
+            ):
+              demo_prompts = {
+                  "us": (
+                      "**Natural Language Prompt (Copy to AI)**:  \n`Write a"
+                      " Python script using yfinance to download TSMC (2330.TW)"
+                      " stock prices for the past 1 year and plot a closing"
+                      " price line chart.`"
+                  ),
+                  "tw": (
+                      "**自然語言提示詞 (可直接複製問 AI)**：  \n`請用 Python 的"
+                      " yfinance 套件，抓取台積電 (2330.TW)"
+                      " 過去一年的股價歷史資料，並畫出收盤價的折線圖。`"
+                  ),
+              }
+              st.markdown(demo_prompts.get(current_code, demo_prompts["us"]))
+              st.markdown(
+                  "**Python Code (Click copy icon in top-right / 點擊右上角一鍵複製)**:"
+              )
+              demo_code = """# 1. 安裝與匯入市場數據套件
+!pip install yfinance
+import yfinance as yf
+
+# 2. 下載台積電 (2330.TW) 過去一年股價並畫圖
+df = yf.download("2330.TW", period="1y")
+df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=True)
+"""
+              st.code(demo_code, language="python")
+              st.caption(
+                  "💡 **操作步驟**：複製上方代碼 ➔ 點下方按鈕打開 Colab ➔ 貼上"
+                  " (`Ctrl+V` / `Cmd+V`) ➔ 按下 `Shift + Enter` 立即執行！"
+              )
         else:
             placeholders = {
                 "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
