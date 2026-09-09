@@ -638,6 +638,16 @@ for i in range(1, 19):
                 
                 st.markdown("**Python Code / Python 程式碼 (Click copy icon in top-right / 點擊右上角一鍵複製):**")
                 demo_code = """# 1. Install and import market data package
+!pip install yfinance
+import yfinance as yf
+
+# 2. Download TSMC (2330.TW) 1-year historical prices and plot trend
+df = yf.download("2330.TW", period="1y")
+df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=True)
+"""
+                st.code(demo_code, language="python")
+                st.caption("💡 **Execution Guide / 操作指引**: Copy code above ➔ Click Colab button below ➔ Paste (`Ctrl+V` / `Cmd+V`) ➔ Press `Shift + Enter` to run!")
+
             # 4. 商業與經濟延伸思考題 (Business & Economics Reflection)
             with st.expander("🧠 Business & Economics Thinking / 跨學科商業思考題 (結合經濟與會計)", expanded=False):
                 reflection_markdown = (
@@ -669,18 +679,8 @@ for i in range(1, 19):
                 )
                 st.code(share_text, language="text")
                 st.caption("💡 歡迎將上方文字複製轉發到班級群組，找好搭檔一起來結對實作！")
-                
-!pip install yfinance
-import yfinance as yf
 
-# 2. Download TSMC (2330.TW) 1-year historical prices and plot trend
-df = yf.download("2330.TW", period="1y")
-df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=True)
-"""
-                st.code(demo_code, language="python")
-                st.caption("💡 **Execution Guide / 操作指引**: Copy code above ➔ Click Colab button below ➔ Paste (`Ctrl+V` / `Cmd+V`) ➔ Press `Shift + Enter` to run!")
-            
-            # 4. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
+            # 6. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
             st.markdown(f"#### {cur_btn_meta[0]}")
             btn_col1, btn_col2 = st.columns(2)
