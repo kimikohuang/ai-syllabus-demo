@@ -535,7 +535,8 @@ expand_section_titles = {
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
 # 第一週詳細內容（支援繁中與英文，其他語言自動 fallback 至英文確保零故障）
-"us": """
+w1_details = {
+    "us": """
     * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour (Room 506)**
       1. Course orientation, grading policies, and portal overview.
       2. Device Requirements: Bring your **Laptop**, **Smartphone**, and **Transparency Earphones** (for voice prompting!).
@@ -561,6 +562,7 @@ st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles
       8. **加碼挑戰**：嘗試 5 年長線趨勢 (`period="5y"`) 或詢問 Gemini 進行雙資產對比。
       9. **重要打卡 (Check-in)**：請務必將學號、股票代號與觀察心得透過 **左側側邊欄 AI 助教** 送出，作為今日出勤與實作完成證明！
     """
+}
 
 shortcuts_info = {
     "us": """
