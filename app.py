@@ -1,6 +1,6 @@
 # ==============================================================================
 # [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant
-# 學生端多語系課綱門戶（100% 精準對齊明志科大官方教學進度表）
+# 學生端多語系課綱門戶（含教室創506、必備筆電手機、4行Code快速複製、Colab/Gemini按鈕）
 # ==============================================================================
 
 import streamlit as st
@@ -187,7 +187,7 @@ status_labels = {
 }
 st.info(f"💡 **{status_labels.get(current_code, status_labels['us'])}**: **{current_info['name']}**")
 
-# 4. 四大卡片完整多語系資料庫（完全對齊官方教學目標與 Office Hour 規定）
+# 4. 四大卡片完整多語系資料庫
 meta_cards = {
     "goal": {
         "title": {
@@ -197,7 +197,7 @@ meta_cards = {
         "content": {
             "us": "As future business managers, you do not need to memorize complex coding syntax! You are the **conductor**, and AI is your musician. Connect freshman Accounting & Economics with sophomore Statistics and Management to build interactive charts and launch web apps on your phone.\n\n*If you can ask a question, you can create with AI!*",
             "tw": "作為未來的商業經理人，你不需要死記複雜的程式語法！你是樂團的**指揮家**，AI 則是你的樂手。串聯大一會計與經濟學基礎，支援大二統計、行銷與管理課程，共同打造互動商業圖表並發布手機 Web App。\n\n*只要會提問，就能與 AI 共同創造！*",
-            "vn": "Là nhà quản lý kinh doanh tương lai, bạn không cần ghi nhớ cú pháp code! Bạn là **nhạc trưởng**, AI là nhạc công. Kết nối Kế toán & Kinh tế năm nhất với Thống kê và Quản trị năm hai để xây dựng biểu đồ tương tác và phát hành Web App.\n\n*Chỉ cần biết đặt câu hỏi, bạn có thể sáng tạo cùng AI!*",
+            "vn": "Là nhà quản lý tương lai, bạn không cần ghi nhớ cú pháp code! Bạn là **nhạc trưởng**, AI là nhạc công. Kết nối Kế toán & Kinh tế năm nhất với Thống kê và Quản trị năm hai để xây dựng biểu đồ tương tác và phát hành Web App.\n\n*Chỉ cần biết đặt câu hỏi, bạn có thể sáng tạo cùng AI!*",
             "id": "Sebagai calon manajer bisnis, Anda tidak perlu menghafal sintaksis kode yang rumit! Anda adalah **konduktor**, dan AI adalah musisi Anda. Hubungkan Akuntansi & Ekonomi tingkat satu dengan Statistik dan Manajemen tingkat dua untuk membuat grafik interaktif dan web app di ponsel.\n\n*Jika Anda bisa bertanya, Anda bisa berkreasi dengan AI!*",
             "my": "Sebagai pengurus perniagaan masa depan, anda tidak perlu menghafal sintaks kod yang rumit! Anda adalah **konduktor**, dan AI adalah pemuzik anda. Hubungkan Perakaunan & Ekonomi tahun satu dengan Statistik dan Pengurusan tahun dua untuk membina carta interaktif dan aplikasi web.\n\n*Jika anda boleh bertanya, anda boleh mencipta dengan AI!*",
             "th": "ในฐานะผู้จัดการธุรกิจในอนาคต คุณไม่จำเป็นต้องท่องจำไวยากรณ์โค้ดที่ซับซ้อน! คุณคือ**ผู้นำวงคอนดักเตอร์** และ AI คือนักดนตรีของคุณ เชื่อมโยงบัญชีและเศรษฐศาสตร์ปี 1 สู่สถิติและการจัดการปี 2 เพื่อสร้างชาร์ตและเว็บแอปบนมือถือ\n\n*ขอแค่ถามเป็น คุณก็สร้างสรรค์ร่วมกับ AI ได้!*",
@@ -304,7 +304,7 @@ weeks_all = [
         "tw": {"prog": "市場數據工程：台積電與蘋果", "hw": "課堂即時實作與練習", "sum": "加退選期間；Python 擷取每日股價；資料表 DataFrame 處理與繪製走勢圖；友善入門。", "rem": "創506"},
         "vn": {"prog": "Kỹ thuật dữ liệu thị trường: Apple & TSMC", "hw": "Thực hành trực tiếp trên lớp", "sum": "Giai đoạn thêm/hủy môn; lấy giá cổ phiếu hàng ngày; vẽ biểu đồ xu hướng trực quan; làm quen nhẹ nhàng.", "rem": "創506"},
         "id": {"prog": "Rekayasa Data Pasar: Apple & TSMC", "hw": "Latihan langsung di kelas", "sum": "Periode tambah/batal matkul; mengambil harga saham harian; grafik tren visual; onboarding ramah.", "rem": "創506"},
-        "my": {"prog": "Kejuruteraan Data Pasaran: Apple & TSMC", "hw": "Latihan langsung dalam kelas", "sum": "Tempoh tambah/gugur kursus; mengambil harga saham harian; carta trend visual; pengenalan mesra.", "rem": "創506"},
+        "my": {"prog": "Kejuruteraan Data Pasaran: Apple & TSMC", "hw": "Latihan langsung dalam kelas", "sum": "Tempoh tambah/gugur kursus; mengambil data harga saham harian; carta trend visual; pengenalan mesra.", "rem": "創506"},
         "th": {"prog": "วิศวกรรมข้อมูลตลาด: Apple & TSMC", "hw": "ฝึกปฏิบัติตามสดในชั้นเรียน", "sum": "ช่วงเพิ่ม-ถอนรายวิชา; ดึงข้อมูลราคาหุ้นรายวันด้วย Python; สร้างกราฟแนวโน้ม; เริ่มต้นอย่างเป็นมิตร", "rem": "創506"},
         "fr": {"prog": "Ingénierie des données de marché : Apple & TSMC", "hw": "Exercice guidé en classe", "sum": "Période d'ajustement ; extraction de cours boursiers avec Python ; graphiques visuels ; onboarding doux.", "rem": "創506"}
     },
@@ -500,7 +500,7 @@ with st.expander(schedule_expander_titles.get(current_code, schedule_expander_ti
         st.markdown(table_full, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開）
+# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開 + 多語系健全 Fallback）
 # ==============================================================================
 st.markdown("---")
 expand_section_titles = {
@@ -514,7 +514,7 @@ expand_section_titles = {
 }
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
-# 第一週詳細內容
+# 第一週詳細內容（支援繁中與英文，其他語言自動 fallback 至英文確保零故障）
 w1_details = {
     "us": """
     * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour (Room 506)**
@@ -543,20 +543,6 @@ w1_details = {
     * **Part 3 (11:00 - 11:50) ｜ 課堂實作 Lab 0 與雙軌 AI 輔助**
       8. **Lab 0 實作**：同學親自動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
       9. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
-    """,
-    "vn": """
-    * **Part 1 (09:00 - 09:50) | Khái niệm, Tư duy nhạc trưởng & Giới thiệu cổng thông tin (Phòng 506)**
-      1. Tổng quan môn học, cơ cấu điểm (50% Lab, 20% Giữa kỳ T9, 30% Đồ án T16) và tham quan cổng thông tin.
-      2. Yêu cầu thiết bị: Vui lòng mang theo **Laptop** (cho Colab) và **Smartphone** (cho LINE) mỗi tuần.
-      3. **Tư duy nhạc trưởng**: Điều khiển AI bằng câu lệnh tự nhiên mà không cần ghi nhớ cú pháp.
-      4. Truyền cảm hứng: Cổng thông tin bạn đang xem được xây dựng hoàn toàn bằng Python + Streamlit!
-    * **Part 2 (10:00 - 10:50) | Cài đặt Cloud, Phím tắt & Trình diễn trực tiếp**
-      5. Đăng nhập môi trường **Google Colab** (Lập trình cặp Pair Programming nếu chưa có máy).
-      6. Khởi động phím tắt (`Ctrl/Cmd + C, V, Z` và `Shift + Enter` để chạy code).
-      7. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) và vẽ biểu đồ xu hướng.
-    * **Part 3 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
-      8. **Lab 0**: Sinh viên chạy code và tùy chỉnh lấy dữ liệu cổ phiếu Apple (`AAPL`).
-      9. **Hỗ trợ AI kép**: Dùng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini.
     """
 }
 
@@ -592,6 +578,24 @@ dual_track_info = {
 """
 }
 
+demo_prompts = {
+    "us": {
+        "title": "📈 Live Demo: TSMC 4-Line Python & Prompt (Copy to run)",
+        "prompt_label": "**Natural Language Prompt (Copy to ask AI)**:",
+        "prompt_text": "`Write a Python script using yfinance to download TSMC (2330.TW) stock prices for the past 1 year and plot a closing price line chart.`",
+        "code_label": "**Python Code (Click copy icon in top-right / 點擊右上角一鍵複製)**:",
+        "caption": "💡 **Execution Guide**: Copy code above ➔ Click Colab button below ➔ Paste (`Ctrl+V` / `Cmd+V`) ➔ Press `Shift + Enter` to run!"
+    },
+    "tw": {
+        "title": "📈 現場 Live Demo：台積電 4 行 Python 程式碼與提示詞（一鍵複製）",
+        "prompt_label": "**自然語言提示詞 (可直接複製問 AI)**：",
+        "prompt_text": "`請用 Python 的 yfinance 套件，抓取台積電 (2330.TW) 過去一年的股價歷史資料，並畫出收盤價的折線圖。`",
+        "code_label": "**Python 程式碼 (點擊右上角小圖示一鍵複製)**：",
+        "caption": "💡 **操作步驟**：複製上方代碼 ➔ 點下方按鈕打開 Colab ➔ 貼上 (`Ctrl+V` / `Cmd+V`) ➔ 按下 `Shift + Enter` 立即執行！"
+    }
+}
+
+# 多語系傳送門按鈕標籤
 portal_btn_labels = {
     "us": ("🛠️ Quick Access Links (Week 1)", "🚀 Open Google Colab", "💡 Open Google Gemini (Backup AI)"),
     "tw": ("🛠️ 課堂實作快速傳送門 (第 1 週)", "🚀 打開 Google Colab (雲端筆記本)", "💡 開啟 Google Gemini (AI 助教備用分頁)"),
@@ -619,46 +623,21 @@ for i in range(1, 19):
         if i == 1:
             st.markdown(w1_details.get(current_code, w1_details["us"]))
             
-            with st.expander(
-                "⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)",
-                expanded=False,
-            ):
-              st.markdown(
-                  shortcuts_info.get(current_code, shortcuts_info["us"])
-              )
+            # 1. 快捷鍵速查
+            with st.expander("⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)", expanded=False):
+                st.markdown(shortcuts_info.get(current_code, shortcuts_info["us"]))
+                
+            # 2. 雙軌 AI 指引
+            with st.expander("💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)", expanded=False):
+                st.markdown(dual_track_info.get(current_code, dual_track_info["us"]))
 
-            # 階層式小摺疊 2：雙軌 AI 實作工作流指南
-            with st.expander(
-                "💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)",
-                expanded=False,
-            ):
-              st.markdown(
-                  dual_track_info.get(current_code, dual_track_info["us"])
-              )
-
-            # 階層式小摺疊 3：【全新】Live Demo 4 行程式碼與 Prompt 快速複製區
-            with st.expander(
-                "📈 Live Demo: TSMC 4-Line Python & Prompt (台積電股價 4 行程式碼與提示詞)",
-                expanded=True,
-            ):
-              demo_prompts = {
-                  "us": (
-                      "**Natural Language Prompt (Copy to AI)**:  \n`Write a"
-                      " Python script using yfinance to download TSMC (2330.TW)"
-                      " stock prices for the past 1 year and plot a closing"
-                      " price line chart.`"
-                  ),
-                  "tw": (
-                      "**自然語言提示詞 (可直接複製問 AI)**：  \n`請用 Python 的"
-                      " yfinance 套件，抓取台積電 (2330.TW)"
-                      " 過去一年的股價歷史資料，並畫出收盤價的折線圖。`"
-                  ),
-              }
-              st.markdown(demo_prompts.get(current_code, demo_prompts["us"]))
-              st.markdown(
-                  "**Python Code (Click copy icon in top-right / 點擊右上角一鍵複製)**:"
-              )
-              demo_code = """# 1. 安裝與匯入市場數據套件
+            # 3. Live Demo 程式碼與 Prompt 快速複製區
+            cur_demo = demo_prompts.get(current_code, demo_prompts["us"])
+            with st.expander(cur_demo["title"], expanded=True):
+                st.markdown(cur_demo["prompt_label"])
+                st.markdown(cur_demo["prompt_text"])
+                st.markdown(cur_demo["code_label"])
+                demo_code = """# 1. 安裝與匯入市場數據套件
 !pip install yfinance
 import yfinance as yf
 
@@ -666,11 +645,17 @@ import yfinance as yf
 df = yf.download("2330.TW", period="1y")
 df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=True)
 """
-              st.code(demo_code, language="python")
-              st.caption(
-                  "💡 **操作步驟**：複製上方代碼 ➔ 點下方按鈕打開 Colab ➔ 貼上"
-                  " (`Ctrl+V` / `Cmd+V`) ➔ 按下 `Shift + Enter` 立即執行！"
-              )
+                st.code(demo_code, language="python")
+                st.caption(cur_demo["caption"])
+            
+            # 4. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
+            st.markdown("---")
+            st.markdown(f"#### {cur_btn_meta[0]}")
+            btn_col1, btn_col2 = st.columns(2)
+            with btn_col1:
+                st.link_button(cur_btn_meta[1], "https://colab.research.google.com/", use_container_width=True)
+            with btn_col2:
+                st.link_button(cur_btn_meta[2], "https://gemini.google.com/", use_container_width=True)
         else:
             placeholders = {
                 "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
