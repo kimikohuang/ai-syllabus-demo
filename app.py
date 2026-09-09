@@ -521,28 +521,30 @@ w1_details = {
       1. Course orientation, grading policies (50% Lab, 20% Midterm W9, 30% Final Showcase W16), and portal overview.
       2. Device Requirements: Please bring your **Laptop** (for Colab) and **Smartphone** (for LINE chat & mobile app preview).
       3. Introducing the **Conductor Mindset**: Lead AI with natural language prompts without memorizing syntax.
-      4. Inspiration: The very portal you are viewing right now was built entirely using Python + Streamlit!
     * **Part 2 (10:00 - 10:50) | Cloud Setup, Shortcuts & Live Demo**
-      5. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop today).
-      6. Keyboard Shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
-      7. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
-    * **Part 3 (11:00 - 11:50) | Hands-on Lab 0 & Dual-Track AI**
-      8. **Lab 0**: In-class exploration; run the TSMC script and customize it to fetch Apple (`AAPL`).
-      9. **AI Dual-Track Workflow**: Use Colab in-cell AI, and seamlessly switch to Google Gemini when limits are reached.
+      4. Launching **Google Colab** (Pair Programming if sharing laptops).
+      5. Keyboard shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
+      6. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices.
+    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone & Bonus Challenges**
+      7. **Core Milestone (Lab 0)**: Run the script, change `2330.TW` to your favorite global brand (`AAPL`, `SBUX`, etc.), and view the trend.
+      8. **Bonus Challenge 1 (Tweak Parameters)**: Change `period="1y"` to `"5y"` to view multi-year macro trends.
+      9. **Bonus Challenge 2 (Dual Asset)**: Ask Gemini how to plot TSMC and Apple on the same chart.
+      10. **Check-in**: Submit your stock code & insight via the sidebar AI Assistant to complete today's attendance!
     """,
     "tw": """
     * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
       1. 課程總覽、評量標準（平常 50%、第9週期中 20%、第16週期末發表 30%）與多語系 AI 助教網頁導覽。
-      2. 必備設備提醒：每週請務必攜帶 **筆記型電腦**（Colab 實作）與 **智慧型手機**（LINE 互動與網頁預覽）。
-      3. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI，無須死記複雜語法。
-      4. 激勵展示：眼前的手機課綱與 AI 助教網頁，就是用純 Python 與 Streamlit 打造的成果！
+      2. 必備設備提醒：每週請務必攜帶 **筆記型電腦**（Colab 實作）與 **智慧型手機**。
+      3. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI。
     * **Part 2 (10:00 - 10:50) ｜ 雲端環境、鍵盤快捷鍵與台積電 Live Demo**
-      5. 登入 **Google Colab** 雲端開發環境（今日未帶電腦者採兩人結對 Pair Programming）。
-      6. 鍵盤神級快捷鍵暖身（複製貼上、復原救命鍵 `Ctrl/Cmd + Z`、以及執行代碼 `Shift + Enter`）。
-      7. 老師現場示範 4 行 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
-    * **Part 3 (11:00 - 11:50) ｜ 課堂實作 Lab 0 與雙軌 AI 輔助**
-      8. **Lab 0 實作**：同學親自動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
-      9. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
+      4. 登入 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
+      5. 鍵盤神級快捷鍵暖身與 `Shift + Enter` 執行。
+      6. 老師現場示範 4 行 Python 程式碼抓取台積電 (`2330.TW`) 股價。
+    * **Part 3 (11:00 - 11:50) ｜ Lab 0 課堂成就解鎖與追加挑戰**
+      7. **核心成就解鎖 (Lab 0)**：成功跑出台積電或自選股票（如蘋果 `AAPL`、星巴克 `SBUX`）的走勢圖。
+      8. **追加挑戰 1（參數微調）**：將 `period="1y"` 改為 `"5y"` 觀察長線宏觀趨勢。
+      9. **追加挑戰 2（雙線對比）**：詢問 Gemini 如何在同一張圖畫出台積電與蘋果的對比。
+      10. **完成打卡**：於左側側邊欄填寫你的股票代號與心得送出，即完成今日出勤與實作登記！
     """
 }
 
@@ -765,7 +767,10 @@ with st.sidebar:
     else:
         final_student_id = selected_choice
 
-    user_q = st.text_input("💬", placeholder=ui_texts["placeholder"].get(current_code, "Type your question..."))
+    user_q = st.text_input(
+        "💬 填寫今日成就與心得 (例如: 成功跑出 AAPL 走勢，最高價約 230):", 
+        placeholder="請輸入你的股票代號與觀察心得..."
+    )
     
     if st.button(ui_texts["btn_submit"].get(current_code, "🚀 Submit"), use_container_width=True):
         if user_q:
