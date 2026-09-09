@@ -720,9 +720,8 @@ with st.expander(
         "Join us during the Add/Drop week! 🚀"
     )
     st.code(share_text, language="text")
-    st.caption(
-        "💡 Forward this text to your student group chats to invite friends from any department!"
-    )
+    st.code(share_text, language="text")
+    st.caption("💡 Forward this text to your student group chats to invite friends from any department!")
             # 6. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
             st.markdown(f"#### {cur_btn_meta[0]}")
