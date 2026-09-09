@@ -631,22 +631,22 @@ for i in range(1, 19):
             with st.expander("💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)", expanded=False):
                 st.markdown(dual_track_info.get(current_code, dual_track_info["us"]))
 
-            # 3. Live Demo 程式碼與 Prompt 快速複製區
-            cur_demo = demo_prompts.get(current_code, demo_prompts["us"])
-            with st.expander(cur_demo["title"], expanded=True):
-                st.markdown(cur_demo["prompt_label"])
-                st.markdown(cur_demo["prompt_text"])
-                st.markdown(cur_demo["code_label"])
-                demo_code = """# 1. 安裝與匯入市場數據套件
+            # 3. Live Demo 程式碼與 Prompt 快速複製區 (英文為主，中文為輔)
+            with st.expander("📈 Live Demo: TSMC 4-Line Python & Prompt (台積電 Live Demo 程式碼與提示詞)", expanded=True):
+                st.markdown("**Natural Language Prompt / 自然語言提示詞 (Copy to ask AI):**")
+                st.code("Write a Python script using yfinance to download TSMC (2330.TW) stock prices for the past 1 year and plot a closing price line chart.", language="text")
+                
+                st.markdown("**Python Code / Python 程式碼 (Click copy icon in top-right / 點擊右上角一鍵複製):**")
+                demo_code = """# 1. Install and import market data package
 !pip install yfinance
 import yfinance as yf
 
-# 2. 下載台積電 (2330.TW) 過去一年股價並畫圖
+# 2. Download TSMC (2330.TW) 1-year historical prices and plot trend
 df = yf.download("2330.TW", period="1y")
 df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=True)
 """
                 st.code(demo_code, language="python")
-                st.caption(cur_demo["caption"])
+                st.caption("💡 **Execution Guide / 操作指引**: Copy code above ➔ Click Colab button below ➔ Paste (`Ctrl+V` / `Cmd+V`) ➔ Press `Shift + Enter` to run!")
             
             # 4. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
