@@ -535,9 +535,9 @@ expand_section_titles = {
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
 # 第一週詳細步驟（完整對齊教師端 English Teaching Scripts 與中文授課導引）
-w1_details = {
+# 第一週詳細步驟（拆分為 Part 1, Part 2, Part 3 獨立折疊內容）
+w1_part1 = {
     "us": """
-#### 🎙️ Part 1 (09:00 - 09:50) | Mindset, Announcements & 18-Week Roadmap (Room 506)
 1. **Ice-Breaking & QR Setup (09:00 - 09:15)**:
    * Scan the **Portal QR** and **LINE Chat QR** on the main screen to connect immediately.
    * Review our 4 golden rules: Room 506, required gear (Laptop + Smartphone), grading milestones (50% / 20% / 30%), and the group nickname policy (`Last 3 digits + Name`, e.g., `205 Huy`).
@@ -555,44 +555,8 @@ w1_details = {
    * 🌟 **Fast-Finisher Challenges**:
      * **Option A**: Test switching between parallel languages at the top of the portal.
      * **Option B**: Submit your first test question in the sidebar AI Assistant to lock in early participation points!
-
----
-
-#### 🎙️ Part 2 (10:00 - 10:50) | Cloud Setup, Live Demo & Economics Reflection
-1. **Voice Prompting & Keyboard Shortcuts Warm-up (10:00 - 10:15)**:
-   * Unlock **Voice Prompting**: Put on your transparency-mode earphones to micro-whisper prompts to Gemini without typing!
-   * Essential shortcuts: Copy (`Ctrl/Cmd + C`), Paste (`Ctrl/Cmd + V`), Undo lifesaver (`Ctrl/Cmd + Z`), and Run Cell (`Shift + Enter`).
-   * No laptop today? Join your neighbor for hands-on Pair Programming!
-2. **Dual-Track AI Strategy (10:15 - 10:25)**:
-   * Open `gemini.google.com` in a separate browser tab as your backup copilot when Colab hits its usage quota.
-3. **Step-by-Step TSMC Live Demo (10:25 - 10:40)**:
-   * Natural Language Prompt ➔ Copy the 4-line Python script ➔ Paste into Colab ➔ Count down and press **`Shift + Enter`** together to plot the chart in 3 seconds!
-4. **Economics Reflection & Fast-Finisher Challenges (10:40 - 10:50)**:
-   * **Demand Shock Reflection**: How does the GenAI boom create an unprecedented demand shock for semiconductor computing power?
-   * 🌟 **Fast-Finisher Challenges**:
-     * **Option A**: Tweak the code parameter to `period="5y"` or switch the ticker to NVIDIA (`"NVDA"`) to view the multi-year AI cycle.
-     * **Option B**: Switch to Gemini and ask: *"Outline 3 macro catalysts behind TSMC's growth over the past year."*
-
----
-
-#### 🎙️ Part 3 (11:00 - 11:50) | Lab 0 Milestone, Accounting Reflection & Check-in
-1. **Lab 0 Mission & Error Recovery SOP (11:00 - 11:15)**:
-   * Create a new notebook cell and customize the script: replace TSMC with Apple (`'AAPL'`) or Starbucks (`'SBUX'`).
-   * **3-Step Error Recovery**: Hit a red error? Copy it (`Ctrl/Cmd+C`) ➔ Paste into Gemini (`Ctrl/Cmd+V`) ➔ Ask: *"Fix this error and give me working code."*
-2. **Hands-on In-Class Walkthrough (11:15 - 11:30)**:
-   * Instructor walk-around assistance for Wi-Fi and syntax troubleshooting.
-3. **Accounting Reflection & Dual Ticker Comparison (11:30 - 11:40)**:
-   * **B2B vs. B2C Revenue Models**: Why does TSMC's enterprise infrastructure model behave so differently from consumer brands facing inflation?
-   * 🌟 **Fast-Finisher Challenges**:
-     * **Option A**: Ask Gemini: *"How can I plot both TSMC and Apple on the same chart using yfinance?"*
-     * **Option B**: Ask Gemini: *"Calculate the cumulative percentage return for TSMC and Apple over the past year"* for a preview of Week 2!
-4. **Wrap-up, Digital Check-in & Office Hours (11:40 - 11:50)**:
-   * **Mandatory Check-in**: Submit your Student ID and ticker insights via the **Sidebar AI Assistant** to record your attendance.
-   * Share this course with classmates from any department during the Add/Drop week!
-   * Office Hours: Instructor remains in Room 506 right after class.
 """,
     "tw": """
-#### 🎙️ Part 1 (09:00 - 09:50) ｜ 觀念引導、LINE 公告逐項導讀與 18 週地圖 (創新大樓 506 教室)
 1. **破冰與雙 QR Code 配置 (09:00 - 09:15)**：
    * 拿起手機立即掃描大螢幕右上角 **Portal QR**（課綱網頁）與 **LINE Chat QR**（官方社群）。
    * 逐條導讀四大原則：創506教室、每週必備設備（筆電＋手機）、評量標準（平常50%/期中20%/期末30%）、LINE暱稱規範（`學號末三碼 + 姓名`，如 `205 Huy`）。
@@ -610,10 +574,26 @@ w1_details = {
    * 🌟 **快手加碼挑戰 (Fast-Finisher Options)**：
      * **Option A（多語系體驗）**：切換上方 7 國語言按鈕，觀察各國語言的課綱呈現。
      * **Option B（側邊欄搶先發問）**：在側邊欄向 AI 助教發送一則測試提問，搶先登錄平時參與加分！
+"""
+}
 
----
-
-#### 🎙️ Part 2 (10:00 - 10:50) ｜ 雲端開箱、快捷鍵、台積電 Demo 與經濟學思考
+w1_part2 = {
+    "us": """
+1. **Voice Prompting & Keyboard Shortcuts Warm-up (10:00 - 10:15)**:
+   * Unlock **Voice Prompting**: Put on your transparency-mode earphones to micro-whisper prompts to Gemini without typing!
+   * Essential shortcuts: Copy (`Ctrl/Cmd + C`), Paste (`Ctrl/Cmd + V`), Undo lifesaver (`Ctrl/Cmd + Z`), and Run Cell (`Shift + Enter`).
+   * No laptop today? Join your neighbor for hands-on Pair Programming!
+2. **Dual-Track AI Strategy (10:15 - 10:25)**:
+   * Open `gemini.google.com` in a separate browser tab as your backup copilot when Colab hits its usage quota.
+3. **Step-by-Step TSMC Live Demo (10:25 - 10:40)**:
+   * Natural Language Prompt ➔ Copy the 4-line Python script ➔ Paste into Colab ➔ Count down and press **`Shift + Enter`** together to plot the chart in 3 seconds!
+4. **Economics Reflection & Fast-Finisher Challenges (10:40 - 10:50)**:
+   * **Demand Shock Reflection**: How does the GenAI boom create an unprecedented demand shock for semiconductor computing power?
+   * 🌟 **Fast-Finisher Challenges**:
+     * **Option A**: Tweak the code parameter to `period="5y"` or switch the ticker to NVIDIA (`"NVDA"`) to view the multi-year AI cycle.
+     * **Option B**: Switch to Gemini and ask: *"Outline 3 macro catalysts behind TSMC's growth over the past year."*
+""",
+    "tw": """
 1. **透通耳機語音輸入與鍵盤快捷鍵暖身 (10:00 - 10:15)**：
    * **語音輸入黑科技**：戴上透通式耳機，用微氣音對 Gemini 說話下指令，同時不漏聽老師講課與同伴討論！
    * 必備快捷鍵：複製 (`Ctrl/Cmd + C`)、貼上 (`Ctrl/Cmd + V`)、救命復原鍵 (`Ctrl/Cmd + Z`) 與 Colab 執行鍵 (**`Shift + Enter`**)。
@@ -627,10 +607,27 @@ w1_details = {
    * 🌟 **快手加碼挑戰 (Fast-Finisher Options)**：
      * **Option A（參數與標的改寫）**：將程式碼改為 `period="5y"` 觀察 5 年長線景氣循環，或改為輝達 `"NVDA"` 觀察全球算力浪潮。
      * **Option B（AI 商業洞察）**：向 Gemini 提問：「請分析台積電過去一年的三大成長動能與催化劑」，體驗數據與商業分析結合。
+"""
+}
 
----
-
-#### 🎙️ Part 3 (11:00 - 11:50) ｜ Lab 0 實作挑戰、會計營收結構思考與數位打卡
+w1_part3 = {
+    "us": """
+1. **Lab 0 Mission & Error Recovery SOP (11:00 - 11:15)**:
+   * Create a new notebook cell and customize the script: replace TSMC with Apple (`'AAPL'`) or Starbucks (`'SBUX'`).
+   * **3-Step Error Recovery**: Hit a red error? Copy it (`Ctrl/Cmd+C`) ➔ Paste into Gemini (`Ctrl/Cmd+V`) ➔ Ask: *"Fix this error and give me working code."*
+2. **Hands-on In-Class Walkthrough (11:15 - 11:30)**:
+   * Instructor walk-around assistance for Wi-Fi and syntax troubleshooting.
+3. **Accounting Reflection & Dual Ticker Comparison (11:30 - 11:40)**:
+   * **B2B vs. B2C Revenue Models**: Why does TSMC's enterprise infrastructure model behave so differently from consumer brands facing inflation?
+   * 🌟 **Fast-Finisher Challenges**:
+     * **Option A**: Ask Gemini: *"How can I plot both TSMC and Apple on the same chart using yfinance?"*
+     * **Option B**: Ask Gemini: *"Calculate the cumulative percentage return for TSMC and Apple over the past year"* for a preview of Week 2!
+4. **Wrap-up, Digital Check-in & Office Hours (11:40 - 11:50)**:
+   * **Mandatory Check-in**: Submit your Student ID and ticker insights via the **Sidebar AI Assistant** to record your attendance.
+   * Share this course with classmates from any department during the Add/Drop week!
+   * Office Hours: Instructor remains in Room 506 right after class.
+""",
+    "tw": """
 1. **Lab 0 任務發布與三步驟除錯 SOP (11:00 - 11:15)**：
    * 在 Colab 新增儲存格，將台積電改為蘋果 (`AAPL`) 或星巴克 (`SBUX`)。
    * **除錯三步驟**：遇到紅字報錯 ➔ 複製紅字 (`Ctrl/Cmd+C`) ➔ 貼給 Gemini 詢問修復並索取正確代碼。
@@ -739,7 +736,15 @@ for i in range(1, 19):
             st.markdown("---")
             
             # 第一週詳細步驟
-            st.markdown(w1_details.get(current_code, w1_details["us"]))
+            # 第一週三節課獨立折疊指引（Part 1 預設展開，Part 2 與 Part 3 預設收合）
+            with st.expander("🎙️ Part 1 (09:00 - 09:50) | Mindset, Announcements & Roadmap (破冰、公告與全期地圖)", expanded=True):
+                st.markdown(w1_part1.get(current_code, w1_part1["us"]))
+
+            with st.expander("🎙️ Part 2 (10:00 - 10:50) | Cloud Setup, Live Demo & Economics (雲環境、Demo 與經濟學)", expanded=False):
+                st.markdown(w1_part2.get(current_code, w1_part2["us"]))
+
+            with st.expander("🎙️ Part 3 (11:00 - 11:50) | Lab 0 Milestone & Check-in (Lab 0 實作、除錯與數位打卡)", expanded=False):
+                st.markdown(w1_part3.get(current_code, w1_part3["us"]))
             
             # 1. 快捷鍵速查
             with st.expander("⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)", expanded=False):
