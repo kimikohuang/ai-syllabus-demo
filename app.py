@@ -638,36 +638,35 @@ for i in range(1, 19):
                 
                 st.markdown("**Python Code / Python 程式碼 (Click copy icon in top-right / 點擊右上角一鍵複製):**")
                 demo_code = """# 1. Install and import market data package
-            # 4. 【全新】商業與經濟延伸思考題 (Business & Economics Reflection)
+            # 4. 商業與經濟延伸思考題 (Business & Economics Reflection)
             with st.expander("🧠 Business & Economics Thinking / 跨學科商業思考題 (結合經濟與會計)", expanded=False):
-                st.markdown("""
-                Run your code, observe the charts, and connect back to what you learned in freshman year:
-                
-                * 📈 **Question 1 (Economics & Market Shock / 經濟學供需震撼)**:  
-                  *Look at the soaring trend of TSMC (2330.TW). How does the explosion of Generative AI create a massive structural **demand shock** in the global semiconductor supply chain?*  
-                  *(觀察台積電飆升的曲線：生成式 AI 爆發如何對全球半導體供應鏈帶來巨大的結構性供需衝擊？)*
-                  
-                * 💼 **Question 2 (Accounting & Business Models / 會計營收結構對比)**:  
-                  *Why does TSMC's B2B infrastructure business model (selling to tech giants) behave so differently from Apple or Starbucks' B2C model (selling to consumers facing inflation)?*  
-                  *(台積電面向科技巨頭的 B2B 資本支出模式，與蘋果、星巴克直接受通膨影響的 B2C 消費支出模式，在財報營收成長性上有何本質不同？)*
-                  
-                * 🤝 **Question 3 (The Power of Pair Work / 人機與結對協作)**:  
-                  *Why is having a partner (Pair Programming) far more effective than coding alone when directing AI agents?*  
-                  *(在 AI 時代，為什麼一人負責商業邏輯、一人把關代碼的雙人協作，能大幅降低決策盲點？)*
-                """)
+                reflection_markdown = (
+                    "Run your code, observe the charts, and connect back to what you learned in freshman year:\n\n"
+                    "* **Question 1 (Economics & Market Shock / 經濟學供需震撼)**:  \n"
+                    "  *Look at the soaring trend of TSMC (2330.TW). How does the explosion of Generative AI create a massive structural **demand shock** in the global semiconductor supply chain?*  \n"
+                    "  *(觀察台積電飆升的曲線：生成式 AI 爆發如何對全球半導體供應鏈帶來巨大的結構性供需衝擊？)*\n\n"
+                    "* **Question 2 (Accounting & Business Models / 會計營收結構對比)**:  \n"
+                    "  *Why does TSMC's B2B infrastructure business model (selling to tech giants) behave so differently from Apple or Starbucks' B2C model (selling to consumers facing inflation)?*  \n"
+                    "  *(台積電面向科技巨頭的 B2B 資本支出模式，與蘋果、星巴克直接受通膨影響的 B2C 消費支出模式，在財報營收成長性上有何本質不同？)*\n\n"
+                    "* **Question 3 (The Power of Pair Work / 人機與結對協作)**:  \n"
+                    "  *Why is having a partner (Pair Programming) far more effective than coding alone when directing AI agents?*  \n"
+                    "  *(在 AI 時代，為什麼一人負責商業邏輯、一人把關代碼的雙人協作，能大幅降低決策盲點？)*"
+                )
+                st.markdown(reflection_markdown)
 
-            # 5. 【加退選必備】一鍵推薦給同學 (Share with Classmates)
+            # 5. 一鍵推薦給同學 (Share with Classmates)
             with st.expander("📢 Invite Classmates / 推薦給經管系同學（加退選好課相報）", expanded=False):
                 st.markdown("**Copy and forward this message to your class LINE group (複製以下文字轉發至班群)：**")
-                share_text = """🔥【經管系優質選修推薦：Python AI 應用】
-這門課完全不用死背程式語法！老師教我們用自然語言 Prompt 指揮 AI 寫 Python、抓台積電與美股即時數據，還能做出手機 Web App！
-課堂強調 Pair Programming 兩人結對協作，初學者超友善！
-
-📍 上課時間：每週四 09:00 - 11:50（創新大樓 506 教室）
-🔗 課程多語系網頁（免登入手機直接看）：https://ai-syllabus.streamlit.app/
-💬 課程專屬 LINE 群（歡迎直接加入諮詢）：
-https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog
-歡迎加退選一起來修課拿高分！🚀"""
+                share_text = (
+                    "🔥【經管系優質選修推薦：Python AI 應用】\n"
+                    "這門課完全不用死背程式語法！老師教我們用自然語言 Prompt 指揮 AI 寫 Python、抓台積電與美股即時數據，還能做出手機 Web App！\n"
+                    "課堂強調 Pair Programming 兩人結對協作，初學者超友善！\n\n"
+                    "📍 上課時間：每週四 09:00 - 11:50（創新大樓 506 教室）\n"
+                    "🔗 課程多語系網頁（免登入手機直接看）：https://ai-syllabus.streamlit.app/\n"
+                    "💬 課程專屬 LINE 群（歡迎直接加入諮詢）：\n"
+                    "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog\n"
+                    "歡迎加退選一起來修課拿高分！🚀"
+                )
                 st.code(share_text, language="text")
                 st.caption("💡 歡迎將上方文字複製轉發到班級群組，找好搭檔一起來結對實作！")
                 
