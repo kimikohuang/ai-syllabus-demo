@@ -1,6 +1,6 @@
 # ==============================================================================
 # [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant
-# 學生端互動式多語系課綱門戶（導覽優先：上方 18 週大表收納 + 下方每週實作抽屜）
+# 學生端多語系課綱門戶（含快捷鍵速查表、雙軌 AI 工作流、18週總表摺疊）
 # ==============================================================================
 
 import streamlit as st
@@ -500,7 +500,7 @@ with st.expander(schedule_expander_titles.get(current_code, schedule_expander_ti
         st.markdown(table_full, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開 + Colab/Gemini 傳送門）
+# 6. 【每週課堂步驟：下方】詳細操作抽屜（Week 1 預設展開 + 快捷鍵備忘 + 傳送門）
 # ==============================================================================
 st.markdown("---")
 expand_section_titles = {
@@ -514,85 +514,80 @@ expand_section_titles = {
 }
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
-# 第一週詳細內容（精準對齊明志科大課表時間：第 2、3、4 節）
+# 第一週詳細內容（對齊學校時間與 Part 1-3）
 w1_details = {
     "us": """
-    * **Session 2 (09:00 - 09:50) | Concept & Onboarding**
+    * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour**
       1. Course orientation, grading policies (50% Lab, 20% Midterm, 30% Final), and interactive portal overview.
       2. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
-    * **Session 3 (10:00 - 10:50) | Cloud Setup & Live Demo**
-      3. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop).
-      4. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
-    * **Session 4 (11:00 - 11:50) | Hands-on Lab 0 & AI Dual-Track**
-      5. **Lab 0**: In-class exploration; run the script and customize it to fetch Apple (`AAPL`).
-      6. **AI Dual-Track**: Use Colab in-cell AI for coding, and switch to Google Gemini when free credits or tokens run out.
+      3. Showcase: How this entire portal was created with Python + Streamlit!
+    * **Part 2 (10:00 - 10:50) | Cloud Setup, Shortcuts & Live Demo**
+      4. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop).
+      5. Keyboard Shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
+      6. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
+    * **Part 3 (11:00 - 11:50) | Hands-on Lab 0 & Dual-Track AI**
+      7. **Lab 0**: In-class exploration; run the TSMC script and customize it to fetch Apple (`AAPL`).
+      8. **AI Dual-Track Workflow**: Use Colab in-cell AI, and seamlessly switch to Google Gemini when limits are reached.
     """,
     "tw": """
-    * **第 2 節 (09:00 - 09:50) ｜ 觀念引導與門戶導覽**
+    * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽**
       1. 課程總覽、評量標準（平常 50%、期中 20%、期末 30%）與多語系 AI 助教網頁導覽。
-      2. 建立「指揮家思維 (Conductor Mindset)」：學習如何運用自然語言與 AI 協同編程，無須死記複雜語法。
-    * **第 3 節 (10:00 - 10:50) ｜ 雲端環境與即時示範 (Live Demo)**
-      3. 帶領全班登入瀏覽器與 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
-      4. 老師現場示範第一段 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
-    * **第 4 節 (11:00 - 11:50) ｜ 課堂實作與雙軌 AI 輔助 (Lab 0)**
-      5. **Lab 0 實作**：同學實際動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
-      6. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
+      2. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI，無須死記複雜語法。
+      3. 激勵展示：眼前的手機課綱與 AI 助教網頁，就是用純 Python 與 Streamlit 打造的成果！
+    * **Part 2 (10:00 - 10:50) ｜ 雲端環境、鍵盤快捷鍵與台積電 Live Demo**
+      4. 登入 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
+      5. 鍵盤神級快捷鍵暖身（複製貼上、復原救命鍵 `Ctrl/Cmd + Z`、以及執行代碼 `Shift + Enter`）。
+      6. 老師現場示範 4 行 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
+    * **Part 3 (11:00 - 11:50) ｜ 課堂實作 Lab 0 與雙軌 AI 輔助**
+      7. **Lab 0 實作**：同學親自動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
+      8. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
     """,
     "vn": """
-    * **Tiết 2 (09:00 - 09:50) | Khái niệm & Định hướng**
-      1. Tổng quan khóa học, quy chế điểm số (Thực hành 50%, Giữa kỳ 20%, Đồ án 30%) và giới thiệu cổng thông tin.
-      2. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần ghi nhớ cú pháp.
-    * **Tiết 3 (10:00 - 10:50) | Cài đặt Cloud & Trình diễn trực tiếp**
-      3. Đăng nhập môi trường đám mây **Google Colab** (Lập trình cặp nếu không mang máy tính).
-      4. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) theo thời gian thực và vẽ biểu đồ xu hướng.
-    * **Tiết 4 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
-      5. **Lab 0**: Sinh viên chạy mã nguồn và tùy chỉnh để lấy dữ liệu cổ phiếu Apple (`AAPL`).
-      6. **Hỗ trợ AI kép**: Sử dụng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini để hỏi đáp.
-    """,
-    "id": """
-    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengantar**
-      1. Tinjauan kursus, kebijakan penilaian (Praktik 50%, UTS 20%, Akhir 30%), dan navigasi portal.
-      2. **Pola Pikir Konduktor**: Membangun solusi bisnis bersama AI menggunakan bahasa alami.
-    * **Sesi 3 (10:00 - 10:50) | Setup Cloud & Live Demo**
-      3. Membuka browser dan masuk ke **Google Colab** (Pair Programming jika tidak membawa laptop).
-      4. Demo Dosen: Mengambil harga saham TSMC (`2330.TW`) dan memplot grafik tren secara langsung.
-    * **Sesi 4 (11:00 - 11:50) | Praktik Lab 0 & AI Ganda**
-      5. **Lab 0**: Mahasiswa menjalankan kode dan mengubah simbol saham menjadi Apple (`AAPL`).
-      6. **Strategi AI Ganda**: Gunakan AI bawaan Colab untuk coding cepat, dan beralih ke Google Gemini jika limit habis.
-    """,
-    "my": """
-    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengenalan**
-      1. Gambaran keseluruhan kursus, dasar pemarkahan, dan panduan portal interaktif.
-      2. **Minda Konduktor**: Belajar membina bersama AI menggunakan bahasa semula jadi.
-    * **Sesi 3 (10:00 - 10:50) | Persediaan Awan & Demo Langsung**
-      3. Log masuk ke **Google Colab** di pelayar (Pair Programming jika tiada komputer riba).
-      4. Demo pensyarah: Mengambil data saham TSMC (`2330.TW`) dan melukis carta trend.
-    * **Sesi 4 (11:00 - 11:50) | Amali Lab 0 & Dwi-Trek AI**
-      5. **Lab 0**: Pelajar menjalankan skrip dan menukar simbol saham kepada Apple (`AAPL`).
-      6. **Dwi-Trek AI**: Gunakan AI terbina dalam Colab, beralih ke Google Gemini apabila had percuma tamat.
-    """,
-    "th": """
-    * **คาบที่ 2 (09:00 - 09:50) | แนวคิด & การปฐมนิเทศ**
-      1. ภาพรวมรายวิชา, สัดส่วนคะแนน (ปฏิบัติ 50%, กลางภาค 20%, ปลายภาค 30%) และการใช้งานระบบ
-      2. **แนวคิดผู้นำคำสั่ง (Conductor Mindset)**: สั่งการ AI ด้วยภาษาธรรมชาติโดยไม่ต้องท่องจำโค้ด
-    * **คาบที่ 3 (10:00 - 10:50) | ติดตั้งคลาวด์ & สาธิตสด**
-      3. ล็อกอินเข้าใช้งาน **Google Colab** บนเว็บ (จับคู่ Pair Programming สำหรับผู้ที่ไม่มีแล็ปท็อป)
-      4. ผู้สอนสาธิตสด: ดึงข้อมูลราคาหุ้น TSMC (`2330.TW`) และสร้างกราฟแนวโน้มอัตโนมัติ
-    * **คาบที่ 4 (11:00 - 11:50) | ปฏิบัติการ Lab 0 & เสริมพลังด้วย AI คู่ขนาน**
-      5. **Lab 0**: ลงมือรันโค้ดจริง และทดลองเปลี่ยนรหัสหุ้นเป็น Apple (`AAPL`)
-      6. **กลยุทธ์ AI คู่ขนาน**: ใช้ AI ใน Colab ควบคู่กับ Google Gemini เมื่อโควตาใช้งานฟรีเต็ม
-    """,
-    "fr": """
-    * **Séance 2 (09:00 - 09:50) | Concepts & Présentation**
-      1. Présentation du cours, barème d'évaluation et visite du portail d'apprentissage.
-      2. **Posture de chef d'orchestre** : Programmer avec l'IA en langage naturel sans mémoriser la syntaxe.
-    * **Séance 3 (10:00 - 10:50) | Configuration Cloud & Démo en direct**
-      3. Accès à **Google Colab** via le navigateur (travail en binôme si pas d'ordinateur).
-      4. Démonstration live : Récupération des cours de TSMC (`2330.TW`) et tracé graphique.
-    * **Séance 4 (11:00 - 11:50) | TP 0 & Double assistance IA**
-      5. **TP 0** : Pratique en classe ; exécutez le script et personnalisez-le pour Apple (`AAPL`).
-      6. **Double assistance IA** : Utilisez l'IA intégrée de Colab et basculez sur Google Gemini en cas de dépassement de quota.
+    * **Part 1 (09:00 - 09:50) | Khái niệm, Tư duy nhạc trưởng & Giới thiệu cổng thông tin**
+      1. Tổng quan khóa học, quy chế chấm điểm (50% Lab, 20% Giữa kỳ, 30% Đồ án) và giới thiệu cổng thông tin.
+      2. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần nhớ cú pháp.
+      3. Truyền cảm hứng: Toàn bộ cổng thông tin này được xây dựng bằng Python + Streamlit!
+    * **Part 2 (10:00 - 10:50) | Cài đặt Cloud, Phím tắt & Trình diễn trực tiếp**
+      4. Đăng nhập môi trường **Google Colab** (Lập trình cặp Pair Programming nếu không mang laptop).
+      5. Khởi động phím tắt bàn phím (`Ctrl/Cmd + C, V, Z` và `Shift + Enter` để chạy code).
+      6. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) và vẽ biểu đồ xu hướng.
+    * **Part 3 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
+      7. **Lab 0**: Sinh viên chạy code và tùy chỉnh lấy dữ liệu cổ phiếu Apple (`AAPL`).
+      8. **Hỗ trợ AI kép**: Dùng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini.
     """
+}
+
+# 快捷鍵與工作流小備忘（多語系資料）
+shortcuts_info = {
+    "us": """
+| Action (功能) | Windows | Mac | Description (說明) |
+| :--- | :--- | :--- | :--- |
+| **Copy (複製)** | `Ctrl + C` | `Cmd ⌘ + C` | Copy code or error message (複製代碼或錯誤訊息) |
+| **Paste (貼上)** | `Ctrl + V` | `Cmd ⌘ + V` | Paste code into Gemini (貼入 AI 對話框) |
+| **Undo (復原救命鍵)** | `Ctrl + Z` | `Cmd ⌘ + Z` | Undo mistake if code is deleted (手滑刪除代碼時的救命鍵) |
+| **Run Cell (執行程式)** | `Shift + Enter` | `Shift + Enter` | Run current Colab block instantly (免按滑鼠直接執行) |
+""",
+    "tw": """
+| 快捷鍵功能 | Windows | Mac | 課堂實戰用途 |
+| :--- | :--- | :--- | :--- |
+| **複製 (Copy)** | `Ctrl + C` | `Cmd ⌘ + C` | 快速複製 Colab 程式碼或紅字錯誤訊息 |
+| **貼上 (Paste)** | `Ctrl + V` | `Cmd ⌘ + V` | 把代碼貼入 Gemini 詢問或貼回 Colab |
+| **復原 (Undo 救命鍵)** | `Ctrl + Z` | `Cmd ⌘ + Z` | 不小心按錯或把代碼刪除時的一鍵還原！ |
+| **Colab 執行 (Run)** | `Shift + Enter` | `Shift + Enter` | 免用滑鼠按播放鈕，直接執行並跳至下一格 |
+"""
+}
+
+dual_track_info = {
+    "us": """
+1. **Primary Track (Colab AI)**: Use the built-in "Generate with AI" button directly inside your notebook cells for quick completion.
+2. **Backup Track (Google Gemini)**: Keep `gemini.google.com` open in a second browser tab.
+3. **When Colab limit is reached**: Press `Ctrl/Cmd + C` to copy your code & error, switch to Gemini with `Ctrl/Cmd + V`, and ask: *"Explain what went wrong and give me the corrected code."*
+""",
+    "tw": """
+1. **第一軌（Colab 內建 AI）**：直接在儲存格旁邊點擊「使用 AI 產生代碼」，進行即時編寫與自動補齊。
+2. **第二軌（Gemini 深度助教）**：在另一個瀏覽器分頁常駐開啟 `gemini.google.com`。
+3. **當 Colab 額度用盡或報錯看不懂時**：按下 `Ctrl/Cmd + C` 複製報錯訊息，切換到 Gemini 貼上詢問：*「請幫我解釋這段錯誤並給我修正後的 Python 代碼」*。
+"""
 }
 
 # 多語系傳送門按鈕標籤
@@ -623,6 +618,15 @@ for i in range(1, 19):
     with st.expander(w_title, expanded=(i == 1)):
         if i == 1:
             st.markdown(w1_details.get(current_code, w1_details["us"]))
+            
+            # 階層式小摺疊 1：神級快捷鍵速查
+            with st.expander("⚡ Keyboard Shortcuts Cheat Sheet (Windows & Mac 快捷鍵速查表)", expanded=False):
+                st.markdown(shortcuts_info.get(current_code, shortcuts_info["us"]))
+                
+            # 階層式小摺疊 2：雙軌 AI 實作工作流指南
+            with st.expander("💡 Dual-Track AI Workflow Guide (雙軌 AI 實作工作流指引)", expanded=False):
+                st.markdown(dual_track_info.get(current_code, dual_track_info["us"]))
+            
             st.markdown("---")
             st.markdown(f"#### {cur_btn_meta[0]}")
             btn_col1, btn_col2 = st.columns(2)
