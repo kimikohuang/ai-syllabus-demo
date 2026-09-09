@@ -699,29 +699,30 @@ df['Close'].plot(title="TSMC (2330.TW) - 1 Year Trend", figsize=(10, 5), grid=Tr
                 st.markdown(reflection_markdown)
 
             # 5. 一鍵推薦給同學 (Share with Classmates - English First & Open to All Majors/International Students)
-with st.expander(
-    "📢 Invite Classmates / Share Course (Open to ALL Majors & International Students)",
-    expanded=False,
-):
-    st.markdown(
-        "**Copy and forward this message to your class or international student LINE groups:**"
-    )
-    share_text = (
-        "🔥 [Elective Course Recommendation: Python AI Applications]\n"
-        "No complex coding syntax required! Learn how to direct AI with natural language prompts, fetch real-time TSMC & US stock data, and build mobile Web Apps!\n"
-        "• **Language**: English-taught (ideal for international students), with supplementary Chinese guidance (課程主要以英文講授，並輔以中文說明)。If you need support for any specific national language, please feel free to leave a message in the TA section (若有需要增加國家語言，也歡迎在助教區留言)。\n"
-        "• **Eligibility**: Open to ALL majors, year levels, and graduate/undergraduate students across the university—both local and international students are warmly welcomed!\n"
-        "• **Format**: Beginner-friendly with Pair Programming (teams of 1-3)\n"
-        "• **Required Gear**: Laptop and Smartphone (A headset with a microphone is recommended but optional).\n\n"
-        "📍 Time: Every Thursday 09:00 - 11:50 (Room 506, Innovation Bldg)\n"
-        "🔗 Syllabus Portal: https://ai-syllabus.streamlit.app/\n"
-        "💬 LINE Community Group:\n"
-        "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog\n"
-        "Join us during the Add/Drop week! 🚀"
-    )
-    st.code(share_text, language="text")
-    st.code(share_text, language="text")
-    st.caption("💡 Forward this text to your student group chats to invite friends from any department!")
+    with st.expander(
+        "📢 Invite Classmates / Share Course (Open to ALL Majors & International Students)",
+        expanded=False,
+    ):
+        st.markdown(
+            "**Copy and forward this message to your class or international student LINE groups:**"
+        )
+        share_text = (
+            "🔥 [Elective Course Recommendation: Python AI Applications]\n"
+            "No complex coding syntax required! Learn how to direct AI with natural language prompts, fetch real-time TSMC & US stock data, and build mobile Web Apps!\n"
+            "• **Language**: English-taught (ideal for international students), with supplementary Chinese guidance (課程主要以英文講授，並輔以中文說明)。If you need support for any specific national language, please feel free to leave a message in the TA section (若有需要增加國家語言，也歡迎在助教區留言)。\n"
+            "• **Eligibility**: Open to ALL majors, year levels, and graduate/undergraduate students across the university—both local and international students are warmly welcomed!\n"
+            "• **Format**: Beginner-friendly with Pair Programming (teams of 1-3)\n"
+            "• **Required Gear**: Laptop and Smartphone (A headset with a microphone is recommended but optional).\n\n"
+            "📍 Time: Every Thursday 09:00 - 11:50 (Room 506, Innovation Bldg)\n"
+            "🔗 Syllabus Portal: https://ai-syllabus.streamlit.app/\n"
+            "💬 LINE Community Group:\n"
+            "https://line.me/ti/g2/LUyGiu6JVuGP9MQ2leJRbjn7zhEj-G55qGiGog\n"
+            "Join us during the Add/Drop week! 🚀"
+        )
+        st.code(share_text, language="text")
+        st.caption(
+            "💡 Forward this text to your student group chats to invite friends from any department!"
+        )
             # 6. 【永遠保留】Google Colab 與 Gemini 快速傳送門按鈕
             st.markdown("---")
             st.markdown(f"#### {cur_btn_meta[0]}")
