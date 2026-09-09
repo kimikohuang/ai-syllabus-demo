@@ -613,7 +613,7 @@ for i in range(1, 19):
     
     with st.expander(w_title, expanded=(i == 1)):
         if i == 1:
-            # 【全新加入】第一週學習目標與能力清單 (Learning Objectives)
+            # 【學習目標與能力清單】
             with st.container(border=True):
                 st.markdown("##### 🎯 Week 1 Learning Objectives / 本週學習目標與能力清單")
                 st.markdown("""
@@ -628,7 +628,7 @@ for i in range(1, 19):
 
             st.markdown("---")
             
-            # 原本的第一週詳細步驟
+            # 第一週詳細步驟
             st.markdown(w1_details.get(current_code, w1_details["us"]))
             
             # 1. 快捷鍵速查
