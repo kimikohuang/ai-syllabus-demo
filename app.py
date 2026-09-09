@@ -1,5 +1,6 @@
 # ==============================================================================
-# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant (Expandable Sessions)
+# [Script] Interactive Multilingual Syllabus Portal & Q&A Assistant
+# 學生端互動式多語系課綱門戶（上課模式優先：課堂指引在上方，18週總表在下方）
 # ==============================================================================
 
 import streamlit as st
@@ -272,15 +273,161 @@ with c4:
         st.markdown(f"**{meta_cards['office_hour']['title'].get(current_code, meta_cards['office_hour']['title']['us'])}**")
         st.markdown(meta_cards['office_hour']['content'].get(current_code, meta_cards['office_hour']['content']['us']))
 
+# ==============================================================================
+# 5. 【置頂核心】每週三節課詳細步驟與上機指引（第一週預設展開 + Colab/Gemini 傳送門）
+# ==============================================================================
+st.markdown("---")
+expand_section_titles = {
+    "us": "🚀 In-Class Practice & Session Breakdown (Click week to expand)",
+    "tw": "🚀 課堂實作步驟與上機指引（點擊展開各週）",
+    "vn": "🚀 Hướng dẫn thực hành & Chi tiết tiết học (Bấm để mở rộng)",
+    "id": "🚀 Panduan Praktik & Rincian Sesi (Klik untuk memperluas)",
+    "my": "🚀 Panduan Amali & Pecahan Sesi (Klik untuk buka)",
+    "th": "🚀 คำแนะนำการปฏิบัติการในชั้นเรียน (คลิกเพื่อขยาย)",
+    "fr": "🚀 Guide de pratique en classe & Séances (Cliquez pour dérouler)"
+}
+st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
+
+# 第一週詳細內容（精準對齊明志科大課表時間：第 2、3、4 節）
+w1_details = {
+    "us": """
+    * **Session 2 (09:00 - 09:50) | Concept & Onboarding**
+      1. Course orientation, grading policies (50% Lab, 20% Midterm, 30% Final), and interactive portal overview.
+      2. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
+    * **Session 3 (10:00 - 10:50) | Cloud Setup & Live Demo**
+      3. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop).
+      4. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
+    * **Session 4 (11:00 - 11:50) | Hands-on Lab 0 & AI Dual-Track**
+      5. **Lab 0**: In-class exploration; run the script and customize it to fetch Apple (`AAPL`).
+      6. **AI Dual-Track**: Use Colab in-cell AI for coding, and switch to Google Gemini when free credits or tokens run out.
+    """,
+    "tw": """
+    * **第 2 節 (09:00 - 09:50) ｜ 觀念引導與門戶導覽**
+      1. 課程總覽、評量標準（平常 50%、期中 20%、期末 30%）與多語系 AI 助教網頁導覽。
+      2. 建立「指揮家思維 (Conductor Mindset)」：學習如何運用自然語言與 AI 協同編程，無須死記複雜語法。
+    * **第 3 節 (10:00 - 10:50) ｜ 雲端環境與即時示範 (Live Demo)**
+      3. 帶領全班登入瀏覽器與 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
+      4. 老師現場示範第一段 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
+    * **第 4 節 (11:00 - 11:50) ｜ 課堂實作與雙軌 AI 輔助 (Lab 0)**
+      5. **Lab 0 實作**：同學實際動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
+      6. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
+    """,
+    "vn": """
+    * **Tiết 2 (09:00 - 09:50) | Khái niệm & Định hướng**
+      1. Tổng quan khóa học, quy chế điểm số (Thực hành 50%, Giữa kỳ 20%, Đồ án 30%) và giới thiệu cổng thông tin.
+      2. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần ghi nhớ cú pháp.
+    * **Tiết 3 (10:00 - 10:50) | Cài đặt Cloud & Trình diễn trực tiếp**
+      3. Đăng nhập môi trường đám mây **Google Colab** (Lập trình cặp nếu không mang máy tính).
+      4. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) theo thời gian thực và vẽ biểu đồ xu hướng.
+    * **Tiết 4 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
+      5. **Lab 0**: Sinh viên chạy mã nguồn và tùy chỉnh để lấy dữ liệu cổ phiếu Apple (`AAPL`).
+      6. **Hỗ trợ AI kép**: Sử dụng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini để hỏi đáp.
+    """,
+    "id": """
+    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengantar**
+      1. Tinjauan kursus, kebijakan penilaian (Praktik 50%, UTS 20%, Akhir 30%), dan navigasi portal.
+      2. **Pola Pikir Konduktor**: Membangun solusi bisnis bersama AI menggunakan bahasa alami.
+    * **Sesi 3 (10:00 - 10:50) | Setup Cloud & Live Demo**
+      3. Membuka browser dan masuk ke **Google Colab** (Pair Programming jika tidak membawa laptop).
+      4. Demo Dosen: Mengambil harga saham TSMC (`2330.TW`) dan memplot grafik tren secara langsung.
+    * **Sesi 4 (11:00 - 11:50) | Praktik Lab 0 & AI Ganda**
+      5. **Lab 0**: Mahasiswa menjalankan kode dan mengubah simbol saham menjadi Apple (`AAPL`).
+      6. **Strategi AI Ganda**: Gunakan AI bawaan Colab untuk coding cepat, dan beralih ke Google Gemini jika limit habis.
+    """,
+    "my": """
+    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengenalan**
+      1. Gambaran keseluruhan kursus, dasar pemarkahan, dan panduan portal interaktif.
+      2. **Minda Konduktor**: Belajar membina bersama AI menggunakan bahasa semula jadi.
+    * **Sesi 3 (10:00 - 10:50) | Persediaan Awan & Demo Langsung**
+      3. Log masuk ke **Google Colab** di pelayar (Pair Programming jika tiada komputer riba).
+      4. Demo pensyarah: Mengambil data saham TSMC (`2330.TW`) dan melukis carta trend.
+    * **Sesi 4 (11:00 - 11:50) | Amali Lab 0 & Dwi-Trek AI**
+      5. **Lab 0**: Pelajar menjalankan skrip dan menukar simbol saham kepada Apple (`AAPL`).
+      6. **Dwi-Trek AI**: Gunakan AI terbina dalam Colab, beralih ke Google Gemini apabila had percuma tamat.
+    """,
+    "th": """
+    * **คาบที่ 2 (09:00 - 09:50) | แนวคิด & การปฐมนิเทศ**
+      1. ภาพรวมรายวิชา, สัดส่วนคะแนน (ปฏิบัติ 50%, กลางภาค 20%, ปลายภาค 30%) และการใช้งานระบบ
+      2. **แนวคิดผู้นำคำสั่ง (Conductor Mindset)**: สั่งการ AI ด้วยภาษาธรรมชาติโดยไม่ต้องท่องจำโค้ด
+    * **คาบที่ 3 (10:00 - 10:50) | ติดตั้งคลาวด์ & สาธิตสด**
+      3. ล็อกอินเข้าใช้งาน **Google Colab** บนเว็บ (จับคู่ Pair Programming สำหรับผู้ที่ไม่มีแล็ปท็อป)
+      4. ผู้สอนสาธิตสด: ดึงข้อมูลราคาหุ้น TSMC (`2330.TW`) และสร้างกราฟแนวโน้มอัตโนมัติ
+    * **คาบที่ 4 (11:00 - 11:50) | ปฏิบัติการ Lab 0 & เสริมพลังด้วย AI คู่ขนาน**
+      5. **Lab 0**: ลงมือรันโค้ดจริง และทดลองเปลี่ยนรหัสหุ้นเป็น Apple (`AAPL`)
+      6. **กลยุทธ์ AI คู่ขนาน**: ใช้ AI ใน Colab ควบคู่กับ Google Gemini เมื่อโควตาใช้งานฟรีเต็ม
+    """,
+    "fr": """
+    * **Séance 2 (09:00 - 09:50) | Concepts & Présentation**
+      1. Présentation du cours, barème d'évaluation et visite du portail d'apprentissage.
+      2. **Posture de chef d'orchestre** : Programmer avec l'IA en langage naturel sans mémoriser la syntaxe.
+    * **Séance 3 (10:00 - 10:50) | Configuration Cloud & Démo en direct**
+      3. Accès à **Google Colab** via le navigateur (travail en binôme si pas d'ordinateur).
+      4. Démonstration live : Récupération des cours de TSMC (`2330.TW`) et tracé graphique.
+    * **Séance 4 (11:00 - 11:50) | TP 0 & Double assistance IA**
+      5. **TP 0** : Pratique en classe ; exécutez le script et personnalisez-le pour Apple (`AAPL`).
+      6. **Double assistance IA** : Utilisez l'IA intégrée de Colab et basculez sur Google Gemini en cas de dépassement de quota.
+    """
+}
+
+# 多語系傳送門按鈕標籤
+portal_btn_labels = {
+    "us": ("🛠️ Quick Access Links (Week 1)", "🚀 Open Google Colab", "💡 Open Google Gemini (Backup AI)"),
+    "tw": ("🛠️ 課堂實作快速傳送門 (第 1 週)", "🚀 打開 Google Colab (雲端筆記本)", "💡 開啟 Google Gemini (AI 助教備用分頁)"),
+    "vn": ("🛠️ Đường dẫn truy cập nhanh (Tuần 1)", "🚀 Mở Google Colab", "💡 Mở Google Gemini (AI dự phòng)"),
+    "id": ("🛠️ Tautan Akses Cepat (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Cadangan)"),
+    "my": ("🛠️ Pautan Akses Pantas (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Sandaran)"),
+    "th": ("🛠️ ทางลัดเข้าใช้งานด่วน (สัปดาห์ที่ 1)", "🚀 เปิด Google Colab", "💡 เปิด Google Gemini (AI สำรอง)"),
+    "fr": ("🛠️ Liens d'accès rapide (Semaine 1)", "🚀 Ouvrir Google Colab", "💡 Ouvrir Google Gemini (IA relais)")
+}
+cur_btn_meta = portal_btn_labels.get(current_code, portal_btn_labels["us"])
+
+# 渲染 18 週抽屜（第一週預設展開）
+for i in range(1, 19):
+    week_title_map = {
+        "us": f"Week {i} Detailed Agenda (3-Hour Breakdown)",
+        "tw": f"第 {i} 週詳細三節課進行步驟與上機指引",
+        "vn": f"Tuần {i} - Chi tiết 3 tiết học",
+        "id": f"Minggu {i} - Rincian Sesi",
+        "my": f"Minggu {i} - Butiran Sesi",
+        "th": f"สัปดาห์ที่ {i} - รายละเอียดบทเรียน",
+        "fr": f"Semaine {i} - Détail des séances"
+    }
+    w_title = week_title_map.get(current_code, week_title_map["us"])
+    
+    with st.expander(w_title, expanded=(i == 1)):
+        if i == 1:
+            st.markdown(w1_details.get(current_code, w1_details["us"]))
+            st.markdown("---")
+            st.markdown(f"#### {cur_btn_meta[0]}")
+            btn_col1, btn_col2 = st.columns(2)
+            with btn_col1:
+                st.link_button(cur_btn_meta[1], "https://colab.research.google.com/", use_container_width=True)
+            with btn_col2:
+                st.link_button(cur_btn_meta[2], "https://gemini.google.com/", use_container_width=True)
+        else:
+            placeholders = {
+                "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
+                "tw": f"第 {i} 週的詳細三節課 1-5 點操作指引正在準備中，敬請期待！",
+                "vn": f"Chi tiết cho Tuần {i} sẽ sớm được cập nhật.",
+                "id": f"Rincian untuk Minggu {i} akan segera hadir.",
+                "my": f"Butiran untuk Minggu {i} akan dikemas kini.",
+                "th": f"รายละเอียดของสัปดาห์ที่ {i} จะอัปเดตเร็วๆ นี้",
+                "fr": f"Le détail de la semaine {i} sera bientôt disponible."
+            }
+            st.info(placeholders.get(current_code, placeholders["us"]))
+
+# ==============================================================================
+# 6. 【學期藍圖】18 週課程完整大表格（放置於下方作為宏觀參考）
+# ==============================================================================
 st.markdown("---")
 schedule_titles = {
-    "us": "🗓️ 18-Week Syllabus Breakdown", "tw": "🗓️ 18 週課程進度表", "vn": "🗓️ Lịch trình học tập 18 tuần",
-    "id": "🗓️ Rincian Silabus 18 Minggu", "my": "🗓️ Pecahan Sukatan Pelajaran 18 Minggu",
-    "th": "🗓️ แผนการสอน 18 สัปดาห์", "fr": "🗓️ Calendrier prévisionnel sur 18 semaines"
+    "us": "🗓️ 18-Week Full Syllabus Breakdown", "tw": "🗓️ 18 週完整課程進度總表", "vn": "🗓️ Lịch trình học tập 18 tuần toàn diện",
+    "id": "🗓️ Rincian Lengkap Silabus 18 Minggu", "my": "🗓️ Pecahan Lengkap Sukatan Pelajaran 18 Minggu",
+    "th": "🗓️ แผนการสอนฉบับสมบูรณ์ 18 สัปดาห์", "fr": "🗓️ Calendrier complet sur 18 semaines"
 }
 st.markdown(f"### {schedule_titles.get(current_code, schedule_titles['us'])}")
 
-# 5. 18 週課綱資料庫
+# 18 週課綱資料庫
 weeks_all = [
     {
         "week": "Week 1", "date": "2026/09/10",
@@ -492,154 +639,8 @@ else:
     st.markdown(table_full, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6. 每週三節課詳細步驟與上機指引（含精確學校節次、多語系與 Colab/Gemini 傳送門）
-# ==============================================================================
-st.markdown("---")
-expand_section_titles = {
-    "us": "📖 Detailed 3-Hour Session Breakdown (Click week to expand)",
-    "tw": "📖 每週三節課詳細進行步驟與上機指引（點擊展開）",
-    "vn": "📖 Chi tiết 3 tiết học hàng tuần (Bấm để mở rộng)",
-    "id": "📖 Rincian 3 Jam Pelajaran (Klik untuk memperluas)",
-    "my": "📖 Pecahan 3 Jam Sesi (Klik untuk buka)",
-    "th": "📖 รายละเอียดการเรียน 3 ชั่วโมง (คลิกเพื่อขยาย)",
-    "fr": "📖 Détail des 3 heures de cours (Cliquez pour dérouler)"
-}
-st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
-
-# 第一週詳細內容（精準對齊明志科大課表時間：第 2、3、4 節）
-w1_details = {
-    "us": """
-    * **Session 2 (09:00 - 09:50) | Concept & Onboarding**
-      1. Course orientation, grading policies (50% Lab, 20% Midterm, 30% Final), and interactive portal overview.
-      2. Introducing the **Conductor Mindset**: Learning to build with AI using natural language prompts without memorizing syntax.
-    * **Session 3 (10:00 - 10:50) | Cloud Setup & Live Demo**
-      3. Setting up browser access, Google login, and launching **Google Colab** (Pair Programming if no laptop).
-      4. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices and plotting trend charts.
-    * **Session 4 (11:00 - 11:50) | Hands-on Lab 0 & AI Dual-Track**
-      5. **Lab 0**: In-class exploration; run the script and customize it to fetch Apple (`AAPL`).
-      6. **AI Dual-Track**: Use Colab in-cell AI for coding, and switch to Google Gemini when free credits or tokens run out.
-    """,
-    "tw": """
-    * **第 2 節 (09:00 - 09:50) ｜ 觀念引導與門戶導覽**
-      1. 課程總覽、評量標準（平常 50%、期中 20%、期末 30%）與多語系 AI 助教網頁導覽。
-      2. 建立「指揮家思維 (Conductor Mindset)」：學習如何運用自然語言與 AI 協同編程，無須死記複雜語法。
-    * **第 3 節 (10:00 - 10:50) ｜ 雲端環境與即時示範 (Live Demo)**
-      3. 帶領全班登入瀏覽器與 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
-      4. 老師現場示範第一段 Python 程式碼：抓取台積電 (`2330.TW`) 每日股價並繪製走勢圖。
-    * **第 4 節 (11:00 - 11:50) ｜ 課堂實作與雙軌 AI 輔助 (Lab 0)**
-      5. **Lab 0 實作**：同學實際動手操作 Colab 程式碼，嘗試切換代號抓取蘋果 (`AAPL`) 股價。
-      6. **雙軌 AI 策略**：優先使用 Colab 內建 AI；若額度用盡或需深入除錯，隨時切換至 Google Gemini 對話協助。
-    """,
-    "vn": """
-    * **Tiết 2 (09:00 - 09:50) | Khái niệm & Định hướng**
-      1. Tổng quan khóa học, quy chế điểm số (Thực hành 50%, Giữa kỳ 20%, Đồ án 30%) và giới thiệu cổng thông tin.
-      2. **Tư duy nhạc trưởng**: Học cách lập trình cùng AI bằng ngôn ngữ tự nhiên mà không cần ghi nhớ cú pháp.
-    * **Tiết 3 (10:00 - 10:50) | Cài đặt Cloud & Trình diễn trực tiếp**
-      3. Đăng nhập môi trường đám mây **Google Colab** (Lập trình cặp nếu không mang máy tính).
-      4. Giảng viên demo: Lấy giá cổ phiếu TSMC (`2330.TW`) theo thời gian thực và vẽ biểu đồ xu hướng.
-    * **Tiết 4 (11:00 - 11:50) | Thực hành Lab 0 & Chiến lược AI kép**
-      5. **Lab 0**: Sinh viên chạy mã nguồn và tùy chỉnh để lấy dữ liệu cổ phiếu Apple (`AAPL`).
-      6. **Hỗ trợ AI kép**: Sử dụng AI tích hợp trong Colab; khi hết lượt miễn phí, chuyển sang Google Gemini để hỏi đáp.
-    """,
-    "id": """
-    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengantar**
-      1. Tinjauan kursus, kebijakan penilaian (Praktik 50%, UTS 20%, Akhir 30%), dan navigasi portal.
-      2. **Pola Pikir Konduktor**: Membangun solusi bisnis bersama AI menggunakan bahasa alami.
-    * **Sesi 3 (10:00 - 10:50) | Setup Cloud & Live Demo**
-      3. Membuka browser dan masuk ke **Google Colab** (Pair Programming jika tidak membawa laptop).
-      4. Demo Dosen: Mengambil harga saham TSMC (`2330.TW`) dan memplot grafik tren secara langsung.
-    * **Sesi 4 (11:00 - 11:50) | Praktik Lab 0 & AI Ganda**
-      5. **Lab 0**: Mahasiswa menjalankan kode dan mengubah simbol saham menjadi Apple (`AAPL`).
-      6. **Strategi AI Ganda**: Gunakan AI bawaan Colab untuk coding cepat, dan beralih ke Google Gemini jika limit habis.
-    """,
-    "my": """
-    * **Sesi 2 (09:00 - 09:50) | Konsep & Pengenalan**
-      1. Gambaran keseluruhan kursus, dasar pemarkahan, dan panduan portal interaktif.
-      2. **Minda Konduktor**: Belajar membina bersama AI menggunakan bahasa semula jadi.
-    * **Sesi 3 (10:00 - 10:50) | Persediaan Awan & Demo Langsung**
-      3. Log masuk ke **Google Colab** di pelayar (Pair Programming jika tiada komputer riba).
-      4. Demo pensyarah: Mengambil data saham TSMC (`2330.TW`) dan melukis carta trend.
-    * **Sesi 4 (11:00 - 11:50) | Amali Lab 0 & Dwi-Trek AI**
-      5. **Lab 0**: Pelajar menjalankan skrip dan menukar simbol saham kepada Apple (`AAPL`).
-      6. **Dwi-Trek AI**: Gunakan AI terbina dalam Colab, beralih ke Google Gemini apabila had percuma tamat.
-    """,
-    "th": """
-    * **คาบที่ 2 (09:00 - 09:50) | แนวคิด & การปฐมนิเทศ**
-      1. ภาพรวมรายวิชา, สัดส่วนคะแนน (ปฏิบัติ 50%, กลางภาค 20%, ปลายภาค 30%) และการใช้งานระบบ
-      2. **แนวคิดผู้นำคำสั่ง (Conductor Mindset)**: สั่งการ AI ด้วยภาษาธรรมชาติโดยไม่ต้องท่องจำโค้ด
-    * **คาบที่ 3 (10:00 - 10:50) | ติดตั้งคลาวด์ & สาธิตสด**
-      3. ล็อกอินเข้าใช้งาน **Google Colab** บนเว็บ (จับคู่ Pair Programming สำหรับผู้ที่ไม่มีแล็ปท็อป)
-      4. ผู้สอนสาธิตสด: ดึงข้อมูลราคาหุ้น TSMC (`2330.TW`) และสร้างกราฟแนวโน้มอัตโนมัติ
-    * **คาบที่ 4 (11:00 - 11:50) | ปฏิบัติการ Lab 0 & เสริมพลังด้วย AI คู่ขนาน**
-      5. **Lab 0**: ลงมือรันโค้ดจริง และทดลองเปลี่ยนรหัสหุ้นเป็น Apple (`AAPL`)
-      6. **กลยุทธ์ AI คู่ขนาน**: ใช้ AI ใน Colab ควบคู่กับ Google Gemini เมื่อโควตาใช้งานฟรีเต็ม
-    """,
-    "fr": """
-    * **Séance 2 (09:00 - 09:50) | Concepts & Présentation**
-      1. Présentation du cours, barème d'évaluation et visite du portail d'apprentissage.
-      2. **Posture de chef d'orchestre** : Programmer avec l'IA en langage naturel sans mémoriser la syntaxe.
-    * **Séance 3 (10:00 - 10:50) | Configuration Cloud & Démo en direct**
-      3. Accès à **Google Colab** via le navigateur (travail en binôme si pas d'ordinateur).
-      4. Démonstration live : Récupération des cours de TSMC (`2330.TW`) et tracé graphique.
-    * **Séance 4 (11:00 - 11:50) | TP 0 & Double assistance IA**
-      5. **TP 0** : Pratique en classe ; exécutez le script et personnalisez-le pour Apple (`AAPL`).
-      6. **Double assistance IA** : Utilisez l'IA intégrée de Colab et basculez sur Google Gemini en cas de dépassement de quota.
-    """
-}
-
-# 多語系按鈕與提示文字
-portal_btn_labels = {
-    "us": ("🛠️ Quick Access Links (Week 1)", "🚀 Open Google Colab", "💡 Open Google Gemini (Backup AI)"),
-    "tw": ("🛠️ 課堂實作快速傳送門 (第 1 週)", "🚀 打開 Google Colab (雲端筆記本)", "💡 開啟 Google Gemini (AI 助教備用分頁)"),
-    "vn": ("🛠️ Đường dẫn truy cập nhanh (Tuần 1)", "🚀 Mở Google Colab", "💡 Mở Google Gemini (AI dự phòng)"),
-    "id": ("🛠️ Tautan Akses Cepat (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Cadangan)"),
-    "my": ("🛠️ Pautan Akses Pantas (Minggu 1)", "🚀 Buka Google Colab", "💡 Buka Google Gemini (AI Sandaran)"),
-    "th": ("🛠️ ทางลัดเข้าใช้งานด่วน (สัปดาห์ที่ 1)", "🚀 เปิด Google Colab", "💡 เปิด Google Gemini (AI สำรอง)"),
-    "fr": ("🛠️ Liens d'accès rapide (Semaine 1)", "🚀 Ouvrir Google Colab", "💡 Ouvrir Google Gemini (IA relais)")
-}
-cur_btn_meta = portal_btn_labels.get(current_code, portal_btn_labels["us"])
-
-# 建立 18 週的展開抽屜
-for i in range(1, 19):
-    week_title_map = {
-        "us": f"Week {i} Detailed Agenda (3-Hour Breakdown)",
-        "tw": f"第 {i} 週詳細三節課進行步驟與上機指引",
-        "vn": f"Tuần {i} - Chi tiết 3 tiết học",
-        "id": f"Minggu {i} - Rincian Sesi",
-        "my": f"Minggu {i} - Butiran Sesi",
-        "th": f"สัปดาห์ที่ {i} - รายละเอียดบทเรียน",
-        "fr": f"Semaine {i} - Détail des séances"
-    }
-    w_title = week_title_map.get(current_code, week_title_map["us"])
-    
-    with st.expander(w_title, expanded=(i == 1)):
-        if i == 1:
-            # 第一週顯示詳細節次步驟
-            content_to_show = w1_details.get(current_code, w1_details["us"])
-            st.markdown(content_to_show)
-            
-            # 第一週專屬傳送門按鈕（支援多語系）
-            st.markdown("---")
-            st.markdown(f"#### {cur_btn_meta[0]}")
-            btn_col1, btn_col2 = st.columns(2)
-            with btn_col1:
-                st.link_button(cur_btn_meta[1], "https://colab.research.google.com/", use_container_width=True)
-            with btn_col2:
-                st.link_button(cur_btn_meta[2], "https://gemini.google.com/", use_container_width=True)
-        else:
-            # 2-18 週預設提示
-            placeholders = {
-                "us": f"Detailed session breakdown for Week {i} is coming soon. Stay tuned!",
-                "tw": f"第 {i} 週的詳細三節課 1-5 點操作指引正在準備中，敬請期待！",
-                "vn": f"Chi tiết cho Tuần {i} sẽ sớm được cập nhật.",
-                "id": f"Rincian untuk Minggu {i} akan segera hadir.",
-                "my": f"Butiran untuk Minggu {i} akan dikemas kini.",
-                "th": f"รายละเอียดของสัปดาห์ที่ {i} จะอัปเดตเร็วๆ นี้",
-                "fr": f"Le détail de la semaine {i} sera bientôt disponible."
-            }
-            st.info(placeholders.get(current_code, placeholders["us"]))
-
 # 7. 側邊欄：多語系 AI 助教 + Google Sheets 自動同步
+# ==============================================================================
 with st.sidebar:
     ui_texts = {
         "title": {
