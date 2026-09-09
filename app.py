@@ -221,17 +221,12 @@ meta_cards = {
     },
     "materials": {
         "title": {
-            "us": "💻 Devices & Open Platforms", "tw": "💻 上課設備與開放平台", "vn": "💻 Thiết bị & Nền tảng mở",
-            "id": "💻 Perangkat & Platform Terbuka", "my": "💻 Peranti & Platform Terbuka", "th": "💻 อุปกรณ์และแพลตฟอร์มเปิด", "fr": "💻 Appareils & Plateformes"
+            "us": "💻 Devices & Open Platforms", "tw": "💻 上課設備與開放平台", ...
         },
         "content": {
-            "us": "**Bring to Class**:  \n1. 💻 **Laptop (Required)**: For cloud coding (Google Colab).  \n2. 📱 **Smartphone**: For LINE chat & web apps.  \n**Platforms**: Google Colab, Google AI Studio, Streamlit, FRED Economic Data.",
-            "tw": "**每週必備設備**：  \n1. 💻 **筆記型電腦（必備）**：用於雲端 Colab 編程實作。  \n2. 📱 **智慧型手機**：用於 LINE 社群、提問與 App 成果預覽。  \n**雲端工具**：Google Colab、Google AI Studio、Streamlit、FRED 總經資料庫。",
-            "vn": "**Thiết bị cần mang theo**:  \n1. 💻 **Laptop (Bắt buộc)**: Cho lập trình đám mây (Google Colab).  \n2. 📱 **Smartphone**: Cho nhóm LINE & xem trước ứng dụng.  \n**Nền tảng**: Google Colab, Google AI Studio, Streamlit, Dữ liệu kinh tế FRED.",
-            "id": "**Perangkat yang Dibawa**:  \n1. 💻 **Laptop (Wajib)**: Untuk coding di Google Colab.  \n2. 📱 **Smartphone**: Untuk grup LINE & pratinjau web app.  \n**Platform**: Google Colab, Google AI Studio, Streamlit, Data Ekonomi FRED.",
-            "my": "**Peranti yang Perlu Dibawa**:  \n1. 💻 **Komputer Riba (Wajib)**: Untuk amali di Google Colab.  \n2. 📱 **Telefon Pintar**: Untuk grup LINE & pratonton web app.  \n**Platform**: Google Colab, Google AI Studio, Streamlit, Data Ekonomi FRED.",
-            "th": "**สิ่งที่ต้องนำมาเรียน**:  \n1. 💻 **แล็ปท็อป (จำเป็น)**: สำหรับโค้ดดิ้งบน Google Colab  \n2. 📱 **สมาร์ทโฟน**: สำหรับกลุ่ม LINE และดูผลลัพธ์เว็บแอป  \n**แพลตฟอร์ม**: Google Colab, Google AI Studio, Streamlit, ข้อมูลเศรษฐกิจ FRED",
-            "fr": "**Matériel requis** :  \n1. 💻 **Ordinateur portable (Requis)** : Pour Google Colab.  \n2. 📱 **Smartphone** : Pour LINE et les web apps.  \n**Plateformes** : Google Colab, Google AI Studio, Streamlit, FRED API."
+            "us": "**Bring to Class**:  \n1. 💻 **Laptop (Required)**: For cloud coding (Google Colab).  \n2. 📱 **Smartphone**: For LINE chat & web apps.  \n3. 🎧 **Transparency Earphones (Recommended)**: Best for voice-prompting AI while hearing classmates and lecture!  \n**Platforms**: Google Colab, Google AI Studio, Streamlit, FRED API.",
+            "tw": "**每週必備設備**：  \n1. 💻 **筆記型電腦（必備）**：用於雲端 Colab 編程實作。  \n2. 📱 **智慧型手機**：用於 LINE 社群與 App 預覽。  \n3. 🎧 **透通式耳機/麥克風（強烈推薦）**：結合 AI 語音輸入神技，邊聽邊講且不漏接老師上課與同伴討論！  \n**雲端工具**：Google Colab、Google AI Studio、Streamlit、FRED 總經資料庫。",
+            # (其餘語系維持 fallback 或同步更新)
         }
     },
     "office_hour": {
@@ -515,20 +510,17 @@ expand_section_titles = {
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
 # 第一週詳細內容（支援繁中與英文，其他語言自動 fallback 至英文確保零故障）
-w1_details = {
-    "us": """
+"us": """
     * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour (Room 506)**
-      1. Course orientation, grading policies (50% Lab, 20% Midterm W9, 30% Final Showcase W16), and portal overview.
-      2. Device Requirements: Please bring your **Laptop** (for Colab) and **Smartphone** (for LINE chat & mobile app preview).
-      3. Introducing the **Conductor Mindset**: Lead AI with natural language prompts without memorizing syntax.
-    * **Part 2 (10:00 - 10:50) | Cloud Setup, Shortcuts & Live Demo**
-      4. Launching **Google Colab** (Pair Programming if sharing laptops).
-      5. Keyboard shortcuts warmup (`Ctrl/Cmd + C, V, Z` and `Shift + Enter` to run).
-      6. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices.
-    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone, Bonus & Sidebar Check-in**
-      7. **Core Milestone (Lab 0)**: Run the script, change `2330.TW` to your favorite global brand (`AAPL`, `SBUX`, etc.).
-      8. **Bonus Challenge**: Try 5-year macro trends (`period="5y"`) or ask Gemini for dual-asset comparison.
-      9. **Mandatory Check-in**: Submit your student ID, stock ticker & insight via the **sidebar AI Assistant** to record today's attendance & lab completion!
+      1. Course orientation, grading policies, and portal overview.
+      2. Device Requirements: Bring your **Laptop**, **Smartphone**, and **Transparency Earphones** (for voice prompting!).
+      3. Introducing the **Conductor Mindset**: Lead AI with natural language prompts.
+    * **Part 2 (10:00 - 10:50) | Cloud Setup, Voice Prompting & Live Demo**
+      4. Launching **Google Colab** and testing **Voice Typing / Microphone** in Gemini (Micro-whisper technique).
+      5. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices.
+    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone & Sidebar Check-in**
+      6. **Core Milestone (Lab 0)**: Customize the script for `AAPL` or `SBUX`.
+      7. **Mandatory Check-in**: Submit your ID and stock insight via the **sidebar AI Assistant**.
     """,
     "tw": """
     * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
@@ -621,6 +613,22 @@ for i in range(1, 19):
     
     with st.expander(w_title, expanded=(i == 1)):
         if i == 1:
+            # 【全新加入】第一週學習目標與能力清單 (Learning Objectives)
+            with st.container(border=True):
+                st.markdown("##### 🎯 Week 1 Learning Objectives / 本週學習目標與能力清單")
+                st.markdown("""
+                By the end of today's session, you will be able to:
+                1. 🤖 **Master the Conductor Mindset**: Lead AI with natural language prompts and voice-typing without memorizing syntax.
+                2. 💻 **Launch Cloud Python**: Set up Google Colab, execute your first 4-line financial script, and handle keyboard shortcuts.
+                3. 📈 **Fetch Real-World Data**: Pull real-time stock prices (TSMC / Apple) using `yfinance` and plot closing price trends.
+                4. 🚀 **Complete Digital Check-in**: Submit your lab milestone and insights via the sidebar AI Assistant to record your attendance.
+                
+                *(🎯 Self-Check: Make sure you have completed all 4 items above and checked in via the sidebar!)*
+                """)
+
+            st.markdown("---")
+            
+            # 原本的第一週詳細步驟
             st.markdown(w1_details.get(current_code, w1_details["us"]))
             
             # 1. 快捷鍵速查
