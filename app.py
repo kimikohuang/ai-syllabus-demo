@@ -534,34 +534,118 @@ expand_section_titles = {
 }
 st.markdown(f"### {expand_section_titles.get(current_code, expand_section_titles['us'])}")
 
-# 第一週詳細內容（支援繁中與英文，其他語言自動 fallback 至英文確保零故障）
+# 第一週詳細步驟（完整對齊教師端 English Teaching Scripts 與中文授課導引）
 w1_details = {
     "us": """
-    * **Part 1 (09:00 - 09:50) | Concept, Mindset & Portal Tour (Room 506)**
-      1. Course orientation, grading policies, and portal overview.
-      2. Device Requirements: Bring your **Laptop**, **Smartphone**, and **Transparency Earphones** (for voice prompting!).
-      3. Introducing the **Conductor Mindset**: Lead AI with natural language prompts.
-    * **Part 2 (10:00 - 10:50) | Cloud Setup, Voice Prompting & Live Demo**
-      4. Launching **Google Colab** and testing **Voice Typing / Microphone** in Gemini (Micro-whisper technique).
-      5. Instructor live coding: Fetching real-time TSMC (`2330.TW`) stock prices.
-    * **Part 3 (11:00 - 11:50) | Lab 0 Milestone & Sidebar Check-in**
-      6. **Core Milestone (Lab 0)**: Customize the script for `AAPL` or `SBUX`.
-      7. **Mandatory Check-in**: Submit your ID and stock insight via the **sidebar AI Assistant**.
-    """,
+#### 🎙️ Part 1 (09:00 - 09:50) | Mindset, Announcements & 18-Week Roadmap (Room 506)
+1. **Ice-Breaking & QR Setup (09:00 - 09:15)**:
+   * Scan the **Portal QR** and **LINE Chat QR** on the main screen to connect immediately.
+   * Review our 4 golden rules: Room 506, required gear (Laptop + Smartphone), grading milestones (50% / 20% / 30%), and the group nickname policy (`Last 3 digits + Name`, e.g., `205 Huy`).
+2. **Multilingual Navigation & AI Assistant (09:15 - 09:25)**:
+   * Try switching between 7 parallel languages via the top flag buttons.
+   * Open the **Course AI Assistant** in the sidebar to ask questions and earn participation bonus points (anonymous mode available).
+3. **The Conductor Mindset & Flexible Pair Programming (09:25 - 09:35)**:
+   * **Conductor Mindset**: Lead AI agents with natural language prompts without memorizing code syntax.
+   * **Pair Collaboration**: Avoid prompt tunnel vision! Teams are flexible: work in **pairs (teams of 2)**, individually (1 person), or in a group of 3 if needed—no one is left behind.
+4. **Interactive Web App Preview (09:35 - 09:40)**:
+   * Explore how this portal was built entirely with Python and Streamlit—you will build and deploy your own web app to your phone by Week 10!
+5. **18-Week Roadmap & Hype (09:40 - 09:50)**:
+   * Review our full-semester journey: TSMC data, FRED macro indicators, AI Studio, and the Week 16 Showcase.
+   * **Mindset Key**: AI has crossed all language barriers. The real superpower is **asking the right questions and defining business problems clearly**.
+   * 🌟 **Fast-Finisher Challenges**:
+     * **Option A**: Test switching between parallel languages at the top of the portal.
+     * **Option B**: Submit your first test question in the sidebar AI Assistant to lock in early participation points!
+
+---
+
+#### 🎙️ Part 2 (10:00 - 10:50) | Cloud Setup, Live Demo & Economics Reflection
+1. **Voice Prompting & Keyboard Shortcuts Warm-up (10:00 - 10:15)**:
+   * Unlock **Voice Prompting**: Put on your transparency-mode earphones to micro-whisper prompts to Gemini without typing!
+   * Essential shortcuts: Copy (`Ctrl/Cmd + C`), Paste (`Ctrl/Cmd + V`), Undo lifesaver (`Ctrl/Cmd + Z`), and Run Cell (`Shift + Enter`).
+   * No laptop today? Join your neighbor for hands-on Pair Programming!
+2. **Dual-Track AI Strategy (10:15 - 10:25)**:
+   * Open `gemini.google.com` in a separate browser tab as your backup copilot when Colab hits its usage quota.
+3. **Step-by-Step TSMC Live Demo (10:25 - 10:40)**:
+   * Natural Language Prompt ➔ Copy the 4-line Python script ➔ Paste into Colab ➔ Count down and press **`Shift + Enter`** together to plot the chart in 3 seconds!
+4. **Economics Reflection & Fast-Finisher Challenges (10:40 - 10:50)**:
+   * **Demand Shock Reflection**: How does the GenAI boom create an unprecedented demand shock for semiconductor computing power?
+   * 🌟 **Fast-Finisher Challenges**:
+     * **Option A**: Tweak the code parameter to `period="5y"` or switch the ticker to NVIDIA (`"NVDA"`) to view the multi-year AI cycle.
+     * **Option B**: Switch to Gemini and ask: *"Outline 3 macro catalysts behind TSMC's growth over the past year."*
+
+---
+
+#### 🎙️ Part 3 (11:00 - 11:50) | Lab 0 Milestone, Accounting Reflection & Check-in
+1. **Lab 0 Mission & Error Recovery SOP (11:00 - 11:15)**:
+   * Create a new notebook cell and customize the script: replace TSMC with Apple (`'AAPL'`) or Starbucks (`'SBUX'`).
+   * **3-Step Error Recovery**: Hit a red error? Copy it (`Ctrl/Cmd+C`) ➔ Paste into Gemini (`Ctrl/Cmd+V`) ➔ Ask: *"Fix this error and give me working code."*
+2. **Hands-on In-Class Walkthrough (11:15 - 11:30)**:
+   * Instructor walk-around assistance for Wi-Fi and syntax troubleshooting.
+3. **Accounting Reflection & Dual Ticker Comparison (11:30 - 11:40)**:
+   * **B2B vs. B2C Revenue Models**: Why does TSMC's enterprise infrastructure model behave so differently from consumer brands facing inflation?
+   * 🌟 **Fast-Finisher Challenges**:
+     * **Option A**: Ask Gemini: *"How can I plot both TSMC and Apple on the same chart using yfinance?"*
+     * **Option B**: Ask Gemini: *"Calculate the cumulative percentage return for TSMC and Apple over the past year"* for a preview of Week 2!
+4. **Wrap-up, Digital Check-in & Office Hours (11:40 - 11:50)**:
+   * **Mandatory Check-in**: Submit your Student ID and ticker insights via the **Sidebar AI Assistant** to record your attendance.
+   * Share this course with classmates from any department during the Add/Drop week!
+   * Office Hours: Instructor remains in Room 506 right after class.
+""",
     "tw": """
-    * **Part 1 (09:00 - 09:50) ｜ 觀念引導、指揮家思維與網頁導覽 (創新大樓 506 教室)**
-      1. 課程總覽、評量標準（平常 50%、第9週期中 20%、第16週期末發表 30%）與多語系 AI 助教網頁導覽。
-      2. 必備設備提醒：每週請務必攜帶 **筆記型電腦** 與 **智慧型手機**。
-      3. 建立「指揮家思維 (Conductor Mindset)」：以自然語言提示詞指揮 AI。
-    * **Part 2 (10:00 - 10:50) ｜ 雲端環境、鍵盤快捷鍵與台積電 Live Demo**
-      4. 登入 **Google Colab** 雲端開發環境（未帶電腦者採兩人結對 Pair Programming）。
-      5. 鍵盤快捷鍵暖身與 `Shift + Enter` 執行。
-      6. 老師現場示範 4 行 Python 程式碼抓取台積電 (`2330.TW`) 股價。
-    * **Part 3 (11:00 - 11:50) ｜ Lab 0 成就解鎖、加碼挑戰與側邊欄打卡**
-      7. **核心成就解鎖 (Lab 0)**：成功跑出台積電或自選股票（如蘋果 `AAPL`、星巴克 `SBUX`）的走勢圖。
-      8. **加碼挑戰**：嘗試 5 年長線趨勢 (`period="5y"`) 或詢問 Gemini 進行雙資產對比。
-      9. **重要打卡 (Check-in)**：請務必將學號、股票代號與觀察心得透過 **左側側邊欄 AI 助教** 送出，作為今日出勤與實作完成證明！
-    """
+#### 🎙️ Part 1 (09:00 - 09:50) ｜ 觀念引導、LINE 公告逐項導讀與 18 週地圖 (創新大樓 506 教室)
+1. **破冰與雙 QR Code 配置 (09:00 - 09:15)**：
+   * 拿起手機立即掃描大螢幕右上角 **Portal QR**（課綱網頁）與 **LINE Chat QR**（官方社群）。
+   * 逐條導讀四大原則：創506教室、每週必備設備（筆電＋手機）、評量標準（平常50%/期中20%/期末30%）、LINE暱稱規範（`學號末三碼 + 姓名`，如 `205 Huy`）。
+2. **多語系切換與側邊欄 AI 助教實測 (09:15 - 09:25)**：
+   * 點擊上方 7 國國旗按鈕，體驗多語系雙語對照排版。
+   * 展開左側邊欄 **Course AI Assistant**，了解提問換取平時加分與匿名模式。
+3. **建立指揮家思維與結對專題彈性制 (09:25 - 09:35)**：
+   * **指揮家思維 (Conductor Mindset)**：用白話向 AI 下提示詞，擺脫死背語法壓力。
+   * **結對協作 (Pair Programming)**：破除思考盲點！專題鼓勵 **2人結對協作**（亦可1人獨立或3人彈性組），全員分工、無人被孤立。
+4. **Streamlit 應用實例展示 (09:35 - 09:40)**：
+   * 本教學網頁全由純 Python + Streamlit 打造，第 10-11 週每位同學都能打造並部署自己的手機 Web App！
+5. **18 週全學期課程地圖與心態建立 (09:40 - 09:50)**：
+   * 瀏覽全學期脈絡：從台積電數據工程、FRED 總經指標、AI Studio 到第 16 週發表會。
+   * **心法叮嚀**：AI 已跨越語言藩籬，最珍貴的能力是**「學會提出好問題、把商業邏輯定義清楚」**。
+   * 🌟 **快手加碼挑戰 (Fast-Finisher Options)**：
+     * **Option A（多語系體驗）**：切換上方 7 國語言按鈕，觀察各國語言的課綱呈現。
+     * **Option B（側邊欄搶先發問）**：在側邊欄向 AI 助教發送一則測試提問，搶先登錄平時參與加分！
+
+---
+
+#### 🎙️ Part 2 (10:00 - 10:50) ｜ 雲端開箱、快捷鍵、台積電 Demo 與經濟學思考
+1. **透通耳機語音輸入與鍵盤快捷鍵暖身 (10:00 - 10:15)**：
+   * **語音輸入黑科技**：戴上透通式耳機，用微氣音對 Gemini 說話下指令，同時不漏聽老師講課與同伴討論！
+   * 必備快捷鍵：複製 (`Ctrl/Cmd + C`)、貼上 (`Ctrl/Cmd + V`)、救命復原鍵 (`Ctrl/Cmd + Z`) 與 Colab 執行鍵 (**`Shift + Enter`**)。
+   * 今日未帶筆電者，立即與隔壁同學結對 (Pair Programming) 實作。
+2. **雙軌 AI 互補機制說明 (10:15 - 10:25)**：
+   * 常駐開啟 `gemini.google.com` 備用分頁，當 Colab 額度用盡或報錯時無縫接軌。
+3. **現場台積電 Live Demo (10:25 - 10:40)**：
+   * 自然語言提示詞 ➔ 複製 4 行 Python 程式碼 ➔ 貼到 Colab ➔ 全班倒數按下 **`Shift + Enter`**，3 秒繪出股價走勢圖！
+4. **經濟學供需震撼思考與快手加碼 (10:40 - 10:50)**：
+   * **經濟學思考**：觀察台積電飆升曲線，探討生成式 AI 爆發如何對半導體算力帶來結構性「需求衝擊 (Demand Shock)」。
+   * 🌟 **快手加碼挑戰 (Fast-Finisher Options)**：
+     * **Option A（參數與標的改寫）**：將程式碼改為 `period="5y"` 觀察 5 年長線景氣循環，或改為輝達 `"NVDA"` 觀察全球算力浪潮。
+     * **Option B（AI 商業洞察）**：向 Gemini 提問：「請分析台積電過去一年的三大成長動能與催化劑」，體驗數據與商業分析結合。
+
+---
+
+#### 🎙️ Part 3 (11:00 - 11:50) ｜ Lab 0 實作挑戰、會計營收結構思考與數位打卡
+1. **Lab 0 任務發布與三步驟除錯 SOP (11:00 - 11:15)**：
+   * 在 Colab 新增儲存格，將台積電改為蘋果 (`AAPL`) 或星巴克 (`SBUX`)。
+   * **除錯三步驟**：遇到紅字報錯 ➔ 複製紅字 (`Ctrl/Cmd+C`) ➔ 貼給 Gemini 詢問修復並索取正確代碼。
+2. **課堂個別巡視與指導 (11:15 - 11:30)**：
+   * 老師走動排解連線與代碼問題；跑出圖表即達成今日核心里程碑。
+3. **會計營收結構思考與雙標的對比 (11:30 - 11:40)**：
+   * **會計模式思考**：台積電面向科技巨頭的 B2B 資本支出，與蘋果/星巴克直接受通膨影響的 B2C 消費支出有何本質差異？
+   * 🌟 **快手加碼挑戰 (Fast-Finisher Options)**：
+     * **Option A（雙標的同圖對比）**：向 Gemini 提問：「如何用 Python 在同張圖上繪製台積電與蘋果過去一年的走勢對比？」
+     * **Option B（計算累計報酬率）**：讓 AI 計算台積電與蘋果過去一年的漲跌幅百分比（Return %），提前預習下週課程！
+4. **首日總結、側邊欄數位打卡與 Office Hours (11:40 - 11:50)**：
+   * **數位打卡繳交**：下課前務必在網頁左側 **Course AI Assistant** 輸入學號與觀察心得，完成出勤與成就記錄。
+   * 歡迎將課程推薦訊息轉發給各系好友，加退選週皆可跨系跨年級修習！
+   * 老師於下課後在創506教室接受個別諮詢。
+"""
 }
 
 shortcuts_info = {
